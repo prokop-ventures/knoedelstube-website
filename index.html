@@ -122,6 +122,81 @@
       100% { transform: translateX(-400%); opacity: 1; }
     }
 
+    /* Steam rising animation */
+    @keyframes steam1 {
+      0%   { top:95%; left:10%; opacity:0;    }
+      10%  { top:80%; left:13%; opacity:.28;  }
+      30%  { top:60%; left:8%;  opacity:.22;  }
+      50%  { top:40%; left:14%; opacity:.16;  }
+      70%  { top:22%; left:9%;  opacity:.08;  }
+      100% { top:5%;  left:12%; opacity:0;    }
+    }
+    @keyframes steam2 {
+      0%   { top:95%; left:28%; opacity:0;    }
+      10%  { top:78%; left:24%; opacity:.26;  }
+      30%  { top:58%; left:30%; opacity:.2;   }
+      50%  { top:38%; left:25%; opacity:.14;  }
+      70%  { top:20%; left:31%; opacity:.07;  }
+      100% { top:5%;  left:27%; opacity:0;    }
+    }
+    @keyframes steam3 {
+      0%   { top:95%; left:45%; opacity:0;    }
+      10%  { top:80%; left:49%; opacity:.25;  }
+      30%  { top:60%; left:43%; opacity:.19;  }
+      50%  { top:40%; left:48%; opacity:.13;  }
+      70%  { top:22%; left:42%; opacity:.06;  }
+      100% { top:5%;  left:46%; opacity:0;    }
+    }
+    @keyframes steam4 {
+      0%   { top:95%; left:20%; opacity:0;    }
+      10%  { top:78%; left:17%; opacity:.24;  }
+      30%  { top:58%; left:22%; opacity:.18;  }
+      50%  { top:38%; left:16%; opacity:.12;  }
+      70%  { top:18%; left:21%; opacity:.05;  }
+      100% { top:5%;  left:19%; opacity:0;    }
+    }
+    @keyframes steam5 {
+      0%   { top:95%; left:58%; opacity:0;    }
+      10%  { top:80%; left:62%; opacity:.23;  }
+      30%  { top:60%; left:57%; opacity:.17;  }
+      50%  { top:40%; left:63%; opacity:.11;  }
+      70%  { top:22%; left:58%; opacity:.05;  }
+      100% { top:5%;  left:61%; opacity:0;    }
+    }
+    .spotlight-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+    .spotlight-wrap span {
+      position: absolute;
+      border-radius: 50%;
+      width: 260px; height: 260px;
+      transform: translate(-50%, -50%);
+    }
+    .spotlight-wrap .sl {
+      background: radial-gradient(circle, rgba(255,210,120,0.9) 0%, rgba(255,185,70,0.3) 45%, transparent 70%);
+      animation: steam1 6s ease-in-out infinite;
+    }
+    .spotlight-wrap .sm {
+      background: radial-gradient(circle, rgba(255,215,130,0.9) 0%, rgba(255,190,80,0.3) 45%, transparent 70%);
+      animation: steam2 7s ease-in-out infinite;
+      animation-delay: -2.5s;
+    }
+    .spotlight-wrap .sr {
+      background: radial-gradient(circle, rgba(255,205,110,0.9) 0%, rgba(255,180,65,0.3) 45%, transparent 70%);
+      animation: steam3 8s ease-in-out infinite;
+      animation-delay: -1s;
+    }
+    .spotlight-wrap .s4 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,220,140,0.9) 0%, rgba(255,195,85,0.3) 45%, transparent 70%);
+      animation: steam4 5.5s ease-in-out infinite;
+      animation-delay: -3.5s;
+    }
+    .spotlight-wrap .s5 {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(255,208,115,0.9) 0%, rgba(255,183,68,0.3) 45%, transparent 70%);
+      animation: steam5 9s ease-in-out infinite;
+      animation-delay: -5s;
+    }
+
     /* Flatpickr custom styles */
     .flatpickr-calendar { font-family: 'Nunito Sans', sans-serif; border-radius: 1rem; box-shadow: 0 8px 24px rgba(33,91,99,0.12); border: none; }
     .flatpickr-day.flatpickr-disabled, .flatpickr-day.flatpickr-disabled:hover {
@@ -174,6 +249,7 @@
     <!-- Image with overlay text -->
     <div class="relative w-full py-10 md:py-14">
       <img src="images/IMG_0802.jpg" alt="Knödelstube Ambiente" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
+      <div class="spotlight-wrap"><span class="sl"></span><span class="sm"></span><span class="sr"></span><span class="s4"></span><span class="s5"></span></div>
       <div class="relative z-10 flex flex-col items-center justify-center text-center px-6">
         <p class="font-display italic text-3xl md:text-4xl text-white/80 -mb-4 md:-mb-6">Willkommen in der</p>
         <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-24 md:h-36 lg:h-44 brightness-0 invert" />
