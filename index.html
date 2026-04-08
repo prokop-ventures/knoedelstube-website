@@ -509,7 +509,7 @@
             </div>
             <div>
               <h4 class="font-bold text-brand-500 uppercase tracking-wider text-sm mb-1">E-Mail</h4>
-              <a href="mailto:info@knoedelstube.de" class="text-warmgray/70 text-lg hover:text-brand-500 focus-visible:text-brand-500 active:text-brand-600 transition-colors duration-200">info@knoedelstube.de</a>
+              <a href="mailto:info@knoedelstube.de" class="inline-block mt-1 px-5 py-2 bg-brand-500 text-white text-sm font-bold tracking-wider uppercase rounded-full hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-600 transition-colors duration-200">E-Mail schreiben</a>
             </div>
             <div>
               <h4 class="font-bold text-brand-500 uppercase tracking-wider text-sm mb-1">Öffnungszeiten</h4>
@@ -620,17 +620,63 @@
   </section>
 
   <!-- Footer -->
-  <footer class="relative py-12 grain" style="background: linear-gradient(135deg, #0e272b 0%, #163f45 100%);">
+  <footer class="relative py-12 pb-28 md:pb-12 grain" style="background: linear-gradient(135deg, #0e272b 0%, #163f45 100%);">
     <div class="max-w-6xl mx-auto px-6 relative z-10">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col items-center gap-6">
         <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-10 brightness-0 invert" />
-        <div class="text-center md:text-right">
+        <div class="text-center">
           <p class="text-white/40 text-sm">Fischergasse 9, 74072 Heilbronn · 07131 2035 557</p>
-          <p class="text-white/30 text-xs mt-1">© 2025 Knödelstube. Alle Rechte vorbehalten.</p>
+          <p class="text-white/30 text-xs mt-1">© 2025 Knödelstube. Alle Rechte vorbehalten. · <button onclick="document.getElementById('impressum-modal').classList.remove('hidden')" class="underline hover:text-white/60 transition-colors duration-200">Impressum</button></p>
         </div>
       </div>
     </div>
   </footer>
+
+  <!-- Impressum Modal -->
+  <div id="impressum-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-floating">
+      <div class="sticky top-0 bg-white rounded-t-3xl px-8 pt-8 pb-4 flex items-center justify-between border-b border-brand-100">
+        <h2 class="font-display text-2xl font-bold text-brand-500" style="letter-spacing:-0.03em;">Impressum</h2>
+        <button onclick="document.getElementById('impressum-modal').classList.add('hidden')" class="w-9 h-9 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 hover:bg-brand-100 active:bg-brand-200 transition-colors duration-200 text-xl font-bold" aria-label="Schließen">×</button>
+      </div>
+      <div class="px-8 py-6 space-y-6 text-warmgray/80 text-sm leading-relaxed">
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Angaben gemäß § 5 TMG</p>
+          <p>Irena Prokop<br>Craftelicious<br>Fischergasse 1<br>74072 Heilbronn</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Kontakt</p>
+          <p>Telefon: 07131-4050295<br>E-Mail: info[at]craftelicious.de</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Umsatzsteuer-ID</p>
+          <p>Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: DE324053002</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Streitschlichtung</p>
+          <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <span class="text-brand-500">https://ec.europa.eu/consumers/odr</span>.</p>
+          <p class="mt-2">Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
+          <p class="mt-2">Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Haftung für Inhalte</p>
+          <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+          <p class="mt-2">Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Haftung für Links</p>
+          <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p>
+          <p class="mt-2">Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+        </div>
+        <div>
+          <p class="font-bold text-brand-500 uppercase tracking-wider text-xs mb-2">Urheberrecht</p>
+          <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.</p>
+          <p class="mt-2">Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
+          <p class="mt-2 text-warmgray/50 text-xs">Quelle: e-recht24.de</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
