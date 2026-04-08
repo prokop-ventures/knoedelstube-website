@@ -103,6 +103,16 @@
       animation-play-state: paused;
     }
 
+    /* Menu card slide track */
+    .card-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .card-track > div {
+      flex-shrink: 0;
+      width: 100%;
+    }
+
     /* Reviews carousel */
     @keyframes review-slide {
       0%, 20% { transform: translateX(0); opacity: 1; }
@@ -160,22 +170,40 @@
   </nav>
 
   <!-- Hero Banner -->
-  <section id="home" class="relative w-full overflow-hidden" style="margin-top: 72px; height: calc(100vh - 72px); display: flex; flex-direction: column;">
-    <img src="images/IMG_0802.jpg" alt="Knödelstube Ambiente" class="w-full object-cover object-center  brightness-130 contrast-105 saturate-110" style="flex: 1 1 0; min-height: 0;" />
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 mx-auto">
-      <p class="font-display italic text-xl md:text-2xl text-white/80 mb-2">Willkommen in der</p>
-      <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-24 md:h-36 lg:h-44 brightness-0 invert" />
-      <p class="mt-4 font-body text-lg md:text-xl text-white tracking-[0.3em] font-bold">ehrlich | tschechisch | lecker</p>
-    </div>
-    <!-- CTAs & Opening hours inside hero -->
-    <div class="bg-cream py-6 px-6 flex-shrink-0">
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="#menue" class="px-7 py-3 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-full shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200 text-sm">Speisekarte</a>
-        <a href="#reservierung" class="px-7 py-3 border-2 border-brand-500/30 text-brand-500 font-bold tracking-wider uppercase rounded-full hover:border-brand-500 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-100 transition-colors duration-200 text-sm">Tisch reservieren</a>
+  <section id="home" class="relative w-full overflow-hidden" style="margin-top: 72px;">
+    <!-- Image with overlay text -->
+    <div class="relative w-full py-10 md:py-14">
+      <img src="images/IMG_0802.jpg" alt="Knödelstube Ambiente" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
+      <div class="relative z-10 flex flex-col items-center justify-center text-center px-6">
+        <p class="font-display italic text-3xl md:text-4xl text-white/80 -mb-4 md:-mb-6">Willkommen in der</p>
+        <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-24 md:h-36 lg:h-44 brightness-0 invert" />
+        <p class="-mt-2 md:-mt-4 font-body text-lg md:text-xl text-white tracking-[0.3em] font-bold">ehrlich | tschechisch | lecker</p>
+        <div class="mt-4 md:mt-5 text-center">
+          <p class="font-body text-white/60 text-xs tracking-[0.2em] uppercase mb-1">Öffnungszeiten</p>
+          <p class="font-body text-white text-base md:text-lg font-semibold">Di – Do: 17 – 22 Uhr &nbsp;·&nbsp; Fr – Sa: 17 – 23 Uhr</p>
+        </div>
       </div>
-      <div class="max-w-sm mx-auto mt-4 bg-white rounded-2xl px-6 py-3 text-center shadow-elevated">
-        <p class="font-bold tracking-wider uppercase text-xs text-brand-500 mb-1">Öffnungszeiten</p>
-        <p class="text-warmgray/70 text-sm">Di – Do: 17 – 22 Uhr · Fr – Sa: 17 – 23 Uhr</p>
+    </div>
+    <!-- Mission text with image -->
+    <div class="bg-cream px-6 py-10 md:py-14">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div class="rounded-2xl overflow-hidden shadow-elevated">
+          <img src="images/IMG_0867-1.jpg" alt="Knödelstube Interieur" class="w-full h-64 md:h-80 object-cover" />
+        </div>
+        <div class="space-y-4" style="line-height: 1.7;">
+          <p class="text-warmgray/80">Unsere Mission ist es, authentisches tschechisches Essen nach Heilbronn und Umland zu bringen – ehrlich, hausgemacht und mit viel Liebe zubereitet. Entdeckt unsere Auswahl an traditionellen Serviettenknödeln, saisonalen Gerichten und typischen Spezialitäten.</p>
+          <p class="text-warmgray/70">Ob deftige Fleischgerichte oder vegetarische Leckerbissen – bei uns findet jeder etwas Passendes. Dazu gibt es das original Pilsner Urquell. In Pilsen gebraut und in Heilbronn frisch gezapft – einmalig im Umkreis von mindestens 50km.</p>
+          <p class="text-warmgray/70">Unser Lokal liegt zentral im Herzen von Heilbronn und verbindet moderne Gemütlichkeit mit tschechischer Tradition. Im Sommer lädt unser Biergarten zur entspannten Auszeit mitten in der Stadt ein.</p>
+          <p class="text-warmgray/70">Schaut vorbei und erlebt das tschechische Wirtshausgefühl selbst.</p>
+          <p class="font-display italic text-brand-400 text-lg pt-2">Irena & Zdenek Prokop</p>
+        </div>
+      </div>
+      <!-- CTAs & Opening hours -->
+      <div class="max-w-5xl mx-auto mt-10">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#menue" class="px-7 py-3 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-full shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200 text-sm text-center">Speisekarte</a>
+          <a href="#reservierung" class="px-7 py-3 border-2 border-brand-500/30 text-brand-500 font-bold tracking-wider uppercase rounded-full hover:border-brand-500 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-100 transition-colors duration-200 text-sm text-center">Tisch reservieren</a>
+        </div>
       </div>
     </div>
   </section>
@@ -270,164 +298,44 @@
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-brand-500" style="letter-spacing: -0.03em;">Speisekarte</h2>
       </div>
 
-      <!-- Menu tabs -->
-      <div class="flex flex-wrap justify-center gap-3 mb-12">
-        <button onclick="showTab('saisonal')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-brand-500 text-white" data-tab="saisonal">Saisonales</button>
-        <button onclick="showTab('vorspeisen')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-tab="vorspeisen">Vorspeisen & Salate</button>
-        <button onclick="showTab('knoedel')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-tab="knoedel">Knödelküche</button>
-        <button onclick="showTab('wirtshaus')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-tab="wirtshaus">Wirtshausküche</button>
-        <button onclick="showTab('desserts')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-tab="desserts">Desserts</button>
-        <button onclick="showTab('getraenke')" class="menu-tab px-5 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-tab="getraenke">Getränke</button>
+      <!-- Karten-Tabs -->
+      <div class="flex justify-center gap-4 mb-10">
+        <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-brand-500 text-white" data-card="saisonale">Saisonale Karte</button>
+        <button onclick="showMenuCard('sommer')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-card="sommer">Sommerkarte</button>
       </div>
 
-      <!-- Saisonale Spezialitäten -->
-      <div id="tab-saisonal" class="menu-content">
-        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-elevated">
-          <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Saisonale Spezialitäten</h3>
-          <div class="space-y-5">
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Tagessuppe</span><span class="price-dots"></span><span class="font-bold text-brand-500">7 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3 ml-0">Fragen Sie bei unserem Service nach der aktuellen Tagessuppe</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Krautkrapfen</span><span class="price-dots"></span><span class="font-bold text-brand-500">17 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Allgäuer Spezialität mit in Nudelteig eingewickeltem Sauerkraut, Bratensoße und buntem Gartensalat</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Backhendl</span><span class="price-dots"></span><span class="font-bold text-brand-500">18 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Knusprig ausgebackenes Hähnchen-Oberkeulenfleisch, dazu Kartoffel-Gurken-Salat und Tatarka (Kräutermayo)</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Zwiebelrostbraten</span><span class="price-dots"></span><span class="font-bold text-brand-500">29 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Der schwäbische Klassiker: Feiner Rinderbraten mit geschmelzten und knusprigen Zwiebeln, dazu Knöpfle und Bratensößle</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Crème Brûlée</span><span class="price-dots"></span><span class="font-bold text-brand-500">9 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Cremige Vanillecreme mit karamellisierter Zuckerkruste</p>
+      <!-- Saisonale Karte -->
+      <div id="card-saisonale" class="card-content">
+        <div class="relative max-w-3xl mx-auto">
+          <div class="overflow-hidden">
+            <div class="card-track" id="saisonale-track">
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
+            </div>
           </div>
+          <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
+          <button onclick="moveCard('saisonale', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
         </div>
+        <div class="flex justify-center gap-2 mt-6" id="saisonale-dots"></div>
       </div>
 
-      <!-- Vorspeisen & Salate -->
-      <div id="tab-vorspeisen" class="menu-content hidden">
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white rounded-3xl p-8 md:p-10 shadow-elevated">
-            <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Suppen & Vorspeisen</h3>
-            <div class="space-y-5">
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Tschechische Knoblauchsuppe</span><span class="price-dots"></span><span class="font-bold text-brand-500">6 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Mit Croutons und geriebenem Käse</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Eingelegter Camembert</span><span class="price-dots"></span><span class="font-bold text-brand-500">10 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Mit pikanter Knoblauch-Chilipaste gewürzt und in Öl eingelegt</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Utopenec – „Ertrunkener"</span><span class="price-dots"></span><span class="font-bold text-brand-500">10 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Kabanossi, in Essig eingelegt, mit Zwiebeln</p>
+      <!-- Sommerkarte -->
+      <div id="card-sommer" class="card-content hidden">
+        <div class="relative max-w-3xl mx-auto">
+          <div class="overflow-hidden">
+            <div class="card-track" id="sommer-track">
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
+              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
             </div>
           </div>
-          <div class="bg-white rounded-3xl p-8 md:p-10 shadow-elevated">
-            <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Salate</h3>
-            <div class="space-y-5">
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Balkansalat</span><span class="price-dots"></span><span class="font-bold text-brand-500">12 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Tomaten, Gurken, Paprika, rote Zwiebeln und Hirtenkäse</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Bunter Gartensalat</span><span class="price-dots"></span><span class="font-bold text-brand-500">10 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Grüner Salat mit frischem Gartengemüse und Senfdressing</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Wurstsalat nach Art des Hauses</span><span class="price-dots"></span><span class="font-bold text-brand-500">12 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Eingelegte Kabanossi, Essiggurken, Zwiebeln, Senfdressing</p>
-            </div>
-            <p class="mt-6 text-sm text-brand-400 italic">Salate auch als Beilage erhältlich</p>
-          </div>
+          <button onclick="moveCard('sommer', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
+          <button onclick="moveCard('sommer', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
         </div>
-      </div>
-
-      <!-- Knödelküche -->
-      <div id="tab-knoedel" class="menu-content hidden">
-        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-elevated">
-          <h3 class="font-display text-2xl text-brand-500 font-bold mb-2">Unsere Knödelküche</h3>
-          <p class="text-sm text-warmgray/50 mb-8">Alle Gerichte mit original böhmischen Serviettenknödeln</p>
-          <div class="space-y-5">
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Svíčková</span><span class="price-dots"></span><span class="font-bold text-brand-500">25 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Rinderbraten in Wurzelrahmsoße und Preiselbeeren</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Koprovka <span class="text-xs text-brand-300">(v)</span></span><span class="price-dots"></span><span class="font-bold text-brand-500">16 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Böhmische Dill-Sahne-Soße mit gekochtem Ei</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Pilzgulasch</span><span class="price-dots"></span><span class="font-bold text-brand-500">18 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Waldpilzmischung mit Zwiebeln in würziger Soße</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Böhmisches Rindergulasch</span><span class="price-dots"></span><span class="font-bold text-brand-500">20 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Saftiges Rindfleisch mit Zwiebeln geschmort in würziger Soße</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Gefüllte Kartoffelknödel</span><span class="price-dots"></span><span class="font-bold text-brand-500">19 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Mit geräuchertem Speck oder Waldpilzen (v), Sauerkraut und Röstzwiebeln</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wirtshausküche -->
-      <div id="tab-wirtshaus" class="menu-content hidden">
-        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-elevated">
-          <h3 class="font-display text-2xl text-brand-500 font-bold mb-2">Unsere Wirtshausküche</h3>
-          <p class="text-sm text-warmgray/50 mb-8">Mittagstisch-Menü: Hauptspeise + Beilagensalat/Knoblauchsuppe + Heißgetränk zum Preis der Hauptspeise</p>
-          <div class="space-y-5">
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Krauthalušky <span class="text-xs text-brand-300">(v)</span></span><span class="price-dots"></span><span class="font-bold text-brand-500">13 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Kartoffelknöpfle nach slowakischer Art, mit Sauerkraut und Räuchertofu oder Speck</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Käsehalušky <span class="text-xs text-brand-300">(v)</span></span><span class="price-dots"></span><span class="font-bold text-brand-500">15 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Kartoffelknöpfle mit Käsecreme aus Hirtenkäse und Gorgonzola, dazu Räuchertofu oder Speck</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Panierte Blumenkohlröschen <span class="text-xs text-brand-300">(v)</span></span><span class="price-dots"></span><span class="font-bold text-brand-500">16 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Mit Petersilienkartoffeln und hausgemachter Tatarka (Kräutermayo)</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Hähnchen Cordon Bleu</span><span class="price-dots"></span><span class="font-bold text-brand-500">23 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Gefüllt mit Coppa und Camembert – außen knusprig, innen cremig</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Bratkartoffeln <span class="text-xs text-brand-300">(v)</span></span><span class="price-dots"></span><span class="font-bold text-brand-500">12 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Nach eigenem Hausrezept mit Zwiebeln und Räuchertofu oder Speck</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Desserts -->
-      <div id="tab-desserts" class="menu-content hidden">
-        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-elevated max-w-2xl mx-auto">
-          <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Desserts</h3>
-          <div class="space-y-5">
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Apfelstrudel mit Eis</span><span class="price-dots"></span><span class="font-bold text-brand-500">9 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Mit Vanilleeis</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Palatschinken</span><span class="price-dots"></span><span class="font-bold text-brand-500">8 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Mit Vanilleeis und saisonaler Frucht</p>
-            <div class="flex items-baseline"><span class="font-bold text-brand-500">Nougatknödel</span><span class="price-dots"></span><span class="font-bold text-brand-500">11 €</span></div>
-            <p class="text-sm text-warmgray/60 -mt-3">Mit Vanilleeis und saisonaler Frucht</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Getränke -->
-      <div id="tab-getraenke" class="menu-content hidden">
-        <div class="grid md:grid-cols-2 gap-8">
-          <!-- Bier -->
-          <div class="bg-white rounded-3xl p-8 md:p-10 shadow-elevated">
-            <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Bier vom Fass</h3>
-            <div class="space-y-5">
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Pilsner Urquell 0,3l | 0,5l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,50 | 5,50 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Original böhmisches Bier aus Pilsen, hell, leicht, süffig | 4,8% vol.</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Palmbräu Zwickel Hell 0,3l | 0,5l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,50 | 5,50 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Das regionale Helle aus dem Kraichgau, unfiltriert und vollmundig | 4,9% vol.</p>
-            </div>
-            <h4 class="font-display text-lg text-brand-400 font-bold mt-8 mb-5">Flaschenbiere</h4>
-            <div class="space-y-3 text-sm">
-              <div class="flex items-baseline"><span class="text-brand-500">Palmbräu Export 0,5l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,90 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Palmbräu Hefeweizen 0,5l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,90 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Palmbräu Naturradler</span><span class="price-dots"></span><span class="font-bold text-brand-500">3,90 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Maisel's Weisse Alkoholfrei 0,5l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,90 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Bleifrei Lager Alkoholfrei 0,33l</span><span class="price-dots"></span><span class="font-bold text-brand-500">3,90 €</span></div>
-            </div>
-          </div>
-          <!-- Wein & Spirituosen -->
-          <div class="bg-white rounded-3xl p-8 md:p-10 shadow-elevated">
-            <h3 class="font-display text-2xl text-brand-500 font-bold mb-8">Weine vom Amalienhof</h3>
-            <div class="space-y-5">
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Weissburgunder trocken 0,1l | 0,25l</span><span class="price-dots"></span><span class="font-bold text-brand-500">3,90 | 8,50 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Frisch, mit ausgewogener Säure – 12% Vol.</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Riesling mit Gewürztraminer 0,1l | 0,25l</span><span class="price-dots"></span><span class="font-bold text-brand-500">3,90 | 8,50 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Fruchtig und aromatisch – 11,5% Vol.</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Lemberger Rosé 0,1l | 0,25l</span><span class="price-dots"></span><span class="font-bold text-brand-500">3,90 | 8,50 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Fruchtige Leichtigkeit, erfrischende Säure – 11% Vol.</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Lemberger „Bunter Mergel" 0,1l | 0,25l</span><span class="price-dots"></span><span class="font-bold text-brand-500">4,50 | 8,90 €</span></div>
-              <p class="text-sm text-warmgray/60 -mt-3">Rote Fruchtnoten, feines Holz – 13% Vol.</p>
-              <div class="flex items-baseline"><span class="font-bold text-brand-500">Prosecco Ca'Belli 0,1l</span><span class="price-dots"></span><span class="font-bold text-brand-500">5,00 €</span></div>
-            </div>
-            <h4 class="font-display text-lg text-brand-400 font-bold mt-8 mb-5">Longdrinks & Hausgemachte Limos</h4>
-            <div class="space-y-3 text-sm">
-              <div class="flex items-baseline"><span class="text-brand-500">Gin & Tonic (AMH Gin)</span><span class="price-dots"></span><span class="font-bold text-brand-500">10 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">BeTon (Becherovka & Tonic)</span><span class="price-dots"></span><span class="font-bold text-brand-500">8 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Aperol Spritz</span><span class="price-dots"></span><span class="font-bold text-brand-500">9 €</span></div>
-              <div class="flex items-baseline"><span class="text-brand-500">Hausgemachte Limo | Spritz</span><span class="price-dots"></span><span class="font-bold text-brand-500">7 | 10 €</span></div>
-              <p class="text-xs text-warmgray/50 -mt-1">Erdbeer-Rhabarber · Ingwer-Limette-Minze · Blutorange</p>
-            </div>
-          </div>
-        </div>
+        <div class="flex justify-center gap-2 mt-6" id="sommer-dots"></div>
       </div>
     </div>
   </section>
@@ -656,17 +564,45 @@
       mobileMenu.style.pointerEvents = 'none';
     }
 
-    // Menu tabs
-    function showTab(tab) {
-      document.querySelectorAll('.menu-content').forEach(el => el.classList.add('hidden'));
-      document.getElementById('tab-' + tab).classList.remove('hidden');
-      document.querySelectorAll('.menu-tab').forEach(btn => {
+    // Menu card tabs
+    function showMenuCard(card) {
+      document.querySelectorAll('.card-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('card-' + card).classList.remove('hidden');
+      document.querySelectorAll('.card-tab').forEach(btn => {
         btn.classList.remove('bg-brand-500', 'text-white');
         btn.classList.add('bg-white', 'text-brand-500');
       });
-      const active = document.querySelector(`[data-tab="${tab}"]`);
+      const active = document.querySelector(`[data-card="${card}"]`);
       active.classList.remove('bg-white', 'text-brand-500');
       active.classList.add('bg-brand-500', 'text-white');
+    }
+
+    // Menu card page flip
+    const cardState = { saisonale: 0, sommer: 0 };
+    const cardCounts = { saisonale: 2, sommer: 6 };
+
+    ['saisonale', 'sommer'].forEach(name => {
+      const dotsEl = document.getElementById(name + '-dots');
+      for (let i = 0; i < cardCounts[name]; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'w-3 h-3 rounded-full transition-colors duration-200 ' + (i === 0 ? 'bg-brand-500' : 'bg-brand-200');
+        dot.addEventListener('click', () => goToCard(name, i));
+        dotsEl.appendChild(dot);
+      }
+    });
+
+    function goToCard(name, index) {
+      cardState[name] = index;
+      document.getElementById(name + '-track').style.transform = 'translateX(-' + (index * 100) + '%)';
+      const dots = document.getElementById(name + '-dots').querySelectorAll('button');
+      dots.forEach((d, i) => {
+        d.className = 'w-3 h-3 rounded-full transition-colors duration-200 ' + (i === index ? 'bg-brand-500' : 'bg-brand-200');
+      });
+    }
+
+    function moveCard(name, dir) {
+      const next = (cardState[name] + dir + cardCounts[name]) % cardCounts[name];
+      goToCard(name, next);
     }
 
     // Review carousel
