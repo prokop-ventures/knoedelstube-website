@@ -460,14 +460,28 @@
           <p class="font-body font-bold tracking-[0.3em] uppercase text-brand-400 text-sm mb-2">Jetzt buchen</p>
           <h2 class="font-display text-4xl md:text-5xl font-bold text-brand-500 mb-10" style="letter-spacing: -0.03em;">Reservierung</h2>
 
-          <form class="space-y-5" onsubmit="event.preventDefault(); document.getElementById('form-success').classList.remove('hidden');">
+          <form id="reservierung-form" class="space-y-5">
+            <!-- Web3Forms hidden fields -->
+            <input type="hidden" name="access_key" id="w3f-access-key" />
+            <input type="hidden" name="subject" id="w3f-subject" />
+            <input type="hidden" name="from_name" value="Knödelstube Reservierung" />
+            <input type="hidden" name="replyto" id="w3f-replyto" />
+            <input type="hidden" name="message" id="w3f-message" />
+            <input type="checkbox" name="botcheck" style="display:none" />
+
             <div>
               <label for="name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Name</label>
               <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
             </div>
-            <div>
-              <label for="email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">E-Mail</label>
-              <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">E-Mail</label>
+                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              </div>
+              <div>
+                <label for="telefon" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Telefon</label>
+                <input type="tel" id="telefon" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
@@ -490,6 +504,10 @@
               <div>
                 <label for="uhrzeit" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Uhrzeit</label>
                 <select id="uhrzeit" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
+                  <option>12:00</option>
+                  <option>12:30</option>
+                  <option>13:00</option>
+                  <option>13:30</option>
                   <option>17:00</option>
                   <option>17:30</option>
                   <option selected>18:00</option>
@@ -510,11 +528,15 @@
               <label for="nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Nachricht (optional)</label>
               <textarea id="nachricht" rows="3" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
             </div>
-            <button type="submit" class="w-full py-4 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-xl shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200">Reservierung anfragen</button>
+            <button type="submit" id="reservierung-submit" class="w-full py-4 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-xl shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200">Reservierung anfragen</button>
           </form>
           <div id="form-success" class="hidden mt-6 p-6 bg-brand-50 border border-brand-200 rounded-xl text-center">
             <p class="text-brand-500 font-bold text-lg">Ihre Reservierungsanfrage wurde erfolgreich verschickt!</p>
             <p class="text-brand-400 mt-1">Wir melden uns in Kürze bei Ihnen.</p>
+          </div>
+          <div id="form-error" class="hidden mt-6 p-6 bg-red-50 border border-red-200 rounded-xl text-center">
+            <p class="text-red-600 font-bold">Es ist ein Fehler aufgetreten.</p>
+            <p class="text-red-500 mt-1">Bitte versuchen Sie es erneut oder rufen Sie uns an: 07131/2035557</p>
           </div>
         </div>
       </div>
@@ -536,6 +558,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+  <script src="reservation-config.js"></script>
   <script>
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
@@ -645,6 +668,53 @@
         return d;
       })(),
       disable: [date => date.getDay() === 0 || date.getDay() === 1],
+    });
+
+    // Reservierungsformular – Web3Forms
+    document.getElementById('reservierung-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('reservierung-submit');
+      btn.disabled = true;
+      btn.textContent = 'Wird gesendet…';
+
+      const name     = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const telefon  = document.getElementById('telefon').value.trim() || '–';
+      const personen = document.getElementById('personen').value;
+      const uhrzeit  = document.getElementById('uhrzeit').value;
+      const datum    = document.getElementById('datum').value;
+      const nachricht = document.getElementById('nachricht').value.trim() || '–';
+
+      const message = RESERVATION_CONFIG.message_template
+        .replace(/{name}/g, name)
+        .replace(/{datum}/g, datum)
+        .replace(/{uhrzeit}/g, uhrzeit)
+        .replace(/{personen}/g, personen)
+        .replace(/{telefon}/g, telefon)
+        .replace(/{nachricht}/g, nachricht);
+
+      document.getElementById('w3f-access-key').value = RESERVATION_CONFIG.web3forms_key;
+      document.getElementById('w3f-subject').value    = RESERVATION_CONFIG.subject.replace('{datum}', datum);
+      document.getElementById('w3f-replyto').value    = email;
+      document.getElementById('w3f-message').value    = message;
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(this),
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.classList.add('hidden');
+          document.getElementById('form-success').classList.remove('hidden');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch {
+        document.getElementById('form-error').classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Reservierung anfragen';
+      }
     });
   </script>
 
