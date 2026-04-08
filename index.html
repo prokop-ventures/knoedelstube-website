@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Knödelstube – Ehrlich | Tschechisch | Lecker</title>
+  <link rel="icon" type="image/svg+xml" href="brand_assets/KS_Icon_Teal.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -384,10 +385,10 @@
       <!-- Saisonale Karte -->
       <div id="card-saisonale" class="card-content">
         <div class="relative max-w-3xl mx-auto">
-          <div class="overflow-hidden">
+          <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="saisonale-track">
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
@@ -399,14 +400,14 @@
       <!-- Sommerkarte -->
       <div id="card-sommer" class="card-content hidden">
         <div class="relative max-w-3xl mx-auto">
-          <div class="overflow-hidden">
+          <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="sommer-track">
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
-              <div><div class="bg-white rounded-3xl p-4 md:p-8 shadow-elevated"><img src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('sommer', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
