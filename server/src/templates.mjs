@@ -1,19 +1,4 @@
-// Konfiguration für das Reservierungsformular
-// Diese Datei kann unabhängig vom restlichen HTML gepflegt werden.
-
-const RESERVATION_CONFIG = {
-
-  // Web3Forms Access Key – nach Registrierung auf web3forms.com eintragen
-  web3forms_key: 'a15bfa54-c1cf-4675-a37f-d5f64d43979d',
-
-  // Empfänger-E-Mail (muss mit dem Web3Forms-Konto übereinstimmen)
-  to_email: 'info@knoedelstube.de',
-
-  // Betreff-Vorlage – {datum} wird ersetzt
-  subject: 'Reservierung {datum}',
-
-  // E-Mail-Text an Irena – Platzhalter: {name}, {datum}, {uhrzeit}, {personen}, {telefon}, {nachricht}
-  message_template: `Hallo {name},
+const RESERVATION_BODY = `Hallo {name},
 
 vielen Dank für Ihre Reservierung in der Knödelstube Heilbronn.
 Wir freuen uns, Sie und Ihre Begleitung am {datum}, um {uhrzeit} Uhr bei uns begrüßen zu dürfen.
@@ -42,6 +27,25 @@ Diese Anfrage wurde über das Reservierungsformular auf www.knoedelstube.de übe
 Eine Antwort direkt an den Gast ist per Reply möglich.
 
 Knödelstube · Fischergasse 9 · 74072 Heilbronn
-Telefon: 07131/2035557 · info@knoedelstube.de`,
+Telefon: 07131/2035557 · info@knoedelstube.de`;
 
-};
+const fill = (tpl, vars) =>
+  Object.entries(vars).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v && v.length > 0 ? v : '–'), tpl);
+
+export function renderReservation({ name, telefon, personen, uhrzeit, datum, nachricht }) {
+  const subject = `Reservierung ${datum} – ${name} (${personen})`;
+  const text = fill(RESERVATION_BODY, { name, datum, uhrzeit, personen, telefon, nachricht });
+  return { subject, text };
+}
+
+export function renderContact({ name, email, betreff, nachricht }) {
+  const subject = `Kontaktformular: ${betreff}`;
+  const text =
+    `Name:    ${name}\n` +
+    `E-Mail:  ${email}\n` +
+    `Betreff: ${betreff}\n\n` +
+    `Nachricht:\n${nachricht || '–'}\n\n` +
+    `---\nDiese Anfrage wurde über das Kontaktformular auf www.knoedelstube.de übermittelt.\n` +
+    `Eine Antwort direkt an den Gast ist per Reply möglich.`;
+  return { subject, text };
+}

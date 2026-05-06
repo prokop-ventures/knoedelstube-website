@@ -250,7 +250,7 @@
     <!-- Image with overlay text -->
     <div class="relative w-full py-6 md:py-9">
       <img src="images/IMG_0802.jpg" alt="Knödelstube Ambiente" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
-      <div class="spotlight-wrap"><span class="sl"></span><span class="sm"></span><span class="sr"></span><span class="s4"></span><span class="s5"></span></div>
+          <div class="spotlight-wrap"><span class="sl"></span><span class="sm"></span><span class="sr"></span><span class="s4"></span><span class="s5"></span></div>
       <div class="relative z-10 flex flex-col items-center justify-center text-center px-6">
         <p class="font-display italic text-3xl md:text-4xl text-white/80 -mb-4 md:-mb-6">Willkommen in der</p>
         <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-24 md:h-36 lg:h-44 brightness-0 invert" />
@@ -550,12 +550,7 @@
       <!-- Zentriertes Formular -->
       <div class="max-w-2xl mx-auto">
         <form id="kontakt-form" class="space-y-4">
-          <input type="hidden" name="access_key" value="a15bfa54-c1cf-4675-a37f-d5f64d43979d" />
-          <input type="hidden" name="from_name" value="Knödelstube Kontaktformular" />
-          <input type="hidden" name="subject" id="k-subject-hidden" />
-          <input type="hidden" name="replyto" id="k-replyto-hidden" />
-          <input type="hidden" name="message" id="k-message-hidden" />
-          <input type="checkbox" name="botcheck" style="display:none" />
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
               <label for="k-name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Dein Name</label>
@@ -611,12 +606,7 @@
         <!-- Formular -->
         <div class="md:col-span-3 bg-white rounded-2xl p-8 shadow-elevated">
         <form id="reservierung-form" class="space-y-4">
-          <input type="hidden" name="access_key" id="w3f-access-key" />
-          <input type="hidden" name="subject" id="w3f-subject" />
-          <input type="hidden" name="from_name" value="Knödelstube Reservierung" />
-          <input type="hidden" name="replyto" id="w3f-replyto" />
-          <input type="hidden" name="message" id="w3f-message" />
-          <input type="checkbox" name="botcheck" style="display:none" />
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div>
             <label for="name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Name</label>
@@ -753,7 +743,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
-  <script src="reservation-config.js"></script>
   <script>
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
@@ -865,46 +854,38 @@
       disable: [date => date.getDay() === 0 || date.getDay() === 1],
     });
 
-    // Reservierungsformular – Web3Forms
+    async function postJson(url, payload) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'send_failed');
+    }
+
+    // Reservierungsformular
     document.getElementById('reservierung-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = document.getElementById('reservierung-submit');
       btn.disabled = true;
       btn.textContent = 'Wird gesendet…';
 
-      const name     = document.getElementById('name').value.trim();
-      const email    = document.getElementById('email').value.trim();
-      const telefon  = document.getElementById('telefon').value.trim() || '–';
-      const personen = document.getElementById('personen').value;
-      const uhrzeit  = document.getElementById('uhrzeit').value;
-      const datum    = document.getElementById('datum').value;
-      const nachricht = document.getElementById('nachricht').value.trim() || '–';
-
-      const message = RESERVATION_CONFIG.message_template
-        .replace(/{name}/g, name)
-        .replace(/{datum}/g, datum)
-        .replace(/{uhrzeit}/g, uhrzeit)
-        .replace(/{personen}/g, personen)
-        .replace(/{telefon}/g, telefon)
-        .replace(/{nachricht}/g, nachricht);
-
-      document.getElementById('w3f-access-key').value = RESERVATION_CONFIG.web3forms_key;
-      document.getElementById('w3f-subject').value    = RESERVATION_CONFIG.subject.replace('{datum}', datum);
-      document.getElementById('w3f-replyto').value    = email;
-      document.getElementById('w3f-message').value    = message;
+      const payload = {
+        name:      document.getElementById('name').value.trim(),
+        email:     document.getElementById('email').value.trim(),
+        telefon:   document.getElementById('telefon').value.trim(),
+        personen:  document.getElementById('personen').value,
+        uhrzeit:   document.getElementById('uhrzeit').value,
+        datum:     document.getElementById('datum').value,
+        nachricht: document.getElementById('nachricht').value.trim(),
+        botcheck:  this.querySelector('[name=botcheck]').checked,
+      };
 
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          body: new FormData(this),
-        });
-        const data = await res.json();
-        if (data.success) {
-          this.classList.add('hidden');
-          document.getElementById('form-success').classList.remove('hidden');
-        } else {
-          throw new Error(data.message);
-        }
+        await postJson('/api/reservation', payload);
+        this.classList.add('hidden');
+        document.getElementById('form-success').classList.remove('hidden');
       } catch {
         document.getElementById('form-error').classList.remove('hidden');
         btn.disabled = false;
@@ -918,24 +899,19 @@
       const btn = document.getElementById('kontakt-submit');
       btn.disabled = true;
       btn.textContent = 'Wird gesendet…';
-      const name      = document.getElementById('k-name').value.trim();
-      const email     = document.getElementById('k-email').value.trim();
-      const betreff   = document.getElementById('k-betreff').value.trim();
-      const nachricht = document.getElementById('k-nachricht').value.trim() || '–';
-      document.getElementById('k-subject-hidden').value = betreff;
-      document.getElementById('k-replyto-hidden').value = email;
-      document.getElementById('k-message-hidden').value =
-        `Name: ${name}\nE-Mail: ${email}\nBetreff: ${betreff}\n\nNachricht:\n${nachricht}`;
+
+      const payload = {
+        name:      document.getElementById('k-name').value.trim(),
+        email:     document.getElementById('k-email').value.trim(),
+        betreff:   document.getElementById('k-betreff').value.trim(),
+        nachricht: document.getElementById('k-nachricht').value.trim(),
+        botcheck:  this.querySelector('[name=botcheck]').checked,
+      };
+
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          body: new FormData(this),
-        });
-        const data = await res.json();
-        if (data.success) {
-          this.classList.add('hidden');
-          document.getElementById('kontakt-success').classList.remove('hidden');
-        } else { throw new Error(data.message); }
+        await postJson('/api/contact', payload);
+        this.classList.add('hidden');
+        document.getElementById('kontakt-success').classList.remove('hidden');
       } catch {
         document.getElementById('kontakt-error').classList.remove('hidden');
         btn.disabled = false;

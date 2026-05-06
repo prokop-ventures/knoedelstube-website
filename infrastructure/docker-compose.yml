@@ -1,0 +1,21 @@
+services:
+  knoedel-mail:
+    image: ghcr.io/${GITHUB_REPOSITORY:-fbeck/knoedelstube-website}/mail:${IMAGE_TAG:-latest}
+    container_name: knoedel-mail
+    restart: unless-stopped
+    env_file: .env
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "node -e \"require('http').get('http://127.0.0.1:3000/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # Schritt 2: dieses Stack-Netzwerk wird über Caddy von außen erreichbar
+    # gemacht, indem caddy-prod im Kilian-Stack diesem Netzwerk beitritt.

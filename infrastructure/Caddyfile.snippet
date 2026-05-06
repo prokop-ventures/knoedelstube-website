@@ -1,0 +1,54 @@
+# Caddyfile-Block für die Knödelstube-Site.
+# Wird in Schritt 2 (Kilian-Repo) in infrastructure/caddy/Caddyfile.prod eingefügt.
+#
+# Voraussetzungen:
+#   - DNS-A-Records zeigen auf den Server.
+#   - Caddy mountet zusätzlich /opt/knoedelstube/static-web nach /srv/knoedelstube (read-only).
+#   - Caddy joint das Compose-Netzwerk des knoedelstube-Stacks, damit der
+#     Hostname "knoedel-mail" im reverse_proxy auflösbar ist.
+#
+# ─── Phase 1: Test über Subdomain ───
+# Nur die Subdomain im Hostname-Block, knoedelstube.de bleibt unberührt.
+#
+# knoedelstube.hefangelist.de {
+#     ... Konfig wie unten ...
+# }
+#
+# ─── Phase 2: Live-Schaltung ───
+# DNS für knoedelstube.de auf den Server umbiegen, Hostnamen unten ergänzen,
+# Caddyfile reloaden. Beide URLs liefern denselben Inhalt.
+
+knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
+    encode zstd gzip
+
+    header {
+        -Server
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        X-Frame-Options "DENY"
+    }
+
+    root * /srv/knoedelstube
+
+    handle /api/contact {
+        reverse_proxy knoedel-mail:3000
+    }
+
+    handle /api/reservation {
+        reverse_proxy knoedel-mail:3000
+    }
+
+    handle {
+        try_files {path} /index.html
+        file_server
+    }
+}
+
+# ─── Optional ab Phase 2: Subdomain auf Hauptdomain weiterleiten (SEO) ───
+# Statt die Subdomain als zusätzlichen Hostnamen oben zu führen, kann sie
+# nach Live-Gang per 301 auf knoedelstube.de zeigen. Nur eine der beiden
+# Varianten gleichzeitig verwenden.
+#
+# knoedelstube.hefangelist.de {
+#     redir https://knoedelstube.de{uri} permanent
+# }
