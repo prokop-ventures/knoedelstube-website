@@ -28,6 +28,15 @@ knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
         X-Frame-Options "DENY"
     }
 
+    # HTML immer revalidieren, damit Updates auch ohne Hard-Reload sofort
+    # beim Nutzer ankommen.
+    @html path / *.html
+    header @html Cache-Control "no-cache"
+
+    # Statische Assets: 1h hart cachen, danach via ETag revalidieren.
+    @assets path /images/* /brand_assets/* *.png *.jpg *.jpeg *.webp *.svg *.ico *.woff2 *.css *.js
+    header @assets Cache-Control "public, max-age=3600, must-revalidate"
+
     root * /srv/knoedelstube
 
     handle /api/contact {

@@ -1010,6 +1010,28 @@
   <style>
     .bonbon_ibtn { background-color: rgba(255,255,255,0.88) !important; backdrop-filter: blur(4px); }
     .bonbon_ibtn_pckchn svg path { fill: #215B63 !important; }
+
+    /* CTA-Button im Popup im Marken-Look */
+    .bonbon_cpnbtn {
+      background-color: #215B63 !important;
+      color: #ffffff !important;
+      border: none !important;
+      box-shadow: 0 8px 24px -8px rgba(33, 91, 99, 0.45), 0 2px 6px rgba(33, 91, 99, 0.18) !important;
+      transition: background-color 200ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 200ms ease !important;
+    }
+    .bonbon_cpnbtn:hover {
+      background-color: #2d7a85 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 32px -8px rgba(33, 91, 99, 0.55), 0 4px 10px rgba(33, 91, 99, 0.22) !important;
+    }
+    .bonbon_cpnbtn:active {
+      background-color: #18434a !important;
+      transform: translateY(0);
+    }
+    .bonbon_cpnbtn:focus-visible {
+      outline: 2px solid #215B63 !important;
+      outline-offset: 3px !important;
+    }
   </style>
   <script type="text/javascript" src="https://tech.bon-bon.de/banner/assets/bonbon-bb2_ml.js"></script>
   <script type="text/javascript">
