@@ -92,6 +92,13 @@
     /* Star rating */
     .star { color: #215b63; }
 
+    /* Speisekarten-Tabs — Hover/Active nur wenn nicht aktiv, damit der
+       aktive Tab beim Hovern nicht plötzlich heller wird. */
+    .card-tab { background-color: #ffffff; color: #215b63; }
+    .card-tab.is-active { background-color: #215b63; color: #ffffff; }
+    .card-tab:not(.is-active):hover { background-color: #d9edee; }
+    .card-tab:not(.is-active):active { background-color: #b5dde0; }
+
     /* Gallery infinite scroll */
     @keyframes gallery-scroll {
       0% { transform: translateX(0); }
@@ -396,8 +403,8 @@
 
       <!-- Karten-Tabs -->
       <div class="flex justify-center gap-4 mb-10">
-        <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-brand-500 text-white" data-card="saisonale">Saisonale Spezialitäten</button>
-        <button onclick="showMenuCard('sommer')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 bg-white text-brand-500 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-200" data-card="sommer">Speisekarte</button>
+        <button onclick="showMenuCard('saisonale')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Spezialitäten</button>
+        <button onclick="showMenuCard('sommer')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="sommer">Speisekarte</button>
       </div>
 
       <!-- Saisonale Karte -->
@@ -820,12 +827,8 @@
       document.querySelectorAll('.card-content').forEach(el => el.classList.add('hidden'));
       document.getElementById('card-' + card).classList.remove('hidden');
       document.querySelectorAll('.card-tab').forEach(btn => {
-        btn.classList.remove('bg-brand-500', 'text-white');
-        btn.classList.add('bg-white', 'text-brand-500');
+        btn.classList.toggle('is-active', btn.dataset.card === card);
       });
-      const active = document.querySelector(`[data-card="${card}"]`);
-      active.classList.remove('bg-white', 'text-brand-500');
-      active.classList.add('bg-brand-500', 'text-white');
     }
 
     // Menu card page flip
