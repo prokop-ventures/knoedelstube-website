@@ -82,11 +82,10 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}
           IMAGE_TAG: ${{ needs.build.outputs.image_sha }}
-          REPO: ${{ github.repository }}
         run: |
           ssh -i ~/.ssh/id_ed25519 \
             ${{ secrets.HETZNER_USER }}@${{ secrets.HETZNER_HOST }} \
             "cd /opt/knoedelstube && \
              echo '$GHCR_TOKEN' | docker login ghcr.io -u '$GHCR_USER' --password-stdin && \
-             GITHUB_REPOSITORY='$REPO' IMAGE_TAG='$IMAGE_TAG' docker compose pull && \
-             GITHUB_REPOSITORY='$REPO' IMAGE_TAG='$IMAGE_TAG' docker compose up -d"
+             IMAGE_TAG='$IMAGE_TAG' docker compose pull && \
+             IMAGE_TAG='$IMAGE_TAG' docker compose up -d"

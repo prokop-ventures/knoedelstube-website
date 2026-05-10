@@ -1,9 +1,9 @@
 services:
   knoedel-mail:
-    image: ghcr.io/${GITHUB_REPOSITORY:-fbeck/knoedelstube-website}/mail:${IMAGE_TAG:-latest}
+    image: ghcr.io/prokop-ventures/knoedelstube-website/mail:${IMAGE_TAG:-latest}
     container_name: knoedel-mail
     restart: unless-stopped
-    env_file: .env
+    env_file: mail.env
     healthcheck:
       test:
         - "CMD-SHELL"

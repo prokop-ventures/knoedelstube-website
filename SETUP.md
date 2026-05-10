@@ -14,10 +14,14 @@ sudo mkdir -p /opt/knoedelstube/static-web
 sudo chown -R $USER:$USER /opt/knoedelstube
 ```
 
-## 2. .env mit Strato-Zugangsdaten anlegen
+## 2. mail.env mit Strato-Zugangsdaten anlegen
+
+> **Wichtig:** Datei heißt `mail.env`, **nicht** `.env`. Sonst interpretiert
+> Docker Compose sie zusätzlich als Projekt-Interpolation-Datei und stolpert
+> über `$`-Zeichen im SMTP-Passwort.
 
 ```bash
-nano /opt/knoedelstube/.env
+nano /opt/knoedelstube/mail.env
 ```
 
 Inhalt nach Vorlage `infrastructure/.env.example` (`SMTP_PASS` mit echtem
@@ -39,7 +43,7 @@ IMAGE_TAG=latest
 ```
 
 ```bash
-chmod 600 /opt/knoedelstube/.env
+chmod 600 /opt/knoedelstube/mail.env
 ```
 
 ## 3. GitHub-Secrets

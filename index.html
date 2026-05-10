@@ -549,21 +549,24 @@
 
       <!-- Zentriertes Formular -->
       <div class="max-w-2xl mx-auto">
-        <form id="kontakt-form" class="space-y-4">
+        <form id="kontakt-form" class="space-y-4" novalidate>
           <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
               <label for="k-name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Dein Name</label>
               <input type="text" id="k-name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-name"></p>
             </div>
             <div>
               <label for="k-email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Deine E-Mail</label>
-              <input type="email" id="k-email" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="email" id="k-email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-email"></p>
             </div>
           </div>
           <div>
             <label for="k-betreff" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Betreff</label>
             <input type="text" id="k-betreff" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-betreff"></p>
           </div>
           <div>
             <label for="k-nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Deine Nachricht (optional)</label>
@@ -605,17 +608,19 @@
 
         <!-- Formular -->
         <div class="md:col-span-3 bg-white rounded-2xl p-8 shadow-elevated">
-        <form id="reservierung-form" class="space-y-4">
+        <form id="reservierung-form" class="space-y-4" novalidate>
           <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div>
             <label for="name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Name</label>
             <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="name"></p>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">E-Mail</label>
-              <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="email" id="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="email"></p>
             </div>
             <div>
               <label for="telefon" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Telefon</label>
@@ -662,6 +667,7 @@
           <div>
             <label for="datum" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Datum</label>
             <input type="text" id="datum" required placeholder="Datum wählen" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray placeholder-warmgray/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="datum"></p>
           </div>
           <div>
             <label for="nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Nachricht (optional)</label>
@@ -861,12 +867,88 @@
         body: JSON.stringify(payload),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) throw new Error(data.error || 'send_failed');
+      if (!res.ok || !data.ok) {
+        const err = new Error(data.error || 'send_failed');
+        err.status = res.status;
+        throw err;
+      }
+    }
+
+    // ── Live-Validierung ─────────────────────────────────────────────
+    function fieldErrorMessage(input) {
+      const v = input.validity;
+      if (v.valid) return '';
+      if (v.valueMissing) return 'Bitte ausfüllen.';
+      if (v.typeMismatch || v.patternMismatch) {
+        if (input.type === 'email') return 'Bitte gültige E-Mail-Adresse eingeben (z.B. name@beispiel.de).';
+        return 'Format ungültig.';
+      }
+      if (v.tooShort) return `Mindestens ${input.minLength} Zeichen.`;
+      return 'Eingabe ungültig.';
+    }
+
+    function setFieldError(input, errorEl, message) {
+      if (message) {
+        errorEl.textContent = message;
+        errorEl.classList.remove('hidden');
+        input.classList.add('border-red-400');
+        input.classList.remove('border-brand-200');
+      } else {
+        errorEl.classList.add('hidden');
+        input.classList.remove('border-red-400');
+        input.classList.add('border-brand-200');
+      }
+    }
+
+    function bindLiveValidation(form) {
+      const errorEls = form.querySelectorAll('.field-error');
+      errorEls.forEach((errorEl) => {
+        const input = form.querySelector('#' + errorEl.dataset.errorFor);
+        if (!input) return;
+        let touched = false;
+        const validate = () => {
+          if (!touched) return;
+          setFieldError(input, errorEl, fieldErrorMessage(input));
+        };
+        input.addEventListener('blur', () => { touched = true; validate(); });
+        input.addEventListener('input', validate);
+      });
+    }
+
+    function validateAllFields(form) {
+      let firstInvalid = null;
+      form.querySelectorAll('.field-error').forEach((errorEl) => {
+        const input = form.querySelector('#' + errorEl.dataset.errorFor);
+        if (!input) return;
+        const msg = fieldErrorMessage(input);
+        setFieldError(input, errorEl, msg);
+        if (msg && !firstInvalid) firstInvalid = input;
+      });
+      if (firstInvalid) firstInvalid.focus();
+      return !firstInvalid;
+    }
+
+    bindLiveValidation(document.getElementById('kontakt-form'));
+    bindLiveValidation(document.getElementById('reservierung-form'));
+
+    function submitErrorMessage(err) {
+      if (err.status === 400) return 'Bitte prüfe deine Eingaben — eine E-Mail-Adresse oder ein Pflichtfeld scheint ungültig.';
+      if (err.status === 429) return 'Zu viele Anfragen in kurzer Zeit. Bitte versuche es später erneut.';
+      return 'Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut oder ruf uns an: 07131/2035557.';
+    }
+    function showError(box, err) {
+      const p = box.querySelector('p');
+      if (p) p.textContent = submitErrorMessage(err);
+      box.classList.remove('hidden');
     }
 
     // Reservierungsformular
     document.getElementById('reservierung-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const errorBox = document.getElementById('form-error');
+      errorBox.classList.add('hidden');
+      if (!validateAllFields(this)) return;
+
       const btn = document.getElementById('reservierung-submit');
       btn.disabled = true;
       btn.textContent = 'Wird gesendet…';
@@ -886,8 +968,8 @@
         await postJson('/api/reservation', payload);
         this.classList.add('hidden');
         document.getElementById('form-success').classList.remove('hidden');
-      } catch {
-        document.getElementById('form-error').classList.remove('hidden');
+      } catch (err) {
+        showError(errorBox, err);
         btn.disabled = false;
         btn.textContent = 'Reservierung anfragen';
       }
@@ -896,6 +978,10 @@
     // Kontaktformular
     document.getElementById('kontakt-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const errorBox = document.getElementById('kontakt-error');
+      errorBox.classList.add('hidden');
+      if (!validateAllFields(this)) return;
+
       const btn = document.getElementById('kontakt-submit');
       btn.disabled = true;
       btn.textContent = 'Wird gesendet…';
@@ -912,8 +998,8 @@
         await postJson('/api/contact', payload);
         this.classList.add('hidden');
         document.getElementById('kontakt-success').classList.remove('hidden');
-      } catch {
-        document.getElementById('kontakt-error').classList.remove('hidden');
+      } catch (err) {
+        showError(errorBox, err);
         btn.disabled = false;
         btn.textContent = 'Nachricht senden';
       }
