@@ -98,10 +98,14 @@
       100% { transform: translateX(-50%); }
     }
     .gallery-scroll {
-      animation: gallery-scroll 45s linear infinite;
+      animation: gallery-scroll 60s linear infinite;
+      will-change: transform;
     }
     .gallery-scroll:hover {
       animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gallery-scroll { animation: none; }
     }
 
     /* Menu card slide track */
@@ -339,9 +343,13 @@
   <section class="py-4 overflow-hidden bg-cream">
     <div class="gallery-scroll flex gap-4 w-max">
       <img src="images/thekemitbier.jpeg" alt="Pilsner Urquell" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/fleischkuechle.jpeg" alt="Fleischküchle" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/pannacotta.jpeg" alt="Panna Cotta" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/puffer.jpeg" alt="Kartoffelpuffer" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/nachtisch1.jpeg" alt="Nachtisch" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/abend.jpeg" alt="Abendstimmung" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/backhendl1.jpeg" alt="Backhendl" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/Artboard-1.jpg" alt="Bar" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/IMG_0787-1.jpg" alt="Atmosphäre" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
@@ -350,13 +358,23 @@
       <img src="images/nachtisch2.jpeg" alt="Nachtisch" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/krautkrapfen2.jpeg" alt="Krautkrapfen" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
       <img src="images/tagessuppe1.jpeg" alt="Tagessuppe" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <!-- Duplicates for seamless loop -->
-      <img src="images/thekemitbier.jpeg" alt="Pilsner Urquell" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/nachtisch1.jpeg" alt="Nachtisch" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/backhendl1.jpeg" alt="Backhendl" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/Artboard-1.jpg" alt="Bar" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <!-- Duplicates for seamless loop — müssen 1:1 die komplette erste Reihe sein -->
+      <img src="images/thekemitbier.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/fleischkuechle.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/krautkrapfen1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/pannacotta.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/rostbraten1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/puffer.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/nachtisch1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/abend.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/backhendl1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/Artboard-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/IMG_0787-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/theke3.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/rostbraten2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
     </div>
   </section>
 
