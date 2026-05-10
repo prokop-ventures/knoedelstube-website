@@ -1,6 +1,6 @@
 # Status — Hosting & Deployment
 
-Stand: 2026-05-07
+Stand: 2026-05-10
 
 ## Ziel
 
@@ -10,127 +10,216 @@ Knödelstube-Website + Mini-Mail-Backend auf dem bestehenden Hetzner-Server
 
 ## Architektur-Entscheidungen
 
-- **Caddy bleibt zentral** im Kilian-Stack — kein "Edge-Stack"-Umzug
-  (Migration wurde als zu riskant eingestuft).
+- **Caddy bleibt zentral** im Kilian-Stack — kein "Edge-Stack"-Umzug.
 - **Entkopplung Kilian ↔ Knödelstube** durch Caddy-Hot-Reload statt
   Container-Restart bei Kilian-Deploys.
 - **Knödelstube-Stack getrennt** unter `/opt/knoedelstube/` mit eigener
   `mail.env`, eigenem Compose, eigenem GHCR-Image.
 - **Statische Files** werden vom bestehenden Kilian-Caddy ausgeliefert
   (zusätzlicher Volume-Mount), Mail-Service läuft als eigener Container.
-- **Deployment:** GitHub Actions auf Push to `main` (bewusst gewählt, damit
-  auch andere Knödelstube-Mitarbeiter ohne SSH/kdc deployen können).
-  Kilian dagegen wird über `kdc deploy` direkt auf dem Server deployed.
+- **Deployment Knödelstube:** GitHub Actions auf Push to `main` (bewusst,
+  damit auch andere Knödelstube-Mitarbeiter ohne SSH/kdc deployen können).
+- **Deployment Kilian:** über `kdc deploy <tag>` direkt auf dem Server.
 - **Mail-Versand:** Nodemailer → Strato SMTP **Port 587 mit STARTTLS**
   (`SMTP_SECURE=false`). Port 465 und 25 von Hetzner Outbound blockiert.
-  `From: kontakt@hefangelist.de` (Strato-Pflicht), `To: info@knoedelstube.de`
-  (Irenas Postfach), `Reply-To: <Gast>`.
-- **GHCR-Package public** — vermeidet permanente Login-Notwendigkeit auf dem
-  Server.
-- **Test über Subdomain `knoedelstube.hefangelist.de` zuerst**, später
-  `knoedelstube.de` zusätzlich. Caddy serviert beide Hostnamen aus demselben
-  Site-Block.
+  `From: kontakt@hefangelist.de` (Strato-Pflicht), `To: info@knoedelstube.de`,
+  `Reply-To: <Gast>`.
+- **GHCR-Package public** — vermeidet permanente Login-Notwendigkeit.
 
 ## Schritt 1 — ABGESCHLOSSEN ✅
 
-**Verifiziert auf Produktion:**
+Mail-Service-Container läuft, Strato-SMTP funktioniert, Smoke-Tests grün.
+Siehe Detail-Liste in vorherigem Status (gekürzt für Übersicht).
 
-- ✅ GitHub Actions Workflow baut Image, pusht nach GHCR
-  (`ghcr.io/prokop-ventures/knoedelstube-website/mail`)
-- ✅ Statische Files werden nach `/opt/knoedelstube/static-web/` gerysynct
-- ✅ `knoedel-mail`-Container läuft, healthcheck grün, ~23 MiB RAM
-- ✅ `mail.env` wird korrekt eingelesen, Nodemailer initialisiert ohne Fehler
-- ✅ STARTTLS-Verbindung zu `smtp.strato.de:587` baut auf
-- ✅ Authentifizierung mit `kontakt@hefangelist.de` erfolgreich
-- ✅ Smoke-Test-Mail via `/api/contact` ist im Postfach angekommen
-- ✅ Kilian-Stack unbeeinflusst, eigenes Docker-Netzwerk (`knoedelstube_default`)
+## Schritt 2 — ABGESCHLOSSEN ✅
 
-**Repo-Stand:**
+Kilian-Repo-Patches deployed:
 
-- `server/` — Express + Nodemailer Mail-Service (Node 24-alpine)
-- `infrastructure/docker-compose.yml` — `knoedel-mail` Service mit fest
-  verdrahtetem Image-Pfad `ghcr.io/prokop-ventures/...`, env_file: `mail.env`
-- `infrastructure/Caddyfile.snippet` — Block für Schritt 2
-- `infrastructure/.env.example` — Vorlage mit Port 587 / STARTTLS
-- `.github/workflows/deploy.yml` — Build → GHCR → rsync + docker compose up
-- `index.html` — beide Formulare posten JSON gegen `/api/contact` und
-  `/api/reservation`, Web3Forms entfernt
-- `reservation-config.js` — gelöscht, Template lebt in `server/src/templates.mjs`
-- `SETUP.md` — Server-Setup-Anleitung
+- ✅ `infrastructure/scripts/kilian-cli/kdc` — `--force-recreate caddy-prod`
+  durch `caddy reload` ersetzt. Künftige `kdc deploy`-Aufrufe lassen die
+  Knödelstube-Site online.
+- ✅ `infrastructure/caddy/Caddyfile.prod` — Site-Block für
+  `knoedelstube.hefangelist.de` ergänzt (statische Files + `/api/contact` +
+  `/api/reservation` reverse-proxy).
+- ✅ `infrastructure/docker-compose.yml` — `caddy-prod` mountet zusätzlich
+  `/opt/knoedelstube/static-web:/srv/knoedelstube:ro`, Beitritt zu externem
+  Netzwerk `knoedelstube_default`.
 
-**Server-Stand `/opt/knoedelstube/`:**
+Live verifiziert:
 
-```
-docker-compose.yml      ← vom Workflow gepusht
-mail.env                ← manuell, chmod 600, $-Zeichen escaped als $$
-static-web/             ← rsync-Target für statische Files
-```
+- ✅ TLS-Cert via Let's Encrypt automatisch ausgestellt
+- ✅ Site lädt schnell unter `https://knoedelstube.hefangelist.de`
+- ✅ Reservierungsformular versendet Mail an `info@knoedelstube.de`
+- ✅ Kontaktformular versendet Mail an `info@knoedelstube.de`
 
-## Schritt 2 — TODO (Kilian-Repo, später)
+## UX- und Quality-Verbesserungen — ABGESCHLOSSEN ✅
 
-Kilian wird über `kdc` deployed. Drei Stellen müssen geändert werden:
+- ✅ **Live-Validierung** für beide Formulare. E-Mail-Pattern matcht jetzt 1:1
+  die Server-Regex (`gmxde` ohne Punkt wird sofort im Browser angezeigt).
+  Inline-Fehlermeldungen unter dem jeweiligen Feld in deutscher Sprache,
+  Auswertung über HTML5 Constraint Validation API.
+- ✅ **Differenzierte Submit-Fehler** — 400 ("prüfe Eingaben"), 429 ("zu
+  viele Anfragen"), 5xx (mit Telefonnummer als Fallback).
+- ✅ **BonBon-Gutschein-Button** (`.bonbon_cpnbtn`) im Marken-Teal mit Hover-,
+  Active- und Focus-Styles statt Default-Hellblau.
+- ✅ **Cache-Header im Caddyfile** — HTML mit `no-cache` (immer revalidieren),
+  Assets mit `max-age=3600, must-revalidate`. Resultat: Updates kommen ohne
+  Hard-Reload an, schon ein normales Refresh reicht. Verifiziert.
 
-1. **`infrastructure/scripts/kilian-cli/kdc`** (Zeile ~325):
-   `--force-recreate caddy-prod` ersetzen durch
-   `docker exec kilian-caddy-prod-1 caddy reload --config /etc/caddy/Caddyfile`
-   → Caddy wird beim Kilian-Deploy nicht mehr restartet.
+## Phase 2 — Live-Schaltung der echten Domain — TODO
 
-2. **`infrastructure/caddy/Caddyfile.prod`**:
-   Knödelstube-Block aus `infrastructure/Caddyfile.snippet` (dieses Repo)
-   einfügen. Phase 1: nur Hostname `knoedelstube.hefangelist.de`.
+### Aktueller DNS-Zustand (Stand 2026-05-10)
 
-3. **`infrastructure/docker-compose.yml`** (Kilian) — `caddy-prod` ergänzen:
-   - Volume: `/opt/knoedelstube/static-web:/srv/knoedelstube:ro`
-   - Beitritt zum Knödelstube-Compose-Netzwerk (`knoedelstube_default`)
-     als external, damit Hostname `knoedel-mail:3000` auflösbar ist.
+| Hostname                       | A-Record           | DNS-Provider     | Hosting-Ziel             | Status           |
+| ------------------------------ | ------------------ | ---------------- | ------------------------ | ---------------- |
+| `kilian.hefangelist.de`        | `46.225.112.119`   | Strato           | Hetzner (Kilian)         | ✅ live          |
+| `knoedelstube.hefangelist.de`  | `46.225.112.119`   | Strato           | Hetzner (Knödelstube)    | ✅ live          |
+| `knoedelstube.de`              | `91.203.110.239`   | **checkdomain**  | dogado/anynode (alt)     | umzubiegen       |
+| `www.knoedelstube.de`          | `91.203.110.239`   | **checkdomain**  | dogado/anynode (alt)     | umzubiegen       |
 
-Bekannter Nebeneffekt: `kdc recreate prod caddy-prod` (manuell) startet
-weiterhin Caddy neu → kurze Knödelstube-Downtime. Akzeptiert, da nur
-bewusster manueller Eingriff.
+### DNS-Verwaltung — bestätigte Fakten
 
-## Schritt 3 — Live-Schaltung (nach erfolgreichem Phase-1-Test)
+- `knoedelstube.de` ist **voll-autoritativ bei checkdomain** (verifiziert via
+  `dig SOA` und `dig NS`):
+  - SOA: `ns.checkdomain.de. hostmaster.checkdomain.de.`
+  - NS: `ns.checkdomain.de.`, `ns2.checkdomain.de.`
+- Keine zwischengeschaltete Nameserver-Delegation
+- DNS-Änderung erfolgt **vollständig im checkdomain-Kundencenter**
+- Negativ-Cache-TTL aus SOA: 300 s — A-Record-TTL separat prüfen via
+  `dig knoedelstube.de A` (ohne `+short`)
+- Beide A-Records (`knoedelstube.de` und `www.knoedelstube.de`) sind direkte
+  A-Records, kein CNAME-Konstrukt → zwei Records umbiegen, nicht einen
+- Die IP `91.203.110.239` gehört zu **anynode/dogado** — dort liegt
+  vermutlich die alte Live-Seite. Bleibt nach Umzug verwaist (oder wird
+  beim alten Hoster gekündigt, separat zu klären).
 
-1. DNS bei Strato: A-Record für `knoedelstube.de` und `www.knoedelstube.de`
-   auf Hetzner-IP `46.225.112.119` ändern (aktuell zeigen sie auf alte
-   Strato-Hosting-IP).
-2. Caddyfile-Block im Kilian-Repo um beide Hostnamen erweitern.
-3. `docker exec kilian-caddy-prod-1 caddy reload`.
-4. `mail.env` `ALLOWED_ORIGIN` um beide Hauptdomains erweitern, Mail-Container
-   recreaten.
-5. Optional: Subdomain `knoedelstube.hefangelist.de` per 301 auf
-   Hauptdomain redirecten (Snippet auskommentiert vorhanden).
+### Reihenfolge für die Live-Schaltung — wichtig
 
-## DNS-Status
+**Caddyfile-Patch zuerst, DNS später.** So vermeiden wir, dass DNS auf den
+Hetzner zeigt, bevor Caddy weiß, was er für `knoedelstube.de` ausliefern
+soll.
 
-| Hostname                       | A-Record           | Status                |
-| ------------------------------ | ------------------ | --------------------- |
-| `kilian.hefangelist.de`        | `46.225.112.119`   | ✅ Hetzner            |
-| `knoedelstube.hefangelist.de`  | (zu prüfen / setzen) | umzubiegen auf Hetzner |
-| `knoedelstube.de`              | (zu prüfen)        | aktuell alte Live-Seite |
-| `www.knoedelstube.de`          | (zu prüfen)        | aktuell alte Live-Seite |
+1. **Im Kilian-Repo** — `infrastructure/caddy/Caddyfile.prod` erweitern:
+   Hostnamen-Liste im bestehenden Knödelstube-Block ergänzen:
+   ```caddy
+   knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
+       ... bestehender Inhalt unverändert ...
+   }
+   ```
 
-## Lessons Learned (für nächstes Mal)
+2. **`/opt/knoedelstube/mail.env`** auf dem Server:
+   ```
+   ALLOWED_ORIGIN=https://knoedelstube.hefangelist.de,https://knoedelstube.de,https://www.knoedelstube.de
+   ```
+   Mail-Container recreate:
+   ```bash
+   cd /opt/knoedelstube
+   docker compose up -d --force-recreate knoedel-mail
+   ```
 
-Drei nicht-offensichtliche Fallen, die Stunden gekostet haben:
+3. **Deploy** (Kilian): `kdc deploy <tag>` mit dem neuen Caddyfile.
+   Stack ist jetzt vorbereitet, Caddy hat Cert-Issuance für die zwei neuen
+   Hostnamen geplant. Holt aber noch keins, weil DNS noch nicht zeigt.
 
-1. **Hetzner Cloud blockt Outbound-SMTP** auf Port 25 und 465 standardmäßig.
-   Port 587 (Submission, STARTTLS) ist offen — daher
-   `SMTP_PORT=587` + `SMTP_SECURE=false`. Verifikation:
-   `nc -zv smtp.strato.de 587`.
+4. **Optional vorab — TTL bei checkdomain reduzieren:**
+   Im checkdomain-Kundencenter A-Record-TTL auf `300` setzen (ohne IP zu
+   ändern), speichern. Ein paar Stunden warten, damit alle Resolver die
+   niedrige TTL übernehmen. Erst dann IP umbiegen — das macht Korrekturen
+   schneller, falls etwas schiefgeht.
 
-2. **Docker Compose interpoliert `env_file`-Werte**. `$`-Zeichen im
-   SMTP-Passwort müssen als `$$` escaped werden, sonst landen leere
-   Strings als Passwort im Container. Symptom: `WARN The "xLNe" variable is
-   not set. Defaulting to a blank string.` und später Auth-Fail beim Versand.
+5. **DNS-Umzug bei checkdomain:** Login bei https://www.checkdomain.de →
+   *Meine Domains* → `knoedelstube.de` → DNS-/Zonenverwaltung. Beide A-Records:
+   - `knoedelstube.de` (oder `@` / leerer Hostname) → `46.225.112.119`
+   - `www` → `46.225.112.119`
 
-3. **GHCR-Packages sind privat per Default**. Manueller `docker compose pull`
-   auf dem Server scheitert mit `not found` (statt `forbidden` — GHCR-Quirk),
-   sobald der Workflow-Token abgelaufen ist. Pragmatischste Lösung: Package
-   auf Public stellen.
+   Die genaue Bezeichnung des Root-Hostnamens variiert je nach UI (`@`,
+   leer, oder voller Domainname mit Punkt). Vor Ort sehen.
 
-## Ressourcen-Einschätzung (verifiziert)
+6. **Propagation abwarten** (je nach gesetzter TTL Minuten bis Stunden):
+   ```bash
+   dig +short knoedelstube.de
+   dig +short www.knoedelstube.de
+   ```
+   Beide sollten `46.225.112.119` zurückgeben.
 
-- `knoedel-mail` Idle: **23 MiB RAM**, 0 % CPU
-- Server gesamt 3,73 GiB RAM, alle Container zusammen ~270 MiB → reichlich Luft
-- Statische Files: vom bestehenden Caddy ausgeliefert, kein neuer Prozess
+7. **Caddy holt automatisch Let's-Encrypt-Certs** beim ersten HTTPS-Request
+   für die zwei neuen Hostnamen (HTTP-01-Challenge auf Port 80). Dauert ~30 s.
+   Logs verifizieren:
+   ```bash
+   docker logs infrastructure-caddy-prod-1 -f
+   ```
+
+8. **Verifikation:**
+   - `https://knoedelstube.de` lädt mit gültigem Cert
+   - `https://www.knoedelstube.de` lädt mit gültigem Cert
+   - Browser-DevTools: `Cache-Control: no-cache` auf HTML, `max-age=3600`
+     auf Assets
+   - Test-Submit eines Formulars von der echten Domain → Mail kommt an
+
+9. **Optional — SEO-Hygiene nach erfolgreichem Live-Gang:**
+   Subdomain `knoedelstube.hefangelist.de` auf die Hauptdomain redirecten,
+   damit Suchmaschinen nur die "echte" URL indexieren. Im Kilian-Caddyfile
+   einen separaten Block ergänzen:
+   ```caddy
+   knoedelstube.hefangelist.de {
+       redir https://knoedelstube.de{uri} permanent
+   }
+   ```
+   Und aus dem Hauptblock die Subdomain entfernen (sonst kollidieren die
+   Site-Blöcke).
+
+### Empfohlener Zeitpunkt
+
+- **Werktag, früher Vormittag** — falls etwas schiefgeht, ist Support
+  bei checkdomain erreichbar.
+- **Nicht direkt vor einem Wochenende** — Wochenende ist Hauptzeit für ein
+  Restaurant.
+- Restaurant vorher informieren, dass es eine kurze Phase (vermutlich nur
+  Minuten) geben kann, in der manche Besucher die alte Seite, manche schon
+  die neue sehen.
+
+### Mini-Downtime-Fenster — was real passiert
+
+Während der DNS-Propagation cachen Resolver weltweit unterschiedlich:
+- Resolver mit aktualisierter Antwort → Hetzner-Server
+- Resolver mit alter Antwort → dogado/anynode (alte Seite)
+
+Es gibt **keine harte Downtime** — beide Server liefern weiterhin Inhalte
+aus, nur jeweils unterschiedliche. Sobald die niedrige TTL bei allen
+Resolvern überall propagiert ist (max. der bisherigen TTL-Dauer), ist nur
+noch der Hetzner sichtbar. Caddyfile-Patch vorab deployen ist daher
+risikoarm.
+
+### Was nach Phase 2 noch übrig ist (Hygiene)
+
+- Alte Webhosting-Pakete prüfen: zahlst du irgendwo noch für die alte
+  Seite (dogado oder über Strato als Reseller)? Falls ja: kündigen, sobald
+  der Umzug verifiziert läuft.
+- Mail-Forwards/Aliase auf der alten Domain prüfen — nur DNS umbiegen
+  reicht nicht, wenn `info@knoedelstube.de` als Mail-Alias beim alten
+  Hoster eingerichtet war. MX-Records bei checkdomain müssen weiter zum
+  Mail-Provider zeigen, wo das Postfach von Irena liegt.
+- AAAA-Records (IPv6): aktuell hat `kilian.hefangelist.de` einen AAAA?
+  Falls ja, analog für die Knödelstube-Domains anlegen.
+
+## Lessons Learned
+
+1. **Hetzner Cloud blockt Outbound-SMTP** auf 25 + 465. Port 587 (STARTTLS)
+   nutzen.
+2. **Docker Compose interpoliert `env_file`-Werte** — `$` im Passwort als
+   `$$` escapen.
+3. **GHCR-Packages privat per Default** — auf Public stellen oder Server
+   permanent einloggen.
+4. **Browser-`type=email`-Validierung ist lax** (akzeptiert `gmxde` ohne
+   Punkt). Server-Validierung muss strenger sein, Frontend braucht ein
+   `pattern`-Attribut zum Matchen.
+5. **Build-Workflow im Kilian-Repo** läuft nicht automatisch beim Tag-Push,
+   sondern nur per `workflow_dispatch`.
+6. **Caddy `--force-recreate`** in `kdc` war der eigentliche Übeltäter für
+   Cross-Site-Downtimes — Hot-Reload via `caddy reload` löst das sauber.
+
+## Ressourcen-Status
+
+- `knoedel-mail` Idle: ~23 MiB RAM, 0 % CPU
+- Server gesamt 3,73 GiB RAM, alle Container ~270 MiB → reichlich Luft
 - Erwartete Last: < 500 Page Views/Tag, < 20 Form-Submits/Tag
