@@ -1,6 +1,6 @@
 # Status — Hosting & Deployment
 
-Stand: 2026-05-10
+Stand: 2026-05-11
 
 ## Ziel
 
@@ -66,59 +66,97 @@ Live verifiziert:
   Assets mit `max-age=3600, must-revalidate`. Resultat: Updates kommen ohne
   Hard-Reload an, schon ein normales Refresh reicht. Verifiziert.
 
-## Phase 2 — Live-Schaltung der echten Domain — TODO
+## Phase 2 — Live-Schaltung der echten Domain — ABGESCHLOSSEN ✅
 
-### Aktueller DNS-Zustand (Stand 2026-05-10)
+Live seit 2026-05-11. `knoedelstube.de` und `www.knoedelstube.de` zeigen auf
+den Hetzner, Caddy hat gültige Let's-Encrypt-Certs für beide Hostnamen.
+
+### Aktueller DNS-Zustand (Stand 2026-05-11)
 
 | Hostname                       | A-Record           | DNS-Provider     | Hosting-Ziel             | Status           |
 | ------------------------------ | ------------------ | ---------------- | ------------------------ | ---------------- |
 | `kilian.hefangelist.de`        | `46.225.112.119`   | Strato           | Hetzner (Kilian)         | ✅ live          |
 | `knoedelstube.hefangelist.de`  | `46.225.112.119`   | Strato           | Hetzner (Knödelstube)    | ✅ live          |
-| `knoedelstube.de`              | `91.203.110.239`   | **checkdomain**  | dogado/anynode (alt)     | umzubiegen       |
-| `www.knoedelstube.de`          | `91.203.110.239`   | **checkdomain**  | dogado/anynode (alt)     | umzubiegen       |
+| `knoedelstube.de`              | `46.225.112.119`   | **checkdomain**  | Hetzner (Knödelstube)    | ✅ live          |
+| `www.knoedelstube.de`          | `46.225.112.119`   | **checkdomain**  | Hetzner (Knödelstube)    | ✅ live          |
 
-### DNS-Verwaltung — bestätigte Fakten
+### Tatsächlich genutztes Verfahren (für künftige checkdomain-Migrationen)
 
-- `knoedelstube.de` ist **voll-autoritativ bei checkdomain** (verifiziert via
-  `dig SOA` und `dig NS`):
-  - SOA: `ns.checkdomain.de. hostmaster.checkdomain.de.`
-  - NS: `ns.checkdomain.de.`, `ns2.checkdomain.de.`
-- Keine zwischengeschaltete Nameserver-Delegation
-- DNS-Änderung erfolgt **vollständig im checkdomain-Kundencenter**
-- Negativ-Cache-TTL aus SOA: 300 s — A-Record-TTL separat prüfen via
-  `dig knoedelstube.de A` (ohne `+short`)
-- Beide A-Records (`knoedelstube.de` und `www.knoedelstube.de`) sind direkte
-  A-Records, kein CNAME-Konstrukt → "Inklusive www: Ja" in checkdomain
-  pflegt automatisch beide.
-- Die IP `91.203.110.239` ist eine **checkdomain-Webhosting-Server-IP**, kein
-  externer Hoster — die alte Live-Seite läuft im Webhosting-Paket von
-  checkdomain selbst, im Verzeichnis `/knoedelstube.de`.
+Folgende Reihenfolge hat am 2026-05-11 zum Erfolg geführt. **Wichtigste
+Erkenntnis: Die Paketdomain-Bindung muss NICHT gelöst werden** (vgl. weiter
+unten, „Widerlegte Annahmen"). Der zentrale Knopf ist „Basisschutz".
 
-### checkdomain-Kundencenter — relevante Einstellungsorte
+1. **Caddy-Block per Container-Restart aktivieren** (`caddy reload` ist im
+   Stack nicht zuverlässig, siehe Lessons Learned):
+   ```bash
+   docker restart infrastructure-caddy-prod-1
+   ```
+   In den Startup-Logs verifizieren, dass beide Hosts geladen wurden:
+   ```bash
+   docker logs infrastructure-caddy-prod-1 --since 2m 2>&1 \
+     | grep "enabling automatic TLS certificate management"
+   ```
+   Erwartung: `domains` enthält `knoedelstube.de` und `www.knoedelstube.de`.
 
-**Bereich 1: Nameserver-Einstellungen** (Domains → `knoedelstube.de` → Nameserver)
-- Modus: "checkdomain Nameserver verwenden" ✅
-- TTL: 300 s ✅
-- "Inklusive www: Ja" ✅
-- **Haupt-IP-Adresse (IPv4): `91.203.110.239`** ← muss auf `46.225.112.119`
-- "E-Mail-Empfang: Über checkdomain" ✅ (NICHT ändern — pflegt automatisch
+2. **checkdomain → Domain → Basisschutz deaktivieren** (roter Button).
+   Checkdomain managt damit das LE-Cert nicht mehr — Voraussetzung für
+   externes Cert-Management.
+
+3. **checkdomain → Nameserver-Einstellungen → Haupt-IPv4** auf
+   `46.225.112.119` setzen, speichern. „Inklusive www: Ja" pflegt
+   automatisch beide Hostnamen. E-Mail-Empfang, SPF, DKIM **nicht
+   anfassen** (laufen weiter über checkdomains Mail-Infrastruktur,
+   `mx*.secure-mailgate.com`).
+
+4. **Caddy-Logs offen halten**, dann ca. 5–10 Minuten Geduld:
+   ```bash
+   docker logs infrastructure-caddy-prod-1 -f 2>&1 \
+     | grep -iE 'knoedelstube|certificate obtained|challenge'
+   ```
+   Caddy retry-t ACME alle 60 s, der erste Erfolg kommt, sobald
+   Let's-Encrypt-Resolver den neuen A-Record sehen. Erst wenn
+   `certificate obtained` für beide Hosts erscheint, im Browser testen.
+
+5. **Verifizieren:**
+   - `https://knoedelstube.de` lädt mit gültigem Cert
+   - `https://www.knoedelstube.de` lädt mit gültigem Cert
+   - Test-Submit eines Formulars → Mail kommt an
+   - `dig knoedelstube.de MX +short` zeigt unverändert `mx*.secure-mailgate.com`
+
+### Widerlegte Annahmen aus der Planungsphase
+
+Im Verlauf der Migration empirisch widerlegt — hier dokumentiert, damit der
+Irrweg nicht wiederholt wird:
+
+- **„Paketdomain-Bindung muss gelöst werden, bevor externe IP greift."**
+  Falsch. Beweis: `craftelicious.de` läuft auf externer Spotify-IP,
+  Paketdomain-Bindung im Webhosting ist weiterhin aktiv — funktioniert
+  problemlos. Die Bindung beeinflusst die externe IPv4 nicht. Was zählt
+  ist der Basisschutz.
+- **„CAA-Records bei checkdomain könnten LE-Issue blocken."**
+  Falsch. `dig knoedelstube.de CAA @ns.checkdomain.de` liefert nichts,
+  checkdomain setzt keine CAA-Records standardmäßig.
+- **„`caddy reload` aktiviert die neue Konfig zuverlässig."**
+  Falsch im Hetzner-Setup. Reload meldet Erfolg, aber Block bleibt
+  inaktiv. Container-Restart ist der ehrliche Apply-Mechanismus, siehe
+  Lessons Learned.
+
+### checkdomain-Kundencenter — relevante Einstellungsorte (Referenz)
+
+**Domain-Einstellungen** (Domains → `knoedelstube.de`)
+- **Basisschutz**: zentraler Knopf für Cert-Management. AUS = checkdomain
+  hält kein eigenes LE-Cert mehr, externes Cert-Management übernimmt.
+- **Nameserver-Einstellungen**: Haupt-IPv4 ist der A-Record-Knopf.
+  „Inklusive www: Ja" pflegt automatisch beide Hostnamen.
+- **E-Mail-Empfang: Über checkdomain** ✅ (NICHT ändern — pflegt automatisch
   die MX-Records zu checkdomains Mail-Infrastruktur)
 - SPF aktiv: `v=spf1 include:secure-mailgate.com ?all` (für Versand-Auth
   von checkdomain-Mailservern, NICHT ändern)
 - DKIM-Eintrag `cloudpit._domainkey.knoedelstube.de` (für eingehende
   Mail-Authentifizierung, NICHT ändern)
 
-**Bereich 2: Paketdomains verwalten** (Webhosting → Paketdomains → `knoedelstube.de`)
-- Verwendung: "Nutzung im Webhosting-Paket (Verzeichnis): `/knoedelstube.de`"
-- **Genau diese Bindung ist der Grund**, warum die A-Record-IP auf
-  checkdomains Webhosting-Server zeigt. Solange die Bindung aktiv ist,
-  überschreibt checkdomain die manuell gesetzte IP auf Bereich 1.
-- **Diese Bindung muss zuerst gelöst werden**, bevor die IP auf einen
-  externen Server (Hetzner) zeigen kann.
-- Dropdown-Optionen aktuell unbekannt — vermutlich: Webhosting-Paket /
-  Frame-Weiterleitung / Permanente Weiterleitung. Falls keine Option
-  "Externer Server"/"Externe Nutzung" vorhanden: Support-Anfrage bei
-  checkdomain stellen.
+**Paketdomain-Bindung** (Webhosting → Paketdomains → `knoedelstube.de`)
+- Bleibt aktiv, nicht anfassen. Beeinflusst externe IP nicht.
 
 ### E-Mail-Setup bei checkdomain — wichtige Erkenntnis
 
@@ -140,145 +178,21 @@ Das Lösen der Domain aus dem Webhosting-Paket darf die Postfächer also
 Bereich 1 erhalten bleibt, leitet checkdomain Mails weiterhin korrekt an
 die Postfächer.
 
-### Sicherheits-Checks für die Migration
+### Hygiene-Followups (offen)
 
-**Vor der Änderung — MX-Records dokumentieren:**
-```bash
-dig knoedelstube.de MX +short
-```
-Wert notieren (vermutlich `mx*.checkdomain.de` oder ähnlich).
-
-**Nach der Änderung — verifizieren, dass MX unverändert:**
-```bash
-dig knoedelstube.de MX +short
-```
-Soll denselben Wert zurückgeben wie vorher.
-
-**Mail-Funktion testen:**
-- Testmail an `info@knoedelstube.de` schicken (von externer Adresse)
-- In Irenas Postfach prüfen, ob sie ankommt
-- Falls nicht: ggf. "E-Mail-Empfang: Über checkdomain" auf Bereich 1 noch
-  einmal speichern, damit MX-Records neu geschrieben werden
-
-### Worst-Case-Rollback
-
-Falls etwas schiefgeht (Website weg, Mails kommen nicht an):
-1. Bereich 2 (Paketdomains): Domain wieder ins Webhosting-Paket einhängen
-2. Bereich 1 (Nameserver): IP auf `91.203.110.239` zurücksetzen
-3. Mit TTL 300 ist nach 5 Minuten der Zustand vor dem Umzug wieder aktiv
-
-### Reihenfolge für die Live-Schaltung — wichtig
-
-**Caddyfile-Patch zuerst, DNS später.** So vermeiden wir, dass DNS auf den
-Hetzner zeigt, bevor Caddy weiß, was er für `knoedelstube.de` ausliefern
-soll.
-
-1. **Im Kilian-Repo** — `infrastructure/caddy/Caddyfile.prod` erweitern:
-   Hostnamen-Liste im bestehenden Knödelstube-Block ergänzen:
-   ```caddy
-   knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
-       ... bestehender Inhalt unverändert ...
-   }
-   ```
-
-2. **`/opt/knoedelstube/mail.env`** auf dem Server:
-   ```
-   ALLOWED_ORIGIN=https://knoedelstube.hefangelist.de,https://knoedelstube.de,https://www.knoedelstube.de
-   ```
-   Mail-Container recreate:
-   ```bash
-   cd /opt/knoedelstube
-   docker compose up -d --force-recreate knoedel-mail
-   ```
-
-3. **Deploy** (Kilian): `kdc deploy <tag>` mit dem neuen Caddyfile.
-   Stack ist jetzt vorbereitet, Caddy hat Cert-Issuance für die zwei neuen
-   Hostnamen geplant. Holt aber noch keins, weil DNS noch nicht zeigt.
-
-4. **Optional vorab — TTL bei checkdomain reduzieren:**
-   Im checkdomain-Kundencenter A-Record-TTL auf `300` setzen (ohne IP zu
-   ändern), speichern. Ein paar Stunden warten, damit alle Resolver die
-   niedrige TTL übernehmen. Erst dann IP umbiegen — das macht Korrekturen
-   schneller, falls etwas schiefgeht.
-
-5. **DNS-Umzug bei checkdomain** — zweistufig wegen Webhosting-Paket-Bindung:
-
-   **5a) Domain aus Webhosting-Paket lösen** (Bereich 2, "Paketdomains verwalten")
-   - Wenn Dropdown "Externer Server" / "Externe Nutzung" o.ä. vorhanden:
-     auswählen und speichern.
-   - Wenn nicht: checkdomain-Support kontaktieren mit Bitte um Entkopplung
-     der Domain vom Webhosting-Paket bei Erhalt der E-Mail-Postfächer.
-
-   **5b) A-Record umstellen** (Bereich 1, "Nameserver-Einstellungen")
-   - Haupt-IP-Adresse (IPv4): `91.203.110.239` → `46.225.112.119`
-   - "Inklusive www: Ja" beibehalten — pflegt automatisch beide Hostnamen
-   - TTL bleibt 300 s
-   - "E-Mail-Empfang: Über checkdomain" **NICHT** anfassen
-   - SPF + DKIM (`cloudpit._domainkey`) **NICHT** anfassen
-   - Speichern
-
-6. **Propagation abwarten** (je nach gesetzter TTL Minuten bis Stunden):
-   ```bash
-   dig +short knoedelstube.de
-   dig +short www.knoedelstube.de
-   ```
-   Beide sollten `46.225.112.119` zurückgeben.
-
-7. **Caddy holt automatisch Let's-Encrypt-Certs** beim ersten HTTPS-Request
-   für die zwei neuen Hostnamen (HTTP-01-Challenge auf Port 80). Dauert ~30 s.
-   Logs verifizieren:
-   ```bash
-   docker logs infrastructure-caddy-prod-1 -f
-   ```
-
-8. **Verifikation:**
-   - `https://knoedelstube.de` lädt mit gültigem Cert
-   - `https://www.knoedelstube.de` lädt mit gültigem Cert
-   - Browser-DevTools: `Cache-Control: no-cache` auf HTML, `max-age=3600`
-     auf Assets
-   - Test-Submit eines Formulars von der echten Domain → Mail kommt an
-
-9. **Optional — SEO-Hygiene nach erfolgreichem Live-Gang:**
-   Subdomain `knoedelstube.hefangelist.de` auf die Hauptdomain redirecten,
-   damit Suchmaschinen nur die "echte" URL indexieren. Im Kilian-Caddyfile
-   einen separaten Block ergänzen:
-   ```caddy
-   knoedelstube.hefangelist.de {
-       redir https://knoedelstube.de{uri} permanent
-   }
-   ```
-   Und aus dem Hauptblock die Subdomain entfernen (sonst kollidieren die
-   Site-Blöcke).
-
-### Empfohlener Zeitpunkt
-
-- **Werktag, früher Vormittag** — falls etwas schiefgeht, ist Support
-  bei checkdomain erreichbar.
-- **Nicht direkt vor einem Wochenende** — Wochenende ist Hauptzeit für ein
-  Restaurant.
-- Restaurant vorher informieren, dass es eine kurze Phase (vermutlich nur
-  Minuten) geben kann, in der manche Besucher die alte Seite, manche schon
-  die neue sehen.
-
-### Mini-Downtime-Fenster — was real passiert
-
-Während der DNS-Propagation cachen Resolver weltweit unterschiedlich:
-- Resolver mit aktualisierter Antwort → Hetzner-Server
-- Resolver mit alter Antwort → dogado/anynode (alte Seite)
-
-Es gibt **keine harte Downtime** — beide Server liefern weiterhin Inhalte
-aus, nur jeweils unterschiedliche. Sobald die niedrige TTL bei allen
-Resolvern überall propagiert ist (max. der bisherigen TTL-Dauer), ist nur
-noch der Hetzner sichtbar. Caddyfile-Patch vorab deployen ist daher
-risikoarm.
-
-### Was nach Phase 2 noch übrig ist (Hygiene)
-
-- Mail-Forwards/Aliase auf der Domain verifizieren — nur DNS umbiegen
-  reicht, wenn alle Postfächer echte checkdomain-Konten sind (verifiziert
-  via Postfach-Liste). MX-Records bei checkdomain bleiben unverändert.
-- AAAA-Records (IPv6): aktuell hat `kilian.hefangelist.de` einen AAAA?
-  Falls ja, analog für die Knödelstube-Domains anlegen.
+- **SEO-Konsolidierung:** Subdomain `knoedelstube.hefangelist.de` per 301
+  auf die Hauptdomain redirecten, damit Suchmaschinen nur die echte URL
+  indexieren. Im Kilian-Caddyfile die Subdomain aus dem Knödelstube-Block
+  entfernen und einen Redirect-Block ergänzen:
+  ```caddy
+  knoedelstube.hefangelist.de {
+      redir https://knoedelstube.de{uri} permanent
+  }
+  ```
+- **AAAA-Records (IPv6):** Falls `kilian.hefangelist.de` einen AAAA hat,
+  analog für die Knödelstube-Domains anlegen.
+- **Mail-Postfächer auf checkdomain bleiben** wie sie sind. MX-Records
+  unverändert, Postfächer hängen am E-Mail-Service, nicht am Webhosting.
 
 ## checkdomain — Kosten-Optimierung & Vertragshygiene
 
@@ -291,8 +205,8 @@ identifiziert worden, die alle weiterlaufen:
 | --- | --- | --- | --- | --- |
 | **Neues Webhosting-Paket** | monatl. 8,99 € | ~108 €/Jahr | bleibt | Mailpostfächer (11 Stück), evtl. WordPress |
 | **Altes Homepage-Baukasten-Hosting** | quartalsw. 29,70 € | ~119 €/Jahr | **kann sofort weg** | wird seit langem nicht mehr genutzt |
-| **Extended PHP Support** | regelmäßig, > 8 € | ~50–100 €/Jahr | **weg nach Phase 2** | hält veraltete PHP-Version für aktuelle WordPress-Live-Seite am Leben |
-| SSL-Zertifikat | jährlich | ~30–60 €/Jahr | **weg nach Phase 2** | wird durch Let's Encrypt auf dem Hetzner überflüssig |
+| **Extended PHP Support** | regelmäßig, > 8 € | ~50–100 €/Jahr | **kündigungsreif** | hielt veraltete PHP-Version für die WordPress-Live-Seite — nicht mehr nötig |
+| SSL-Zertifikat (Basisschutz) | jährlich | ~30–60 €/Jahr | **deaktiviert 2026-05-11** | LE-Cert wird jetzt von Caddy auf dem Hetzner verwaltet |
 | Domain-Verlängerung(en) | jährlich | ~30–50 €/Jahr | bleibt | Domain-Registry-Gebühr |
 
 **Geschätztes jährliches Einsparpotenzial: ~150–200 €.**
@@ -318,16 +232,15 @@ abgekündigte PHP-Versionen.
      Support-Ticket).
    - Kündigungsfrist beachten — typisch 30 Tage zum Vertragsende.
 
-**Nach erfolgreichem Phase-2-Live-Gang:**
+**Jetzt kündigungsreif (nach Phase-2-Live-Gang am 2026-05-11):**
 
-2. **Extended PHP Support** — entfällt, sobald die alte WordPress-Live-Seite
-   nicht mehr gebraucht wird (= sobald `knoedelstube.de` auf Hetzner zeigt).
-   Vermutlich kündigt das sich automatisch mit Webhosting-Paket-Downgrade,
-   sonst explizit kündigen.
+2. **Extended PHP Support** — die WordPress-Live-Seite wird nicht mehr
+   gebraucht, Knödelstube-Website läuft komplett auf dem Hetzner. Explizit
+   kündigen oder im Webhosting-Paket-Downgrade mitziehen.
 
-3. **SSL-Zertifikat** — Caddy auf dem Hetzner liefert kostenlose
-   Let's-Encrypt-Certs. Das gekaufte Zertifikat einfach auslaufen lassen
-   oder zum Vertragsende kündigen.
+3. **SSL-Zertifikat / Basisschutz** — am 2026-05-11 in checkdomain
+   deaktiviert. Falls als separater Vertragsposten geführt, zum
+   Vertragsende kündigen.
 
 4. **Webhosting-Paket** (optional, später):
    - Behalten (komfortabel, Mailpostfächer + Domain in einer Hand)
@@ -361,6 +274,20 @@ Beim Besprechen mit der Geschäftsinhaberin (Irena) am besten so framen:
    sondern nur per `workflow_dispatch`.
 6. **Caddy `--force-recreate`** in `kdc` war der eigentliche Übeltäter für
    Cross-Site-Downtimes — Hot-Reload via `caddy reload` löst das sauber.
+7. **`caddy reload` ist im Hetzner-Stack nicht zuverlässig** — meldet
+   formalen Erfolg (`adapted config to JSON`), aktiviert den neuen Block
+   aber nicht im laufenden Caddy-Prozess. Symptom war damals: neue Hostnamen
+   blieben unbekannt, ACME wurde nie versucht. Heilung: `docker restart
+   infrastructure-caddy-prod-1` (~3 s Cut). Bei künftigen Caddyfile-Patches
+   nicht auf reload vertrauen, sondern in den Startup-Logs nach
+   `enabling automatic TLS certificate management` mit den erwarteten
+   domains prüfen.
+8. **checkdomain-Migration: Basisschutz ist der Knopf, nicht die
+   Paketdomain-Bindung.** Die ursprüngliche Annahme „Bindung muss zuerst
+   gelöst werden" hat einen ganzen Abend an Diagnose gekostet. Empirisch
+   widerlegt durch `craftelicious.de` (externe IP, Bindung aktiv, läuft).
+   Reihenfolge für künftige Migrationen: Caddy-Block aktivieren →
+   Basisschutz aus → IP umbiegen → 5–10 Min warten.
 
 ## Ressourcen-Status
 
