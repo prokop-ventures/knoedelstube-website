@@ -88,10 +88,84 @@ Live verifiziert:
 - Negativ-Cache-TTL aus SOA: 300 s — A-Record-TTL separat prüfen via
   `dig knoedelstube.de A` (ohne `+short`)
 - Beide A-Records (`knoedelstube.de` und `www.knoedelstube.de`) sind direkte
-  A-Records, kein CNAME-Konstrukt → zwei Records umbiegen, nicht einen
-- Die IP `91.203.110.239` gehört zu **anynode/dogado** — dort liegt
-  vermutlich die alte Live-Seite. Bleibt nach Umzug verwaist (oder wird
-  beim alten Hoster gekündigt, separat zu klären).
+  A-Records, kein CNAME-Konstrukt → "Inklusive www: Ja" in checkdomain
+  pflegt automatisch beide.
+- Die IP `91.203.110.239` ist eine **checkdomain-Webhosting-Server-IP**, kein
+  externer Hoster — die alte Live-Seite läuft im Webhosting-Paket von
+  checkdomain selbst, im Verzeichnis `/knoedelstube.de`.
+
+### checkdomain-Kundencenter — relevante Einstellungsorte
+
+**Bereich 1: Nameserver-Einstellungen** (Domains → `knoedelstube.de` → Nameserver)
+- Modus: "checkdomain Nameserver verwenden" ✅
+- TTL: 300 s ✅
+- "Inklusive www: Ja" ✅
+- **Haupt-IP-Adresse (IPv4): `91.203.110.239`** ← muss auf `46.225.112.119`
+- "E-Mail-Empfang: Über checkdomain" ✅ (NICHT ändern — pflegt automatisch
+  die MX-Records zu checkdomains Mail-Infrastruktur)
+- SPF aktiv: `v=spf1 include:secure-mailgate.com ?all` (für Versand-Auth
+  von checkdomain-Mailservern, NICHT ändern)
+- DKIM-Eintrag `cloudpit._domainkey.knoedelstube.de` (für eingehende
+  Mail-Authentifizierung, NICHT ändern)
+
+**Bereich 2: Paketdomains verwalten** (Webhosting → Paketdomains → `knoedelstube.de`)
+- Verwendung: "Nutzung im Webhosting-Paket (Verzeichnis): `/knoedelstube.de`"
+- **Genau diese Bindung ist der Grund**, warum die A-Record-IP auf
+  checkdomains Webhosting-Server zeigt. Solange die Bindung aktiv ist,
+  überschreibt checkdomain die manuell gesetzte IP auf Bereich 1.
+- **Diese Bindung muss zuerst gelöst werden**, bevor die IP auf einen
+  externen Server (Hetzner) zeigen kann.
+- Dropdown-Optionen aktuell unbekannt — vermutlich: Webhosting-Paket /
+  Frame-Weiterleitung / Permanente Weiterleitung. Falls keine Option
+  "Externer Server"/"Externe Nutzung" vorhanden: Support-Anfrage bei
+  checkdomain stellen.
+
+### E-Mail-Setup bei checkdomain — wichtige Erkenntnis
+
+Bei checkdomain sind **11 eigenständige E-Mail-Postfächer** angelegt, davon
+relevante:
+
+| Postfach                              | Verbrauch | Anmerkung |
+| ------------------------------------- | --------- | --------- |
+| `info@knoedelstube.de`                | 4 %       | Irenas Hauptpostfach für Anfragen |
+| `reservierung@knoedelstube.de`        | 0 %       | bisher ungenutzt |
+| `rechnung@knoedelstube.de`            | 0 %       |  |
+| `tobias.raible@knoedelstube.de`       | 0 %       |  |
+| `info@craftelicious.de`               | 70 %      | (andere Domain, separater Kontext) |
+| `prokop@craftelicious.de`             | 58 %      | (andere Domain) |
+
+Die Postfächer hängen am **E-Mail-Service**, **nicht** am Webhosting-Paket.
+Das Lösen der Domain aus dem Webhosting-Paket darf die Postfächer also
+**nicht** beeinträchtigen — solange "E-Mail-Empfang: Über checkdomain" auf
+Bereich 1 erhalten bleibt, leitet checkdomain Mails weiterhin korrekt an
+die Postfächer.
+
+### Sicherheits-Checks für die Migration
+
+**Vor der Änderung — MX-Records dokumentieren:**
+```bash
+dig knoedelstube.de MX +short
+```
+Wert notieren (vermutlich `mx*.checkdomain.de` oder ähnlich).
+
+**Nach der Änderung — verifizieren, dass MX unverändert:**
+```bash
+dig knoedelstube.de MX +short
+```
+Soll denselben Wert zurückgeben wie vorher.
+
+**Mail-Funktion testen:**
+- Testmail an `info@knoedelstube.de` schicken (von externer Adresse)
+- In Irenas Postfach prüfen, ob sie ankommt
+- Falls nicht: ggf. "E-Mail-Empfang: Über checkdomain" auf Bereich 1 noch
+  einmal speichern, damit MX-Records neu geschrieben werden
+
+### Worst-Case-Rollback
+
+Falls etwas schiefgeht (Website weg, Mails kommen nicht an):
+1. Bereich 2 (Paketdomains): Domain wieder ins Webhosting-Paket einhängen
+2. Bereich 1 (Nameserver): IP auf `91.203.110.239` zurücksetzen
+3. Mit TTL 300 ist nach 5 Minuten der Zustand vor dem Umzug wieder aktiv
 
 ### Reihenfolge für die Live-Schaltung — wichtig
 
@@ -127,13 +201,21 @@ soll.
    niedrige TTL übernehmen. Erst dann IP umbiegen — das macht Korrekturen
    schneller, falls etwas schiefgeht.
 
-5. **DNS-Umzug bei checkdomain:** Login bei https://www.checkdomain.de →
-   *Meine Domains* → `knoedelstube.de` → DNS-/Zonenverwaltung. Beide A-Records:
-   - `knoedelstube.de` (oder `@` / leerer Hostname) → `46.225.112.119`
-   - `www` → `46.225.112.119`
+5. **DNS-Umzug bei checkdomain** — zweistufig wegen Webhosting-Paket-Bindung:
 
-   Die genaue Bezeichnung des Root-Hostnamens variiert je nach UI (`@`,
-   leer, oder voller Domainname mit Punkt). Vor Ort sehen.
+   **5a) Domain aus Webhosting-Paket lösen** (Bereich 2, "Paketdomains verwalten")
+   - Wenn Dropdown "Externer Server" / "Externe Nutzung" o.ä. vorhanden:
+     auswählen und speichern.
+   - Wenn nicht: checkdomain-Support kontaktieren mit Bitte um Entkopplung
+     der Domain vom Webhosting-Paket bei Erhalt der E-Mail-Postfächer.
+
+   **5b) A-Record umstellen** (Bereich 1, "Nameserver-Einstellungen")
+   - Haupt-IP-Adresse (IPv4): `91.203.110.239` → `46.225.112.119`
+   - "Inklusive www: Ja" beibehalten — pflegt automatisch beide Hostnamen
+   - TTL bleibt 300 s
+   - "E-Mail-Empfang: Über checkdomain" **NICHT** anfassen
+   - SPF + DKIM (`cloudpit._domainkey`) **NICHT** anfassen
+   - Speichern
 
 6. **Propagation abwarten** (je nach gesetzter TTL Minuten bis Stunden):
    ```bash
@@ -192,15 +274,77 @@ risikoarm.
 
 ### Was nach Phase 2 noch übrig ist (Hygiene)
 
-- Alte Webhosting-Pakete prüfen: zahlst du irgendwo noch für die alte
-  Seite (dogado oder über Strato als Reseller)? Falls ja: kündigen, sobald
-  der Umzug verifiziert läuft.
-- Mail-Forwards/Aliase auf der alten Domain prüfen — nur DNS umbiegen
-  reicht nicht, wenn `info@knoedelstube.de` als Mail-Alias beim alten
-  Hoster eingerichtet war. MX-Records bei checkdomain müssen weiter zum
-  Mail-Provider zeigen, wo das Postfach von Irena liegt.
+- Mail-Forwards/Aliase auf der Domain verifizieren — nur DNS umbiegen
+  reicht, wenn alle Postfächer echte checkdomain-Konten sind (verifiziert
+  via Postfach-Liste). MX-Records bei checkdomain bleiben unverändert.
 - AAAA-Records (IPv6): aktuell hat `kilian.hefangelist.de` einen AAAA?
   Falls ja, analog für die Knödelstube-Domains anlegen.
+
+## checkdomain — Kosten-Optimierung & Vertragshygiene
+
+### Aufschlüsselung der checkdomain-Verträge
+
+Bei der Analyse der Buchungen 2025/2026 sind **drei separate Verträge**
+identifiziert worden, die alle weiterlaufen:
+
+| Vertrag | Frequenz | Kosten | Status | Zweck |
+| --- | --- | --- | --- | --- |
+| **Neues Webhosting-Paket** | monatl. 8,99 € | ~108 €/Jahr | bleibt | Mailpostfächer (11 Stück), evtl. WordPress |
+| **Altes Homepage-Baukasten-Hosting** | quartalsw. 29,70 € | ~119 €/Jahr | **kann sofort weg** | wird seit langem nicht mehr genutzt |
+| **Extended PHP Support** | regelmäßig, > 8 € | ~50–100 €/Jahr | **weg nach Phase 2** | hält veraltete PHP-Version für aktuelle WordPress-Live-Seite am Leben |
+| SSL-Zertifikat | jährlich | ~30–60 €/Jahr | **weg nach Phase 2** | wird durch Let's Encrypt auf dem Hetzner überflüssig |
+| Domain-Verlängerung(en) | jährlich | ~30–50 €/Jahr | bleibt | Domain-Registry-Gebühr |
+
+**Geschätztes jährliches Einsparpotenzial: ~150–200 €.**
+
+Strukturproblem dahinter: checkdomain bündelt Verträge nicht — beim Upgrade
+auf das neuere Hosting wurde der alte Baukasten-Vertrag nicht
+mitgekündigt, der Extended-PHP-Support ist ein verstecktes Add-on für
+abgekündigte PHP-Versionen.
+
+### Kündigungs-Reihenfolge
+
+**Sofort möglich (noch vor Phase 2):**
+
+1. **Altes Homepage-Baukasten-Hosting** kündigen — ist seit langem nicht
+   mehr in Verwendung, beeinflusst die aktuelle Live-Seite nicht
+   (`dig +short knoedelstube.de` zeigt `91.203.110.239` = Webhosting-Paket,
+   nicht Baukasten).
+   - Vorab Check: bei checkdomain unter "Websites" / "Baukasten" prüfen,
+     ob noch eine Domain mit dem Baukasten verknüpft ist — falls ja,
+     vorher entkoppeln.
+   - Bei checkdomain unter Übersicht / Meine Daten / Verträge den
+     Baukasten-Vertrag finden und "Kündigen" klicken (oder
+     Support-Ticket).
+   - Kündigungsfrist beachten — typisch 30 Tage zum Vertragsende.
+
+**Nach erfolgreichem Phase-2-Live-Gang:**
+
+2. **Extended PHP Support** — entfällt, sobald die alte WordPress-Live-Seite
+   nicht mehr gebraucht wird (= sobald `knoedelstube.de` auf Hetzner zeigt).
+   Vermutlich kündigt das sich automatisch mit Webhosting-Paket-Downgrade,
+   sonst explizit kündigen.
+
+3. **SSL-Zertifikat** — Caddy auf dem Hetzner liefert kostenlose
+   Let's-Encrypt-Certs. Das gekaufte Zertifikat einfach auslaufen lassen
+   oder zum Vertragsende kündigen.
+
+4. **Webhosting-Paket** (optional, später):
+   - Behalten (komfortabel, Mailpostfächer + Domain in einer Hand)
+   - Oder auf reines Mail-Paket runterstufen, falls günstiger
+   - Oder Postfächer zu anderem Mail-Provider umziehen (mehr Aufwand)
+
+### Vor Irena als Erklärung
+
+Beim Besprechen mit der Geschäftsinhaberin (Irena) am besten so framen:
+
+- **Wir zahlen aktuell für zwei Hostings parallel** (alt + neu), das alte
+  wird nicht mehr gebraucht.
+- **Extra-Gebühr für veraltetes PHP** entfällt mit dem Umzug auf den
+  neuen Server, weil die neue Website kein WordPress mehr ist.
+- **SSL-Zertifikat** ist beim neuen Setup kostenlos und automatisch.
+- **Postfächer und Domain** bleiben wie sie sind, kein Funktionsverlust.
+- **Einsparung: 150–200 € pro Jahr** bei gleicher oder besserer Leistung.
 
 ## Lessons Learned
 
