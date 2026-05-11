@@ -403,27 +403,12 @@
 
       <!-- Karten-Tabs -->
       <div class="flex justify-center gap-4 mb-10">
-        <button onclick="showMenuCard('saisonale')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Spezialitäten</button>
-        <button onclick="showMenuCard('sommer')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="sommer">Speisekarte</button>
-      </div>
-
-      <!-- Saisonale Karte -->
-      <div id="card-saisonale" class="card-content">
-        <div class="relative max-w-3xl mx-auto">
-          <div class="overflow-hidden rounded-3xl shadow-elevated">
-            <div class="card-track" id="saisonale-track">
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
-            </div>
-          </div>
-          <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
-          <button onclick="moveCard('saisonale', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
-        </div>
-        <div class="flex justify-center gap-2 mt-6" id="saisonale-dots"></div>
+        <button onclick="showMenuCard('sommer')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="sommer">Speisekarte</button>
+        <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Spezialitäten</button>
       </div>
 
       <!-- Sommerkarte -->
-      <div id="card-sommer" class="card-content hidden">
+      <div id="card-sommer" class="card-content">
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="sommer-track">
@@ -439,6 +424,21 @@
           <button onclick="moveCard('sommer', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
         </div>
         <div class="flex justify-center gap-2 mt-6" id="sommer-dots"></div>
+      </div>
+
+      <!-- Saisonale Karte -->
+      <div id="card-saisonale" class="card-content hidden">
+        <div class="relative max-w-3xl mx-auto">
+          <div class="overflow-hidden rounded-3xl shadow-elevated">
+            <div class="card-track" id="saisonale-track">
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
+            </div>
+          </div>
+          <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
+          <button onclick="moveCard('saisonale', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
+        </div>
+        <div class="flex justify-center gap-2 mt-6" id="saisonale-dots"></div>
       </div>
     </div>
   </section>
