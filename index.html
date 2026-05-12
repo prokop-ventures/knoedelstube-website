@@ -587,23 +587,23 @@
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
               <label for="k-name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Dein Name</label>
-              <input type="text" id="k-name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="text" id="k-name" name="name" autocomplete="name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
               <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-name"></p>
             </div>
             <div>
               <label for="k-email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Deine E-Mail</label>
-              <input type="email" id="k-email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="email" id="k-email" name="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
               <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-email"></p>
             </div>
           </div>
           <div>
             <label for="k-betreff" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Betreff</label>
-            <input type="text" id="k-betreff" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <input type="text" id="k-betreff" name="betreff" autocomplete="off" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
             <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="k-betreff"></p>
           </div>
           <div>
             <label for="k-nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Deine Nachricht (optional)</label>
-            <textarea id="k-nachricht" rows="4" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
+            <textarea id="k-nachricht" name="nachricht" autocomplete="off" rows="4" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
           </div>
           <button type="submit" id="kontakt-submit" class="w-full py-3 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-xl shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-600 transition-colors duration-200">Nachricht senden</button>
         </form>
@@ -646,24 +646,24 @@
 
           <div>
             <label for="name" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Name</label>
-            <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <input type="text" id="name" name="name" autocomplete="name" required class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
             <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="name"></p>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="email" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">E-Mail</label>
-              <input type="email" id="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="email" id="email" name="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
               <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="email"></p>
             </div>
             <div>
               <label for="telefon" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Telefon</label>
-              <input type="tel" id="telefon" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+              <input type="tel" id="telefon" name="telefon" autocomplete="tel" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="personen" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Personen</label>
-              <select id="personen" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
+              <select id="personen" name="personen" autocomplete="off" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
                 <option>1 Person</option>
                 <option>2 Personen</option>
                 <option>3 Personen</option>
@@ -680,7 +680,7 @@
             </div>
             <div>
               <label for="uhrzeit" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Uhrzeit</label>
-              <select id="uhrzeit" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
+              <select id="uhrzeit" name="uhrzeit" autocomplete="off" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
                 <option>12:00</option>
                 <option>12:30</option>
                 <option>13:00</option>
@@ -699,12 +699,12 @@
           </div>
           <div>
             <label for="datum" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Datum</label>
-            <input type="text" id="datum" required placeholder="Datum wählen" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray placeholder-warmgray/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
+            <input type="text" id="datum" name="datum" autocomplete="off" required placeholder="Datum wählen" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray placeholder-warmgray/40 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200" />
             <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="datum"></p>
           </div>
           <div>
             <label for="nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Nachricht (optional)</label>
-            <textarea id="nachricht" rows="3" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
+            <textarea id="nachricht" name="nachricht" autocomplete="off" rows="3" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
           </div>
           <button type="submit" id="reservierung-submit" class="w-full py-4 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-xl shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200">Reservierung anfragen</button>
         </form>
@@ -903,6 +903,12 @@
         return d;
       })(),
       disable: [date => date.getDay() === 0 || date.getDay() === 1],
+      onReady: (_, __, instance) => {
+        const year = instance.calendarContainer.querySelector('.cur-year');
+        if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
+        const month = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
+        if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
+      },
     });
 
     async function postJson(url, payload) {
