@@ -31,7 +31,7 @@ Knödelstube website – Überführung einer bestehenden Website in eine Claude 
 
 ## Output Defaults
 - Single `index.html` file, all styles inline, unless user says otherwise
-- Tailwind CSS via CDN: `<script src="https://cdn.tailwindcss.com"></script>`
+- Tailwind CSS **lokal gebaut**, nicht via CDN — `<link rel="stylesheet" href="tailwind.css" />`. Theme-Config lebt in `tailwind.config.js` (Brand-Farben, Fonts), nicht inline im HTML. Nach Klassenänderungen im HTML: `npm run build:css` ausführen, damit `tailwind.css` neue Utilities enthält. `tailwind.css` ist committed.
 - Placeholder images: `https://placehold.co/WIDTHxHEIGHT`
 - Mobile-first responsive
 

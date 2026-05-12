@@ -73,6 +73,8 @@ jobs:
             --exclude '/steam-debug.mjs' \
             --exclude '/package.json' \
             --exclude '/package-lock.json' \
+            --exclude '/tailwind.config.js' \
+            --exclude '/src' \
             --exclude '/.gitignore' \
             --exclude '/.dockerignore' \
             ./ ${{ secrets.HETZNER_USER }}@${{ secrets.HETZNER_HOST }}:/opt/knoedelstube/static-web/
