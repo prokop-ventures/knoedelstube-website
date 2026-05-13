@@ -19,7 +19,7 @@ module.exports = {
         warmgray: '#252525',
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
+        display: ['Nunito Sans', 'sans-serif'],
         body: ['Nunito Sans', 'sans-serif'],
       },
     },
