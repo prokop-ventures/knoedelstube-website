@@ -32,8 +32,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
-  <!-- LCP-Preloads: Hero-Hintergrund und Logo -->
-  <link rel="preload" as="image" href="images/IMG_0802.jpg" fetchpriority="high" />
+  <!-- LCP-Preloads: Hero (WebP, JPEG-Fallback via <picture>) und Logo -->
+  <link rel="preload" as="image" href="images/IMG_0802.webp" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="brand_assets/KS_Logo_Teal.png" />
 
   <!-- Structured Data: Restaurant (Schema.org / JSON-LD) -->
@@ -506,7 +506,7 @@
   <section id="home" class="relative w-full overflow-hidden" style="margin-top: 72px;">
     <!-- Image with overlay text -->
     <div class="relative w-full py-6 md:py-9">
-      <img src="images/IMG_0802.jpg" alt="Innenraum der Knödelstube Heilbronn – tschechisches Restaurant im historischen Beichtstuhl" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
+      <picture><source srcset="images/IMG_0802.webp" type="image/webp" /><img src="images/IMG_0802.jpg" alt="Innenraum der Knödelstube Heilbronn – tschechisches Restaurant im historischen Beichtstuhl" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" /></picture>
           <div class="spotlight-wrap"><span class="sl"></span><span class="sm"></span><span class="sr"></span><span class="s4"></span><span class="s5"></span></div>
       <div class="relative z-10 flex flex-col items-center justify-center text-center px-6">
         <p class="font-body text-3xl md:text-4xl text-white/80 -mb-4 md:-mb-6">Willkommen in der</p>
@@ -523,7 +523,7 @@
     <div class="bg-cream px-6 py-10 md:py-14">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div class="rounded-2xl overflow-hidden shadow-elevated">
-          <img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-64 md:h-80 object-cover" />
+          <picture><source srcset="images/IMG_0867-1.webp" type="image/webp" /><img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-64 md:h-80 object-cover" /></picture>
         </div>
         <div class="space-y-4" style="line-height: 1.7;">
           <p class="text-warmgray/80">Unsere Mission ist es, authentisches tschechisches Essen nach Heilbronn und Umland zu bringen – ehrlich, hausgemacht und mit viel Liebe zubereitet. Entdeckt unsere Auswahl an traditionellen Serviettenknödeln, saisonalen Gerichten und typischen Spezialitäten.</p>
@@ -554,7 +554,7 @@
       <div class="flex flex-col sm:flex-row justify-center gap-8 md:gap-16 mb-16">
         <div class="text-center group">
           <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full overflow-hidden shadow-floating">
-            <img src="images/Irena.jpg" alt="Irena Prokop, Inhaberin der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" />
+            <picture><source srcset="images/Irena.webp" type="image/webp" /><img src="images/Irena.jpg" alt="Irena Prokop, Inhaberin der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" /></picture>
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
           </div>
           <p class="mt-4 font-display text-xl text-brand-500 font-bold">Irena Prokop</p>
@@ -562,7 +562,7 @@
         </div>
         <div class="text-center group">
           <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full overflow-hidden shadow-floating">
-            <img src="images/Zdenek.jpg" alt="Zdenek Prokop, Inhaber der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" />
+            <picture><source srcset="images/Zdenek.webp" type="image/webp" /><img src="images/Zdenek.jpg" alt="Zdenek Prokop, Inhaber der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" /></picture>
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
           </div>
           <p class="mt-4 font-display text-xl text-brand-500 font-bold">Zdenek Prokop</p>
@@ -573,7 +573,7 @@
       <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div class="relative">
           <div class="rounded-3xl overflow-hidden shadow-floating">
-            <img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" />
+            <picture><source srcset="images/IMG_0867-1.webp" type="image/webp" /><img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" /></picture>
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/30 to-transparent rounded-3xl"></div>
           </div>
           <!-- Floating card -->
@@ -601,7 +601,7 @@
       </div>
       <div class="max-w-lg mx-auto">
         <div class="relative rounded-3xl overflow-hidden shadow-floating">
-          <img src="images/aktuelles.jpg" alt="Aktuelles und Saisonangebote der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" />
+          <picture><source srcset="images/aktuelles.webp" type="image/webp" /><img src="images/aktuelles.jpg" alt="Aktuelles und Saisonangebote der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" /></picture>
           <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
         </div>
       </div>
@@ -612,39 +612,39 @@
   <!-- Bildergalerie -->
   <section class="py-4 overflow-hidden bg-cream">
     <div class="gallery-scroll flex gap-4 w-max">
-      <img src="images/thekemitbier.jpeg" alt="Frisch gezapftes Pilsner Urquell an der Theke der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/fleischkuechle.jpeg" alt="Hausgemachte Fleischküchle nach böhmischer Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen mit Sauerkraut – tschechische Spezialität" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/pannacotta.jpeg" alt="Hausgemachte Panna Cotta mit Beerenkompott" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten mit Röstzwiebeln und Bratkartoffeln" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/puffer.jpeg" alt="Knusprige Kartoffelpuffer mit Apfelmus" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/nachtisch1.jpeg" alt="Hausgemachter Nachtisch in der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/abend.jpeg" alt="Abendstimmung im historischen Beichtstuhl der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/backhendl1.jpeg" alt="Knuspriges Backhendl mit Kartoffelsalat" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/Artboard-1.jpg" alt="Bar der Knödelstube Heilbronn mit tschechischem Bier" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/IMG_0787-1.jpg" alt="Gemütliche Atmosphäre im Beichtstuhl-Restaurant in Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/theke3.jpeg" alt="Theke der Knödelstube mit Zapfanlage und Pilsner-Gläsern" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/rostbraten2.jpeg" alt="Zwiebelrostbraten – ein Klassiker der Wirtshausküche" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/nachtisch2.jpeg" alt="Saisonales Dessert der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/krautkrapfen2.jpeg" alt="Krautkrapfen mit deftiger Füllung – böhmische Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/tagessuppe1.jpeg" alt="Hausgemachte Tagessuppe nach Tagesangebot" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <picture><source srcset="images/thekemitbier.webp" type="image/webp" /><img src="images/thekemitbier.jpeg" alt="Frisch gezapftes Pilsner Urquell an der Theke der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/fleischkuechle.webp" type="image/webp" /><img src="images/fleischkuechle.jpeg" alt="Hausgemachte Fleischküchle nach böhmischer Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/krautkrapfen1.webp" type="image/webp" /><img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen mit Sauerkraut – tschechische Spezialität" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/pannacotta.webp" type="image/webp" /><img src="images/pannacotta.jpeg" alt="Hausgemachte Panna Cotta mit Beerenkompott" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/rostbraten1.webp" type="image/webp" /><img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten mit Röstzwiebeln und Bratkartoffeln" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/puffer.webp" type="image/webp" /><img src="images/puffer.jpeg" alt="Knusprige Kartoffelpuffer mit Apfelmus" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/nachtisch1.webp" type="image/webp" /><img src="images/nachtisch1.jpeg" alt="Hausgemachter Nachtisch in der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/abend.webp" type="image/webp" /><img src="images/abend.jpeg" alt="Abendstimmung im historischen Beichtstuhl der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/backhendl1.webp" type="image/webp" /><img src="images/backhendl1.jpeg" alt="Knuspriges Backhendl mit Kartoffelsalat" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/Artboard-1.webp" type="image/webp" /><img src="images/Artboard-1.jpg" alt="Bar der Knödelstube Heilbronn mit tschechischem Bier" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/IMG_0787-1.webp" type="image/webp" /><img src="images/IMG_0787-1.jpg" alt="Gemütliche Atmosphäre im Beichtstuhl-Restaurant in Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/theke3.webp" type="image/webp" /><img src="images/theke3.jpeg" alt="Theke der Knödelstube mit Zapfanlage und Pilsner-Gläsern" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/rostbraten2.webp" type="image/webp" /><img src="images/rostbraten2.jpeg" alt="Zwiebelrostbraten – ein Klassiker der Wirtshausküche" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/nachtisch2.webp" type="image/webp" /><img src="images/nachtisch2.jpeg" alt="Saisonales Dessert der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/krautkrapfen2.webp" type="image/webp" /><img src="images/krautkrapfen2.jpeg" alt="Krautkrapfen mit deftiger Füllung – böhmische Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/tagessuppe1.webp" type="image/webp" /><img src="images/tagessuppe1.jpeg" alt="Hausgemachte Tagessuppe nach Tagesangebot" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
       <!-- Duplicates for seamless loop — müssen 1:1 die komplette erste Reihe sein -->
-      <img src="images/thekemitbier.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/fleischkuechle.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/krautkrapfen1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/pannacotta.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/rostbraten1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/puffer.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/nachtisch1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/abend.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/backhendl1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/Artboard-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/IMG_0787-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/theke3.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/rostbraten2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
-      <img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <picture><source srcset="images/thekemitbier.webp" type="image/webp" /><img src="images/thekemitbier.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/fleischkuechle.webp" type="image/webp" /><img src="images/fleischkuechle.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/krautkrapfen1.webp" type="image/webp" /><img src="images/krautkrapfen1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/pannacotta.webp" type="image/webp" /><img src="images/pannacotta.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/rostbraten1.webp" type="image/webp" /><img src="images/rostbraten1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/puffer.webp" type="image/webp" /><img src="images/puffer.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/nachtisch1.webp" type="image/webp" /><img src="images/nachtisch1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/abend.webp" type="image/webp" /><img src="images/abend.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/backhendl1.webp" type="image/webp" /><img src="images/backhendl1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/Artboard-1.webp" type="image/webp" /><img src="images/Artboard-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/IMG_0787-1.webp" type="image/webp" /><img src="images/IMG_0787-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/theke3.webp" type="image/webp" /><img src="images/theke3.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/rostbraten2.webp" type="image/webp" /><img src="images/rostbraten2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/nachtisch2.webp" type="image/webp" /><img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/krautkrapfen2.webp" type="image/webp" /><img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+      <picture><source srcset="images/tagessuppe1.webp" type="image/webp" /><img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
     </div>
   </section>
 
@@ -908,7 +908,7 @@
         <!-- Bild-Akzent -->
         <div class="hidden md:flex md:col-span-2 self-stretch">
           <div class="rounded-2xl overflow-hidden shadow-elevated w-full">
-            <img src="images/theke3.jpeg" alt="Theke der Knödelstube – jetzt Tisch in Heilbronn reservieren" loading="lazy" decoding="async" class="w-full h-full object-cover object-center brightness-125 saturate-125 contrast-105" />
+            <picture><source srcset="images/theke3.webp" type="image/webp" /><img src="images/theke3.jpeg" alt="Theke der Knödelstube – jetzt Tisch in Heilbronn reservieren" loading="lazy" decoding="async" class="w-full h-full object-cover object-center brightness-125 saturate-125 contrast-105" /></picture>
           </div>
         </div>
 
@@ -1002,7 +1002,7 @@
         <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" loading="lazy" decoding="async" class="h-10 brightness-0 invert" />
         <div class="text-center">
           <p class="text-white/40 text-sm"><a href="https://maps.app.goo.gl/Cu64C8tge2vtt9qc8" target="_blank" rel="noopener noreferrer" class="hover:text-white/70 transition-colors duration-200">Fischergasse 9, 74072 Heilbronn</a> · 07131 2035 557</p>
-          <p class="text-white/30 text-xs mt-1">© 2025 Knödelstube. Alle Rechte vorbehalten. · <button onclick="document.getElementById('impressum-modal').classList.remove('hidden')" class="underline hover:text-white/60 transition-colors duration-200">Impressum</button></p>
+          <p class="text-white/30 text-xs mt-1">© <span id="copyright-year">2026</span> Knödelstube. Alle Rechte vorbehalten. · <button onclick="document.getElementById('impressum-modal').classList.remove('hidden')" class="underline hover:text-white/60 transition-colors duration-200">Impressum</button></p>
         </div>
       </div>
     </div>
@@ -1057,6 +1057,9 @@
   <script src="vendor/flatpickr.min.js"></script>
   <script src="vendor/flatpickr-de.js"></script>
   <script>
+    // Copyright-Jahr dynamisch
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
