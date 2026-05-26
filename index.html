@@ -3,13 +3,282 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Knödelstube – Ehrlich | Tschechisch | Lecker</title>
+  <title>Knödelstube Heilbronn – Tschechische Küche im Beichtstuhl</title>
+  <meta name="description" content="Ehrliche tschechisch-böhmische Küche mitten in Heilbronn: hausgemachte Knödel, Gulasch, Pilsner Urquell. Reserviere deinen Tisch im historischen Beichtstuhl." />
+  <link rel="canonical" href="https://knoedelstube.de/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#215b63" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="restaurant" />
+  <meta property="og:site_name" content="Knödelstube" />
+  <meta property="og:title" content="Knödelstube Heilbronn – Tschechische Küche im Beichtstuhl" />
+  <meta property="og:description" content="Ehrliche tschechisch-böhmische Küche mitten in Heilbronn: hausgemachte Knödel, Gulasch, Pilsner Urquell. Reserviere deinen Tisch im historischen Beichtstuhl." />
+  <meta property="og:url" content="https://knoedelstube.de/" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:image" content="https://knoedelstube.de/images/IMG_0802.jpg" />
+  <meta property="og:image:alt" content="Innenraum der Knödelstube Heilbronn im historischen Beichtstuhl" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Knödelstube Heilbronn – Tschechische Küche im Beichtstuhl" />
+  <meta name="twitter:description" content="Ehrliche tschechisch-böhmische Küche mitten in Heilbronn: hausgemachte Knödel, Gulasch, Pilsner Urquell." />
+  <meta name="twitter:image" content="https://knoedelstube.de/images/IMG_0802.jpg" />
+
   <link rel="icon" type="image/svg+xml" href="brand_assets/KS_Icon_Teal.svg" />
   <link rel="stylesheet" href="tailwind.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="vendor/flatpickr.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- LCP-Preloads: Hero-Hintergrund und Logo -->
+  <link rel="preload" as="image" href="images/IMG_0802.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="brand_assets/KS_Logo_Teal.png" />
+
+  <!-- Structured Data: Restaurant (Schema.org / JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "@id": "https://knoedelstube.de/#restaurant",
+    "name": "Knödelstube",
+    "alternateName": "Knödelstube Heilbronn",
+    "description": "Tschechisch-böhmisches Restaurant in Heilbronn im historischen Beichtstuhl. Hausgemachte Knödel, Gulasch und Pilsner Urquell.",
+    "url": "https://knoedelstube.de/",
+    "telephone": "+49-7131-2035557",
+    "email": "info@knoedelstube.de",
+    "image": [
+      "https://knoedelstube.de/images/IMG_0802.jpg",
+      "https://knoedelstube.de/images/IMG_0867-1.jpg",
+      "https://knoedelstube.de/images/thekemitbier.jpeg"
+    ],
+    "logo": "https://knoedelstube.de/brand_assets/KS_Logo_Teal.png",
+    "servesCuisine": ["Czech", "Bohemian", "Central European"],
+    "priceRange": "€€",
+    "acceptsReservations": "True",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Fischergasse 9",
+      "postalCode": "74072",
+      "addressLocality": "Heilbronn",
+      "addressRegion": "BW",
+      "addressCountry": "DE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 49.140388,
+      "longitude": 9.2158635
+    },
+    "hasMap": "https://maps.app.goo.gl/Cu64C8tge2vtt9qc8",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "12:00",
+        "closes": "14:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
+        "opens": "17:00",
+        "closes": "22:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Friday", "Saturday"],
+        "opens": "17:00",
+        "closes": "23:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61576262824283",
+      "https://www.instagram.com/knoedelstube_heilbronn/"
+    ],
+    "hasMenu": {
+      "@type": "Menu",
+      "@id": "https://knoedelstube.de/#menu",
+      "name": "Speisekarte der Knödelstube Heilbronn",
+      "description": "Authentisch tschechisches Essen, ehrlich, hausgemacht und mit viel Liebe zubereitet. Original Pilsner Urquell – in Pilsen gebraut und in Heilbronn frisch gezapft.",
+      "inLanguage": "de",
+      "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "name": "Suppen, Vorspeisen & Salate",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/2.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Tschechische Knoblauchsuppe", "description": "Mit Croutons und geriebenem Käse.", "offers": { "@type": "Offer", "price": "6.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Eingelegter Camembert", "description": "Mit pikanter Knoblauch-Chilipaste gewürzt und in Öl eingelegt.", "offers": { "@type": "Offer", "price": "10.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Útopenec – Ertrunkene", "description": "Kabanossi, in Essig eingelegt, mit Zwiebeln.", "offers": { "@type": "Offer", "price": "10.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Balkansalat", "description": "Tomaten, Gurken, Paprika, rote Zwiebeln und Hirtenkäse.", "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Bunter Gartensalat", "description": "Grüner Salat mit frischem Gartengemüse und Senfdressing. Mit gebratenen Knödeln & Ei +4 €, mit Hähnchenstreifen +5 €.", "offers": { "@type": "Offer", "price": "10.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Wurstsalat nach Art des Hauses", "description": "Eingelegte Kabanossi, Essiggurken, Zwiebeln, Senfdressing.", "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Unsere Knödelküche",
+          "description": "Hausgemachte böhmische Knödel. Zu jedem Gericht Knödel nach Wahl: Serviettenknödel, Semmelknödel oder Kartoffelknödel.",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/3.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Koprovka", "description": "Böhmische Dill-Sahne-Soße mit gekochtem Ei.", "offers": { "@type": "Offer", "price": "16.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Pilzgulasch", "description": "Waldpilzmischung mit Zwiebeln in würziger Soße.", "suitableForDiet": "https://schema.org/VegetarianDiet", "offers": { "@type": "Offer", "price": "18.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Böhmisches Rindergulasch", "description": "Saftiges Rindfleisch mit Zwiebeln, geschmort in würziger Soße.", "offers": { "@type": "Offer", "price": "20.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Svíčková – Rinderbraten", "description": "In Wurzelrahmsoße mit Preiselbeeren.", "offers": { "@type": "Offer", "price": "25.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Gefüllte Kartoffelknödel", "description": "Mit geräuchertem Schinken oder Waldpilzen, dazu Sauerkraut und Bratensoße. Auch vegan erhältlich.", "offers": { "@type": "Offer", "price": "19.00", "priceCurrency": "EUR" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Unsere Wirtshausküche",
+          "description": "Tschechische und süddeutsche Klassiker.",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/4.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Krauthalušky", "description": "Kartoffelknöpfle nach slowakischer Art, mit Sauerkraut und Räuchertofu oder Speck.", "offers": { "@type": "Offer", "price": "13.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Käsehalušky", "description": "Kartoffelknöpfle nach slowakischer Art, mit Käsecreme aus Hirtenkäse und Gorgonzola, dazu Räuchertofu oder Speck.", "offers": { "@type": "Offer", "price": "15.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Panierte Blumenkohlröschen", "description": "Mit Petersilienkartoffeln und hausgemachter Tatarka (Kräutermayo).", "suitableForDiet": "https://schema.org/VegetarianDiet", "offers": { "@type": "Offer", "price": "16.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Hähnchenschnitzel", "description": "Goldgelb ausgebacken, mit Pommes und Tatarka (Kräutermayo).", "offers": { "@type": "Offer", "price": "19.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Bratkartoffeln", "description": "Nach eigenem Hausrezept mit Zwiebeln und Räuchertofu oder Speck. Mit Wurstsalat +5 €, mit Spiegelei +3 €.", "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Desserts & Kaffee",
+          "description": "Kaffee von der Rösterei Echt Hammer aus Neckarsulm. Hausgemachte Cantuccini zu jedem Heißgetränk.",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/5.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Palatschinken", "description": "Mit Vanilleeis und saisonaler Frucht.", "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Apfelstrudel", "description": "Mit Vanilleeis.", "offers": { "@type": "Offer", "price": "9.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Nougatknödel", "description": "Mit saisonaler Frucht.", "offers": { "@type": "Offer", "price": "11.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Kaffee Americano", "offers": { "@type": "Offer", "price": "3.80", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Espresso", "offers": { "@type": "Offer", "price": "2.80", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Espresso Doppio", "offers": { "@type": "Offer", "price": "4.20", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Espresso Macchiato", "offers": { "@type": "Offer", "price": "4.20", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Cappuccino", "offers": { "@type": "Offer", "price": "4.20", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Flat White", "offers": { "@type": "Offer", "price": "5.20", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Latte Macchiato", "offers": { "@type": "Offer", "price": "4.20", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Tee", "description": "Schwarz, Früchte oder Kräuter.", "offers": { "@type": "Offer", "price": "3.80", "priceCurrency": "EUR" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Wasser, Limos & Bier",
+          "description": "Pilsner Urquell vom Fass – in Pilsen gebraut und in Heilbronn frisch gezapft.",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/6.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Pilsner Urquell vom Fass", "description": "4,4 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,3 l", "price": "4.50", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,5 l", "price": "5.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Palmbräu Zwickel Hell vom Fass", "description": "4,8 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,3 l", "price": "4.50", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,5 l", "price": "5.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Palmbräu Hefeweizen", "description": "0,5 l Flasche, 5,4 % Vol.", "offers": { "@type": "Offer", "price": "4.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Palmbräu Export", "description": "0,5 l Flasche, 5,6 % Vol.", "offers": { "@type": "Offer", "price": "4.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Palmbräu Naturradler", "description": "0,33 l Flasche, 2,5 % Vol.", "offers": { "@type": "Offer", "price": "3.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Lammsbräu glutenfrei", "description": "0,33 l Flasche, 4,7 % Vol.", "offers": { "@type": "Offer", "price": "4.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Kehrwieder Miami Grove (alkoholfrei)", "description": "0,3 l Pale Ale.", "offers": { "@type": "Offer", "price": "5.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Braucampus Bleifrei (alkoholfrei)", "description": "0,33 l Pils.", "offers": { "@type": "Offer", "price": "3.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Maisel's Weiße alkoholfrei", "description": "0,5 l Hefeweizen.", "offers": { "@type": "Offer", "price": "4.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Teinacher Still oder Classic", "offers": [
+              { "@type": "Offer", "name": "0,25 l", "price": "3.00", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,4 l",  "price": "4.00", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,75 l", "price": "6.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Teinacher Genusslimonade", "description": "Zitrone, Mango-Maracuja-Orange, Johannisbeer-Holunder, Apfelschorle oder Colamix.", "offers": [
+              { "@type": "Offer", "name": "0,25 l", "price": "4.00", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,4 l",  "price": "5.00", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Coca Cola oder Coca Cola Zero", "offers": [
+              { "@type": "Offer", "name": "0,25 l", "price": "4.50", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,4 l",  "price": "5.50", "priceCurrency": "EUR" }
+            ] }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Spirituosen & Wein",
+          "description": "Wein vom Amalienhof, tschechische Liköre und Spirituosen.",
+          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/7.svg",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "AMH Bierbrand", "description": "2 cl, 40 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH Williamsbirne", "description": "2 cl, 38 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH Spiced Rum", "description": "2 cl, 40 % Vol.", "offers": { "@type": "Offer", "price": "4.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH New Western Dry Gin", "description": "2 cl, 45 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Absinth", "description": "2 cl, 55 % Vol.", "offers": { "@type": "Offer", "price": "4.00", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Becherovka", "description": "Tschechischer Kräuterlikör, 2 cl, 38 % Vol.", "offers": { "@type": "Offer", "price": "2.90", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH Kräuterlikör", "description": "2 cl, 35,5 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH Haselnusslikör", "description": "2 cl, 18 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "AMH Bierlikör", "description": "2 cl, 24 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
+            { "@type": "MenuItem", "name": "Weißburgunder trocken", "description": "Wein vom Amalienhof. Frisch, mit ausgewogener Säure. 12 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,1 l",  "price": "3.90", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,25 l", "price": "8.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Riesling mit Gewürztraminer feinherb", "description": "Wein vom Amalienhof. Fruchtig und aromatisch, raffinierte Frucht, feine Süße. 11,5 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,1 l",  "price": "3.90", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,25 l", "price": "8.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Lemberger Rosé", "description": "Wein vom Amalienhof. Fruchtige Leichtigkeit, erfrischende Säure. 11 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,1 l",  "price": "3.90", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,25 l", "price": "8.50", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Lemberger „Bunter Mergel“", "description": "Wein vom Amalienhof. Fleischige, rote Fruchtnoten, sehr fein eingebundenes Holz. 13 % Vol.", "offers": [
+              { "@type": "Offer", "name": "0,1 l",  "price": "4.50", "priceCurrency": "EUR" },
+              { "@type": "Offer", "name": "0,25 l", "price": "8.90", "priceCurrency": "EUR" }
+            ] },
+            { "@type": "MenuItem", "name": "Weinschorle süß oder sauer", "description": "0,25 l.", "offers": { "@type": "Offer", "price": "6.50", "priceCurrency": "EUR" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Saisonale Spezialitäten",
+          "description": "Wechselnde saisonale Gerichte – bitte beim Servicepersonal erfragen.",
+          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/1.svg"
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Limos & Longdrinks",
+          "description": "Saisonale Erfrischungen und Longdrinks.",
+          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/2.svg"
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "75",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Andreas B." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Die Knödelstube ist ein tolles böhmisches Restaurant. Wir wurden herzlich von der Gastgeberin umsorgt und auch für eine kleine Plauderei hatte sie Zeit. Das Gulasch das ich hatte war exzellent. Das Fleisch zerfiel schon beim Anschauen und die Knödel waren perfekt."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Lena S." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Ich war mit meiner 10-köpfigen Familie am Freitag Abend bei schönem Wetter in der Knödelstube. Eine wunderschöne Atmosphäre, leckeres Essen und super Service. Was will man mehr."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "S. Jasegar" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Great service and great food. Perfect place to wind down after an exhausting day, especially with the cozy outdoor seating."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "A. Weiss" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Endlich mal ein wirklich neues Gastro-Konzept in Heilbronn! Das Essen schmeckt sehr lecker und das Preis-Leistungsverhältnis ist sehr gut. Vor allem, dass es auch für Vegetarier eine gute Auswahl mit großer Vielfalt gibt, hätte ich von einem tschechisches Restaurant nicht erwartet."
+      }
+    ]
+  }
+  </script>
   <style>
     html { scroll-behavior: smooth; }
     body { font-family: 'Nunito Sans', sans-serif; }
@@ -195,6 +464,8 @@
 </head>
 <body class="bg-cream text-warmgray antialiased">
 
+  <h1 class="sr-only">Knödelstube Heilbronn – Tschechisch-böhmische Küche im historischen Beichtstuhl</h1>
+
   <!-- Navigation -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm transition-all duration-300" id="navbar">
     <div class="w-full px-6 py-4 flex items-center justify-between">
@@ -235,7 +506,7 @@
   <section id="home" class="relative w-full overflow-hidden" style="margin-top: 72px;">
     <!-- Image with overlay text -->
     <div class="relative w-full py-6 md:py-9">
-      <img src="images/IMG_0802.jpg" alt="Knödelstube Ambiente" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
+      <img src="images/IMG_0802.jpg" alt="Innenraum der Knödelstube Heilbronn – tschechisches Restaurant im historischen Beichtstuhl" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover object-center brightness-110 contrast-105 saturate-110" />
           <div class="spotlight-wrap"><span class="sl"></span><span class="sm"></span><span class="sr"></span><span class="s4"></span><span class="s5"></span></div>
       <div class="relative z-10 flex flex-col items-center justify-center text-center px-6">
         <p class="font-body text-3xl md:text-4xl text-white/80 -mb-4 md:-mb-6">Willkommen in der</p>
@@ -252,7 +523,7 @@
     <div class="bg-cream px-6 py-10 md:py-14">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div class="rounded-2xl overflow-hidden shadow-elevated">
-          <img src="images/IMG_0867-1.jpg" alt="Knödelstube Interieur" class="w-full h-64 md:h-80 object-cover" />
+          <img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-64 md:h-80 object-cover" />
         </div>
         <div class="space-y-4" style="line-height: 1.7;">
           <p class="text-warmgray/80">Unsere Mission ist es, authentisches tschechisches Essen nach Heilbronn und Umland zu bringen – ehrlich, hausgemacht und mit viel Liebe zubereitet. Entdeckt unsere Auswahl an traditionellen Serviettenknödeln, saisonalen Gerichten und typischen Spezialitäten.</p>
@@ -283,7 +554,7 @@
       <div class="flex flex-col sm:flex-row justify-center gap-8 md:gap-16 mb-16">
         <div class="text-center group">
           <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full overflow-hidden shadow-floating">
-            <img src="images/Irena.jpg" alt="Irena Prokop – Inhaberin" class="w-full h-full object-cover object-top" />
+            <img src="images/Irena.jpg" alt="Irena Prokop, Inhaberin der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" />
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
           </div>
           <p class="mt-4 font-display text-xl text-brand-500 font-bold">Irena Prokop</p>
@@ -291,7 +562,7 @@
         </div>
         <div class="text-center group">
           <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto rounded-full overflow-hidden shadow-floating">
-            <img src="images/Zdenek.jpg" alt="Zdenek Prokop – Inhaber" class="w-full h-full object-cover object-top" />
+            <img src="images/Zdenek.jpg" alt="Zdenek Prokop, Inhaber der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full h-full object-cover object-top" />
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
           </div>
           <p class="mt-4 font-display text-xl text-brand-500 font-bold">Zdenek Prokop</p>
@@ -302,7 +573,7 @@
       <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div class="relative">
           <div class="rounded-3xl overflow-hidden shadow-floating">
-            <img src="images/IMG_0867-1.jpg" alt="Knödelstube Interieur" class="w-full object-cover aspect-[4/5]" />
+            <img src="images/IMG_0867-1.jpg" alt="Historischer Beichtstuhl als Restaurant – Innenraum der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" />
             <div class="absolute inset-0 bg-gradient-to-t from-brand-500/30 to-transparent rounded-3xl"></div>
           </div>
           <!-- Floating card -->
@@ -330,7 +601,7 @@
       </div>
       <div class="max-w-lg mx-auto">
         <div class="relative rounded-3xl overflow-hidden shadow-floating">
-          <img src="images/aktuelles.jpg" alt="Aktuelles aus der Knödelstube" class="w-full object-cover aspect-[4/5]" />
+          <img src="images/aktuelles.jpg" alt="Aktuelles und Saisonangebote der Knödelstube Heilbronn" loading="lazy" decoding="async" class="w-full object-cover aspect-[4/5]" />
           <div class="absolute inset-0 bg-gradient-to-t from-brand-500/20 to-transparent"></div>
         </div>
       </div>
@@ -341,39 +612,39 @@
   <!-- Bildergalerie -->
   <section class="py-4 overflow-hidden bg-cream">
     <div class="gallery-scroll flex gap-4 w-max">
-      <img src="images/thekemitbier.jpeg" alt="Pilsner Urquell" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/fleischkuechle.jpeg" alt="Fleischküchle" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/pannacotta.jpeg" alt="Panna Cotta" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/puffer.jpeg" alt="Kartoffelpuffer" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/nachtisch1.jpeg" alt="Nachtisch" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/abend.jpeg" alt="Abendstimmung" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/backhendl1.jpeg" alt="Backhendl" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/Artboard-1.jpg" alt="Bar" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/IMG_0787-1.jpg" alt="Atmosphäre" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/theke3.jpeg" alt="Theke" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/rostbraten2.jpeg" alt="Zwiebelrostbraten" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/nachtisch2.jpeg" alt="Nachtisch" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/krautkrapfen2.jpeg" alt="Krautkrapfen" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/tagessuppe1.jpeg" alt="Tagessuppe" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/thekemitbier.jpeg" alt="Frisch gezapftes Pilsner Urquell an der Theke der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/fleischkuechle.jpeg" alt="Hausgemachte Fleischküchle nach böhmischer Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/krautkrapfen1.jpeg" alt="Krautkrapfen mit Sauerkraut – tschechische Spezialität" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/pannacotta.jpeg" alt="Hausgemachte Panna Cotta mit Beerenkompott" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/rostbraten1.jpeg" alt="Zwiebelrostbraten mit Röstzwiebeln und Bratkartoffeln" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/puffer.jpeg" alt="Knusprige Kartoffelpuffer mit Apfelmus" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/nachtisch1.jpeg" alt="Hausgemachter Nachtisch in der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/abend.jpeg" alt="Abendstimmung im historischen Beichtstuhl der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/backhendl1.jpeg" alt="Knuspriges Backhendl mit Kartoffelsalat" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/Artboard-1.jpg" alt="Bar der Knödelstube Heilbronn mit tschechischem Bier" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/IMG_0787-1.jpg" alt="Gemütliche Atmosphäre im Beichtstuhl-Restaurant in Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/theke3.jpeg" alt="Theke der Knödelstube mit Zapfanlage und Pilsner-Gläsern" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/rostbraten2.jpeg" alt="Zwiebelrostbraten – ein Klassiker der Wirtshausküche" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/nachtisch2.jpeg" alt="Saisonales Dessert der Knödelstube" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/krautkrapfen2.jpeg" alt="Krautkrapfen mit deftiger Füllung – böhmische Hausmannskost" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/tagessuppe1.jpeg" alt="Hausgemachte Tagessuppe nach Tagesangebot" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
       <!-- Duplicates for seamless loop — müssen 1:1 die komplette erste Reihe sein -->
-      <img src="images/thekemitbier.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/fleischkuechle.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/krautkrapfen1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/pannacotta.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/rostbraten1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/puffer.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/nachtisch1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/abend.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/backhendl1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/Artboard-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/IMG_0787-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/theke3.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/rostbraten2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
-      <img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" />
+      <img src="images/thekemitbier.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/fleischkuechle.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/krautkrapfen1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/pannacotta.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/rostbraten1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/puffer.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/nachtisch1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/abend.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/backhendl1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/Artboard-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/IMG_0787-1.jpg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/theke3.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/rostbraten2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
+      <img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" />
     </div>
   </section>
 
@@ -404,12 +675,12 @@
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="sommer-track">
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('sommer', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
@@ -423,8 +694,8 @@
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="saisonale-track">
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
@@ -637,7 +908,7 @@
         <!-- Bild-Akzent -->
         <div class="hidden md:flex md:col-span-2 self-stretch">
           <div class="rounded-2xl overflow-hidden shadow-elevated w-full">
-            <img src="images/theke3.jpeg" alt="Die Knödelstube Theke" class="w-full h-full object-cover object-center brightness-125 saturate-125 contrast-105" />
+            <img src="images/theke3.jpeg" alt="Theke der Knödelstube – jetzt Tisch in Heilbronn reservieren" loading="lazy" decoding="async" class="w-full h-full object-cover object-center brightness-125 saturate-125 contrast-105" />
           </div>
         </div>
 
@@ -728,7 +999,7 @@
   <footer class="relative py-12 pb-28 md:pb-12 grain" style="background: linear-gradient(135deg, #0e272b 0%, #163f45 100%);">
     <div class="max-w-6xl mx-auto px-6 relative z-10">
       <div class="flex flex-col items-center gap-6">
-        <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" class="h-10 brightness-0 invert" />
+        <img src="brand_assets/KS_Logo_Teal.png" alt="Knödelstube" loading="lazy" decoding="async" class="h-10 brightness-0 invert" />
         <div class="text-center">
           <p class="text-white/40 text-sm"><a href="https://maps.app.goo.gl/Cu64C8tge2vtt9qc8" target="_blank" rel="noopener noreferrer" class="hover:text-white/70 transition-colors duration-200">Fischergasse 9, 74072 Heilbronn</a> · 07131 2035 557</p>
           <p class="text-white/30 text-xs mt-1">© 2025 Knödelstube. Alle Rechte vorbehalten. · <button onclick="document.getElementById('impressum-modal').classList.remove('hidden')" class="underline hover:text-white/60 transition-colors duration-200">Impressum</button></p>
@@ -783,8 +1054,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+  <script src="vendor/flatpickr.min.js"></script>
+  <script src="vendor/flatpickr-de.js"></script>
   <script>
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
