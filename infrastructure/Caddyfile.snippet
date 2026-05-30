@@ -47,8 +47,21 @@ knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
         reverse_proxy knoedel-mail:3000
     }
 
+    # Spam-Altlasten aus früherer Domain-Kompromittierung / Scraper-Backlinks.
+    # 410 Gone signalisiert Google "endgültig weg" und beschleunigt die
+    # De-Indexierung gegenüber 404 deutlich. In handle-Blöcken, weil mehrere
+    # handle-Direktiven exklusiv nach erstem Treffer ausgewertet werden.
+    @spam_legacy path /products/* /product/* /shop/* /wp-admin/* /wp-admin /wp-content/* /wp-includes/* /wp-login.php /xmlrpc.php /feed /feed/* /comments/feed/*
+    handle @spam_legacy {
+        respond 410
+    }
+
+    @spam_legacy_query query p=*
+    handle @spam_legacy_query {
+        respond 410
+    }
+
     handle {
-        try_files {path} /index.html
         file_server
     }
 }
