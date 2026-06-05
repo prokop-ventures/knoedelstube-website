@@ -1179,7 +1179,11 @@
         else if (d.getDay() === 1) d.setDate(d.getDate() + 1);
         return d;
       })(),
-      disable: [date => date.getDay() === 0 || date.getDay() === 1],
+      disable: [
+        date => date.getDay() === 0 || date.getDay() === 1,
+        // Betriebsurlaub: 18.06.–20.06.2026 geschlossen
+        { from: new Date(2026, 5, 18), to: new Date(2026, 5, 20) },
+      ],
       onReady: (_, __, instance) => {
         const year = instance.calendarContainer.querySelector('.cur-year');
         if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
