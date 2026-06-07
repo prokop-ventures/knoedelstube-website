@@ -25,7 +25,12 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(__dirname, decodeURIComponent(req.url === '/' ? '/index.html' : req.url));
+  const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
+  let filePath = path.join(__dirname, urlPath === '/' ? '/index.html' : urlPath);
+  // Clean URLs / Directory-Index wie Caddys file_server: /mittagstisch -> /mittagstisch/index.html
+  if (!path.extname(filePath)) {
+    filePath = path.join(filePath, 'index.html');
+  }
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
