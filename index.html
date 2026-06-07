@@ -340,20 +340,22 @@
     .card-tab:not(.is-active):hover { background-color: #d9edee; }
     .card-tab:not(.is-active):active { background-color: #b5dde0; }
 
-    /* Gallery infinite scroll */
-    @keyframes gallery-scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    /* Gallery — nativer Wisch-Scroll mit Momentum + sanftem Auto-Lauf (JS) */
+    .gallery-viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;           /* Firefox */
+      -ms-overflow-style: none;        /* IE/Edge */
+      touch-action: pan-x;
+      cursor: grab;
     }
-    .gallery-scroll {
-      animation: gallery-scroll 60s linear infinite;
+    .gallery-viewport::-webkit-scrollbar { display: none; } /* WebKit */
+    .gallery-viewport:active { cursor: grabbing; }
+    .gallery-track {
       will-change: transform;
-    }
-    .gallery-scroll:hover {
-      animation-play-state: paused;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .gallery-scroll { animation: none; }
     }
 
     /* Menu card slide track */
@@ -636,8 +638,9 @@
   -->
 
   <!-- Bildergalerie -->
-  <section class="py-4 overflow-hidden bg-cream">
-    <div class="gallery-scroll flex gap-4 w-max">
+  <section class="py-4 bg-cream">
+    <div class="gallery-viewport">
+    <div class="gallery-track flex gap-4 w-max">
       <picture><source srcset="images/thekemitbier.webp" type="image/webp" /><img src="images/thekemitbier.jpeg" alt="Frisch gezapftes Pilsner Urquell an der Theke der Knödelstube Heilbronn" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
       <picture><source srcset="images/biergarten/biergarten1.webp" type="image/webp" /><img src="images/biergarten/biergarten1.jpg" alt="Biergarten der Knödelstube in der Heilbronner Fußgängerzone" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
       <picture><source srcset="images/fruehlingshalusky.webp" type="image/webp" /><img src="images/fruehlingshalusky.jpg" alt="Frühlings-Halušky mit Kirschtomaten und Käse überbacken" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
@@ -683,6 +686,7 @@
       <picture><source srcset="images/nachtisch2.webp" type="image/webp" /><img src="images/nachtisch2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
       <picture><source srcset="images/krautkrapfen2.webp" type="image/webp" /><img src="images/krautkrapfen2.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
       <picture><source srcset="images/tagessuppe1.webp" type="image/webp" /><img src="images/tagessuppe1.jpeg" alt="" aria-hidden="true" class="h-48 md:h-64 rounded-2xl object-cover shadow-elevated" loading="lazy" decoding="async" /></picture>
+    </div>
     </div>
   </section>
 
@@ -1097,6 +1101,63 @@
   <script>
     // Copyright-Jahr dynamisch
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+    // Galerie: nativer Wisch-Scroll mit Momentum + sanftem Auto-Lauf
+    (function () {
+      const vp = document.querySelector('.gallery-viewport');
+      const track = vp && vp.querySelector('.gallery-track');
+      if (!vp || !track) return;
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let half = 0; // Breite einer Bildhälfte (= eine komplette Bildreihe)
+      const measure = () => { half = track.scrollWidth / 2; };
+      measure();
+      window.addEventListener('resize', measure);
+      // Nach dem Laden der Bilder neu vermessen (Breite ändert sich)
+      track.querySelectorAll('img').forEach(img => {
+        if (!img.complete) img.addEventListener('load', measure, { once: true });
+      });
+
+      let paused = reduce;
+      let pos = 0;
+      let last = performance.now();
+      let resumeTimer = null;
+      const PX_PER_SEC = () => half / 60; // gleiche Geschwindigkeit wie zuvor: eine Reihe in 60 s
+
+      const pause = () => { paused = true; clearTimeout(resumeTimer); };
+      const scheduleResume = () => {
+        if (reduce) return;
+        clearTimeout(resumeTimer);
+        // Erst nach kurzer Ruhe (auch nach auslaufendem Momentum) weiterlaufen
+        resumeTimer = setTimeout(() => {
+          pos = vp.scrollLeft;
+          last = performance.now();
+          paused = false;
+        }, 1500);
+      };
+
+      vp.addEventListener('pointerdown', pause);
+      vp.addEventListener('pointerup', scheduleResume);
+      vp.addEventListener('pointercancel', scheduleResume);
+      vp.addEventListener('touchstart', pause, { passive: true });
+      vp.addEventListener('touchend', scheduleResume, { passive: true });
+      vp.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
+      vp.addEventListener('mouseenter', pause);
+      vp.addEventListener('mouseleave', scheduleResume);
+
+      function frame(now) {
+        const dt = Math.min((now - last) / 1000, 0.05); // Sprünge nach Tab-Wechsel begrenzen
+        last = now;
+        if (!paused && half > 0) {
+          pos += PX_PER_SEC() * dt;
+          if (pos >= half) pos -= half; // nahtloser Loop (beide Hälften identisch)
+          else if (pos < 0) pos += half;
+          vp.scrollLeft = pos;
+        }
+        requestAnimationFrame(frame);
+      }
+      if (!reduce) requestAnimationFrame(frame);
+    })();
 
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
