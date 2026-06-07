@@ -357,6 +357,69 @@
     .gallery-track {
       will-change: transform;
     }
+    .gallery-track img { cursor: zoom-in; }
+
+    /* Lightbox — Bild zoomt aus seiner Karussell-Position auf (FLIP) */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 5vw;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .lightbox.open { opacity: 1; visibility: visible; }
+    .lightbox__backdrop {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(22,63,69,0.82) 0%, rgba(14,39,43,0.94) 100%);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      cursor: zoom-out;
+    }
+    .lightbox__img {
+      position: relative;
+      max-width: 92vw;
+      max-height: 82vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 1rem;
+      box-shadow: 0 24px 60px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      transform-origin: center center;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+      cursor: zoom-out;
+    }
+    .lightbox__close {
+      position: absolute;
+      top: max(1rem, env(safe-area-inset-top));
+      right: max(1rem, env(safe-area-inset-right));
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .lightbox__close:hover { background: rgba(255,255,255,0.22); }
+    .lightbox__close:active { transform: scale(0.92); }
+    .lightbox__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .lightbox__img { transition: none; }
+    }
 
     /* Menu card slide track */
     .card-track {
@@ -689,6 +752,13 @@
     </div>
     </div>
   </section>
+
+  <!-- Lightbox für die Galerie -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Vergrößerte Bildansicht" aria-hidden="true">
+    <div class="lightbox__backdrop" data-lb-close></div>
+    <button type="button" class="lightbox__close" data-lb-close aria-label="Ansicht schließen">&times;</button>
+    <img class="lightbox__img" alt="" decoding="async" />
+  </div>
 
   <!-- Pilsner Urquell Banner -->
   <section class="relative py-20 grain" style="background: linear-gradient(135deg, #0e272b 0%, #215b63 50%, #163f45 100%);">
@@ -1157,6 +1227,95 @@
         requestAnimationFrame(frame);
       }
       if (!reduce) requestAnimationFrame(frame);
+    })();
+
+    // Galerie-Lightbox: Bild zoomt aus seiner Position auf (FLIP)
+    (function () {
+      const lb = document.getElementById('lightbox');
+      const track = document.querySelector('.gallery-track');
+      if (!lb || !track) return;
+      const lbImg = lb.querySelector('.lightbox__img');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let lastThumb = null;
+      let lastFocus = null;
+
+      function flipFrom(rect) {
+        // Aktuelle Zielposition/-größe des großen Bildes messen …
+        lbImg.style.transition = 'none';
+        lbImg.style.transform = '';
+        const to = lbImg.getBoundingClientRect();
+        // … und das Bild zunächst auf die Thumbnail-Position „zurückrechnen"
+        const dx = rect.left + rect.width / 2 - (to.left + to.width / 2);
+        const dy = rect.top + rect.height / 2 - (to.top + to.height / 2);
+        const sx = rect.width / to.width;
+        const sy = rect.height / to.height;
+        lbImg.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
+        return { dx: dx, dy: dy, sx: sx, sy: sy };
+      }
+
+      function open(thumb) {
+        lastThumb = thumb;
+        lastFocus = document.activeElement;
+        const src = thumb.currentSrc || thumb.src;
+        lbImg.src = src;
+        lbImg.alt = thumb.getAttribute('alt') || '';
+
+        const start = function () {
+          lb.classList.add('open');
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          lb.querySelector('.lightbox__close').focus({ preventScroll: true });
+          if (reduce) return;
+          const rect = thumb.getBoundingClientRect();
+          flipFrom(rect);
+          void lbImg.offsetWidth; // Reflow erzwingen
+          requestAnimationFrame(function () {
+            lbImg.style.transition = '';
+            lbImg.style.transform = '';
+          });
+        };
+
+        if (lbImg.complete && lbImg.naturalWidth) start();
+        else lbImg.onload = start;
+      }
+
+      function close() {
+        if (!lb.classList.contains('open')) return;
+        const finish = function () {
+          lb.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          lbImg.style.transition = 'none';
+          lbImg.style.transform = '';
+          if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+          lbImg.removeEventListener('transitionend', finish);
+        };
+        if (!reduce && lastThumb) {
+          const rect = lastThumb.getBoundingClientRect();
+          // Nur zurück-zoomen, wenn das Thumbnail noch sichtbar im Viewport ist
+          if (rect.width > 0 && rect.bottom > 0 && rect.top < window.innerHeight) {
+            lbImg.style.transition = '';
+            const f = flipFrom(rect);
+            lbImg.style.transform = 'translate(' + f.dx + 'px,' + f.dy + 'px) scale(' + f.sx + ',' + f.sy + ')';
+            lbImg.addEventListener('transitionend', finish);
+          } else {
+            finish();
+          }
+        } else {
+          finish();
+        }
+        lb.classList.remove('open');
+      }
+
+      track.addEventListener('click', function (e) {
+        const img = e.target.closest('img');
+        if (img) open(img);
+      });
+      lb.addEventListener('click', function (e) {
+        if (e.target.hasAttribute('data-lb-close') || e.target === lbImg) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
     })();
 
     // Navbar scroll effect
