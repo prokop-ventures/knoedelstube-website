@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./tailwind.css --minify",
+    "postbuild:css": "node scripts/bust-css-cache.mjs",
     "watch:css": "tailwindcss -i ./src/input.css -o ./tailwind.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
