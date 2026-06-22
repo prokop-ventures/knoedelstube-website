@@ -1171,8 +1171,8 @@
     </div>
   </div>
 
-  <script src="vendor/flatpickr.min.js"></script>
-  <script src="vendor/flatpickr-de.js"></script>
+  <script defer src="vendor/flatpickr.min.js"></script>
+  <script defer src="vendor/flatpickr-de.js"></script>
   <script>
     // Copyright-Jahr dynamisch
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
@@ -1457,26 +1457,36 @@
     reviewTrack.parentElement.addEventListener('mouseleave', () => { reviewInterval = setInterval(() => moveReview(1), 6500); });
 
     // Flatpickr: disable Sundays (0) and Mondays (1)
-    flatpickr('#datum', {
-      locale: 'de',
-      dateFormat: 'd.m.Y',
-      minDate: 'today',
-      defaultDate: (() => {
-        const d = new Date();
-        if (d.getDay() === 0) d.setDate(d.getDate() + 2);
-        else if (d.getDay() === 1) d.setDate(d.getDate() + 1);
-        return d;
-      })(),
-      disable: [
-        date => date.getDay() === 0 || date.getDay() === 1,
-      ],
-      onReady: (_, __, instance) => {
-        const year = instance.calendarContainer.querySelector('.cur-year');
-        if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
-        const month = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
-        if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
-      },
-    });
+    // Die Vendor-Skripte werden mit defer geladen (nicht render-blockierend),
+    // daher Init erst nach dem Parsen, wenn flatpickr verfügbar ist.
+    function initDatepicker() {
+      if (typeof flatpickr === 'undefined') return;
+      flatpickr('#datum', {
+        locale: 'de',
+        dateFormat: 'd.m.Y',
+        minDate: 'today',
+        defaultDate: (() => {
+          const d = new Date();
+          if (d.getDay() === 0) d.setDate(d.getDate() + 2);
+          else if (d.getDay() === 1) d.setDate(d.getDate() + 1);
+          return d;
+        })(),
+        disable: [
+          date => date.getDay() === 0 || date.getDay() === 1,
+        ],
+        onReady: (_, __, instance) => {
+          const year = instance.calendarContainer.querySelector('.cur-year');
+          if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
+          const month = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
+          if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
+        },
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDatepicker);
+    } else {
+      initDatepicker();
+    }
 
     async function postJson(url, payload) {
       const res = await fetch(url, {
