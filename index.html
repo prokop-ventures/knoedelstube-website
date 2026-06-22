@@ -1187,7 +1187,13 @@
       let half = 0; // Breite einer Bildhälfte (= eine komplette Bildreihe)
       const measure = () => { half = track.scrollWidth / 2; };
       measure();
-      window.addEventListener('resize', measure);
+      let measureTicking = false;
+      window.addEventListener('resize', () => {
+        if (!measureTicking) {
+          measureTicking = true;
+          requestAnimationFrame(() => { measureTicking = false; measure(); });
+        }
+      }, { passive: true });
       // Nach dem Laden der Bilder neu vermessen (Breite ändert sich)
       track.querySelectorAll('img').forEach(img => {
         if (!img.complete) img.addEventListener('load', measure, { once: true });
@@ -1197,6 +1203,16 @@
       let pos = 0;
       let last = performance.now();
       let resumeTimer = null;
+
+      // Auto-Lauf nur, wenn die Galerie sichtbar ist — spart Main-Thread-Arbeit
+      // (jeder Frame schreibt scrollLeft = Reflow) und verbessert so die INP.
+      let visible = true;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+          visible = entries[0].isIntersecting;
+          last = performance.now(); // Zeitsprung nach Wiedereintritt vermeiden
+        }, { threshold: 0 }).observe(vp);
+      }
       const PX_PER_SEC = () => half / 60; // gleiche Geschwindigkeit wie zuvor: eine Reihe in 60 s
 
       const pause = () => { paused = true; clearTimeout(resumeTimer); };
@@ -1223,7 +1239,7 @@
       function frame(now) {
         const dt = Math.min((now - last) / 1000, 0.05); // Sprünge nach Tab-Wechsel begrenzen
         last = now;
-        if (!paused && half > 0) {
+        if (!paused && visible && half > 0) {
           pos += PX_PER_SEC() * dt;
           if (pos >= half) pos -= half; // nahtloser Loop (beide Hälften identisch)
           else if (pos < 0) pos += half;
@@ -1323,15 +1339,24 @@
       });
     })();
 
-    // Navbar scroll effect
+    // Navbar scroll effect — rAF-gedrosselt und nur bei echtem Statuswechsel
+    // schreiben, damit Scrollen den Main-Thread nicht blockiert (INP).
     const navbar = document.getElementById('navbar');
+    let navShadowed = null;
+    let navTicking = false;
+    function updateNavbar() {
+      navTicking = false;
+      const shadowed = window.scrollY > 60;
+      if (shadowed === navShadowed) return;
+      navShadowed = shadowed;
+      navbar.style.boxShadow = shadowed
+        ? '0 2px 12px rgba(33,91,99,0.08)'
+        : '0 1px 3px rgba(0,0,0,0.05)';
+    }
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 60) {
-        navbar.style.boxShadow = '0 2px 12px rgba(33,91,99,0.08)';
-      } else {
-        navbar.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
-      }
-    });
+      if (!navTicking) { navTicking = true; requestAnimationFrame(updateNavbar); }
+    }, { passive: true });
+    updateNavbar();
 
     // Mobile menu
     const toggle = document.getElementById('mobile-toggle');
