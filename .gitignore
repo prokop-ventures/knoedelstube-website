@@ -5,3 +5,6 @@ temporary screenshots/
 
 # Bild-Originale (HEIC) nicht committen
 *.heic
+
+# Lokales Bild-Archiv (untracked Originale)
+bild-archiv/
