@@ -60,18 +60,20 @@ Claude führt `git pull` aus.
 
 ### Speisekarte aktualisieren — neue SVGs einbauen
 
-Die Speisekarte besteht aus zwei Tabs: "Saisonale Spezialitäten" und
-"Speisekarte". Jeder Tab zeigt mehrere SVG-Bilder (eine Seite pro SVG).
+Die Speisekarte zeigt mehrere SVG-Bilder (eine Seite pro SVG).
+Der Tab "Saisonale Spezialitäten" ist aktuell deaktiviert — das Markup liegt
+auskommentiert in `index.html` im Abschnitt Speisekarte, inkl. Anleitung zum
+Reaktivieren.
 
 **Bilder liegen unter:**
-- `images/speisekarte/saisonale-karte/` — z.B. `1.svg`, `2.svg`
-- `images/speisekarte/sommerkarte/` — z.B. `2.svg` bis `7.svg`
+- `images/speisekarte/speisekarte/` — z.B. `2.svg` bis `7.svg`
+- `images/speisekarte/saisonale-karte/` — z.B. `1.svg`, `2.svg` (derzeit deaktiviert)
 
-**Beispiel: Du hast neue SVGs für die Sommerkarte bekommen.**
+**Beispiel: Du hast neue SVGs für die Speisekarte bekommen.**
 
-> *"Ich habe die neuen Sommerkarten-SVGs auf den Schreibtisch gelegt
-> (`~/Desktop/sommerkarte-neu/1.svg` bis `5.svg`). Tausch bitte die
-> bestehenden Sommerkarten-Bilder im Ordner `images/speisekarte/sommerkarte/`
+> *"Ich habe die neuen Speisekarten-SVGs auf den Schreibtisch gelegt
+> (`~/Desktop/speisekarte-neu/1.svg` bis `5.svg`). Tausch bitte die
+> bestehenden Speisekarten-Bilder im Ordner `images/speisekarte/speisekarte/`
 > dadurch aus, sodass die Speisekarte fünf Seiten in dieser Reihenfolge
 > zeigt: 1=Vorspeisen, 2=Knödelküche, 3=Hauptgerichte, 4=Desserts,
 > 5=Getränke. Aktualisiere wenn nötig die `alt`-Texte und die

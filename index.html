@@ -93,6 +93,24 @@
         "closes": "23:00"
       }
     ],
+    "specialOpeningHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
+        "opens": "17:00",
+        "closes": "22:00",
+        "validFrom": "2026-08-01",
+        "validThrough": "2026-08-31"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Friday", "Saturday"],
+        "opens": "17:00",
+        "closes": "23:00",
+        "validFrom": "2026-08-01",
+        "validThrough": "2026-08-31"
+      }
+    ],
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61576262824283",
       "https://www.instagram.com/knoedelstube_heilbronn/"
@@ -107,7 +125,7 @@
         {
           "@type": "MenuSection",
           "name": "Suppen, Vorspeisen & Salate",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/2.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/2.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "Tschechische Knoblauchsuppe", "description": "Mit Croutons und geriebenem Käse.", "offers": { "@type": "Offer", "price": "6.00", "priceCurrency": "EUR" } },
             { "@type": "MenuItem", "name": "Eingelegter Camembert", "description": "Mit pikanter Knoblauch-Chilipaste gewürzt und in Öl eingelegt.", "offers": { "@type": "Offer", "price": "10.00", "priceCurrency": "EUR" } },
@@ -121,7 +139,7 @@
           "@type": "MenuSection",
           "name": "Unsere Knödelküche",
           "description": "Hausgemachte böhmische Knödel. Zu jedem Gericht Knödel nach Wahl: Serviettenknödel, Semmelknödel oder Kartoffelknödel.",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/3.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/3.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "Koprovka", "description": "Böhmische Dill-Sahne-Soße mit gekochtem Ei.", "offers": { "@type": "Offer", "price": "16.00", "priceCurrency": "EUR" } },
             { "@type": "MenuItem", "name": "Pilzgulasch", "description": "Waldpilzmischung mit Zwiebeln in würziger Soße.", "suitableForDiet": "https://schema.org/VegetarianDiet", "offers": { "@type": "Offer", "price": "18.00", "priceCurrency": "EUR" } },
@@ -134,7 +152,7 @@
           "@type": "MenuSection",
           "name": "Unsere Wirtshausküche",
           "description": "Tschechische und süddeutsche Klassiker.",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/4.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/4.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "Krauthalušky", "description": "Kartoffelknöpfle nach slowakischer Art, mit Sauerkraut und Räuchertofu oder Speck.", "offers": { "@type": "Offer", "price": "13.00", "priceCurrency": "EUR" } },
             { "@type": "MenuItem", "name": "Käsehalušky", "description": "Kartoffelknöpfle nach slowakischer Art, mit Käsecreme aus Hirtenkäse und Gorgonzola, dazu Räuchertofu oder Speck.", "offers": { "@type": "Offer", "price": "15.00", "priceCurrency": "EUR" } },
@@ -147,7 +165,7 @@
           "@type": "MenuSection",
           "name": "Desserts & Kaffee",
           "description": "Kaffee von der Rösterei Echt Hammer aus Neckarsulm. Hausgemachte Cantuccini zu jedem Heißgetränk.",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/5.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/5.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "Palatschinken", "description": "Mit Vanilleeis und saisonaler Frucht.", "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "EUR" } },
             { "@type": "MenuItem", "name": "Apfelstrudel", "description": "Mit Vanilleeis.", "offers": { "@type": "Offer", "price": "9.00", "priceCurrency": "EUR" } },
@@ -166,7 +184,7 @@
           "@type": "MenuSection",
           "name": "Wasser, Limos & Bier",
           "description": "Pilsner Urquell vom Fass – in Pilsen gebraut und in Heilbronn frisch gezapft.",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/6.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/6.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "Pilsner Urquell vom Fass", "description": "4,4 % Vol.", "offers": [
               { "@type": "Offer", "name": "0,3 l", "price": "4.50", "priceCurrency": "EUR" },
@@ -202,7 +220,7 @@
           "@type": "MenuSection",
           "name": "Spirituosen & Wein",
           "description": "Wein vom Amalienhof, tschechische Liköre und Spirituosen.",
-          "image": "https://knoedelstube.de/images/speisekarte/sommerkarte/7.svg",
+          "image": "https://knoedelstube.de/images/speisekarte/speisekarte/7.svg",
           "hasMenuItem": [
             { "@type": "MenuItem", "name": "AMH Bierbrand", "description": "2 cl, 40 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
             { "@type": "MenuItem", "name": "AMH Williamsbirne", "description": "2 cl, 38 % Vol.", "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "EUR" } },
@@ -231,18 +249,6 @@
             ] },
             { "@type": "MenuItem", "name": "Weinschorle süß oder sauer", "description": "0,25 l.", "offers": { "@type": "Offer", "price": "6.50", "priceCurrency": "EUR" } }
           ]
-        },
-        {
-          "@type": "MenuSection",
-          "name": "Saisonale Spezialitäten",
-          "description": "Wechselnde saisonale Gerichte – bitte beim Servicepersonal erfragen.",
-          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/1.svg"
-        },
-        {
-          "@type": "MenuSection",
-          "name": "Limos & Longdrinks",
-          "description": "Saisonale Erfrischungen und Longdrinks.",
-          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/2.svg"
         }
       ]
     },
@@ -609,11 +615,14 @@
           <p class="font-body text-white/60 text-xs tracking-[0.2em] uppercase mb-1">Öffnungszeiten</p>
           <p class="font-body text-white text-base md:text-lg font-semibold">Di – Sa: 12 – 14 Uhr</p>
           <p class="font-body text-white text-base md:text-lg font-semibold">Di – Do: 17 – 22 Uhr &nbsp;·&nbsp; Fr – Sa: 17 – 23 Uhr</p>
+          <p class="august-hinweis font-body text-sm md:text-base font-bold mt-2 leading-snug" style="color:#e6c187;">
+            Im August entfällt der Mittagstisch – wir öffnen ab 17 Uhr.
+          </p>
         </div>
       </div>
     </div>
-    <!-- Hinweis: Koch-Urlaub im August -->
-    <div class="bg-cream px-6 pt-10 md:pt-14">
+    <!-- Hinweis: August-Einschränkungen (kein Mittagstisch + Koch-Urlaub) -->
+    <div id="august-banner" class="bg-cream px-6 pt-10 md:pt-14">
       <div class="max-w-3xl mx-auto">
         <div id="urlaub-hinweis" class="relative overflow-hidden rounded-2xl px-6 py-6 md:px-10 md:py-8 text-center shadow-elevated"
              style="background: linear-gradient(135deg, #0e272b 0%, #215b63 55%, #163f45 100%);">
@@ -623,23 +632,32 @@
                 style="background: radial-gradient(circle, rgba(216,166,87,0.22) 0%, rgba(216,166,87,0) 70%);"></span>
           <div class="relative z-10 flex flex-col items-center gap-6 md:gap-7">
             <h2 class="font-body text-2xl md:text-4xl text-white uppercase tracking-[0.02em]">
-              Unser Koch macht Urlaub
+              Im August
             </h2>
             <div class="grid gap-4 md:grid-cols-2 w-full max-w-xl">
               <div class="border px-5 py-5 md:px-6 md:py-6" style="border-color: rgba(255,255,255,0.35);">
-                <p class="font-body text-xl md:text-2xl text-white uppercase leading-snug">4.–8. August</p>
-                <p class="font-body text-xl md:text-2xl text-white uppercase leading-snug">25.–29. August</p>
-                <p class="font-body text-base md:text-lg text-white/85 mt-2 leading-snug">Kleinere Karte</p>
-                <p class="font-body text-base md:text-lg text-white/85 leading-snug">unsere Klassiker bleiben</p>
+                <p class="font-body text-xl md:text-2xl text-white uppercase leading-snug">1. – 31. August</p>
+                <p class="font-body text-lg md:text-xl font-bold uppercase mt-2 leading-snug" style="color:#e6c187;">kein Mittagstisch</p>
+                <p class="font-body text-base md:text-lg text-white/85 leading-snug">Wir öffnen Di – Sa erst ab 17:00 Uhr.</p>
               </div>
               <div class="border px-5 py-5 md:px-6 md:py-6" style="border-color: rgba(255,255,255,0.35);">
-                <p class="font-body text-lg md:text-xl text-white uppercase leading-snug whitespace-nowrap">Dienstag – Samstag</p>
-                <p class="font-body text-base md:text-lg font-bold mt-2 leading-snug" style="color:#e6c187;">kein Mittagstisch</p>
-                <p class="font-body text-base md:text-lg text-white/85 leading-snug">geöffnet ab 17:00 Uhr</p>
+                <p class="font-body text-xl md:text-2xl text-white uppercase leading-snug">4. – 8. August</p>
+                <p class="font-body text-xl md:text-2xl text-white uppercase leading-snug">25. – 29. August</p>
+                <p class="font-body text-lg md:text-xl font-bold uppercase mt-2 leading-snug" style="color:#e6c187;">kleinere Karte</p>
+                <p class="font-body text-base md:text-lg text-white/85 leading-snug">Unser Koch ist im Urlaub – unsere Klassiker bleiben.</p>
               </div>
             </div>
+            <div class="border-t w-full max-w-xl pt-5" style="border-color: rgba(255,255,255,0.25);">
+              <p class="font-body text-base md:text-lg text-white leading-snug">
+                An sehr heißen Tagen behalten wir uns vor, die Öffnungszeiten um eine Stunde nach hinten zu verschieben.
+              </p>
+              <p class="font-body text-sm md:text-base text-white mt-2 leading-snug">
+                Die tagesaktuelle Info steht hier auf der Website und auf
+                <a href="https://www.instagram.com/knoedelstube_heilbronn/" target="_blank" rel="noopener noreferrer" class="font-bold underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 transition-colors duration-200" style="color:#e6c187;">Instagram</a>.
+              </p>
+            </div>
             <p class="font-body text-sm md:text-base text-white/70">
-              Dazwischen und ab dem 1. September läuft alles im gewohnten Umfang – mit Mittagstisch und voller Karte.
+              Ab dem 1. September läuft alles wieder im gewohnten Umfang – mit Mittagstisch und voller Karte.
             </p>
           </div>
         </div>
@@ -814,23 +832,41 @@
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-brand-500" style="letter-spacing: -0.03em;">Speisekarte</h2>
       </div>
 
-      <!-- Karten-Tabs -->
+      <!-- ==== DEAKTIVIERT: Saisonale Speisekarte (03.08.2026) ====================
+           Die Karten-Tabs sind mit deaktiviert, weil nur noch eine Karte übrig ist.
+
+           Zum Reaktivieren: diesen Kommentar-Block auflösen UND zusätzlich
+             1. im <script> unten 'saisonale' wieder ergänzen in:
+                cardState, cardCounts und dem forEach-Array
+             2. im JSON-LD (hasMenu → hasMenuSection) die beiden MenuSections
+                wieder eintragen:
+                  { "@type": "MenuSection",
+                    "name": "Saisonale Spezialitäten",
+                    "description": "Wechselnde saisonale Gerichte – bitte beim Servicepersonal erfragen.",
+                    "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/1.svg" },
+                  { "@type": "MenuSection",
+                    "name": "Limos & Longdrinks",
+                    "description": "Saisonale Erfrischungen und Longdrinks.",
+                    "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/2.svg" }
+
+      <!~~ Karten-Tabs ~~>
       <div class="flex justify-center gap-4 mb-10">
         <button onclick="showMenuCard('sommer')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="sommer">Speisekarte</button>
         <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Spezialitäten</button>
       </div>
+           ==== Ende deaktivierter Block (Teil 1 von 2) ====================== -->
 
-      <!-- Sommerkarte -->
+      <!-- Speisekarte -->
       <div id="card-sommer" class="card-content">
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="sommer-track">
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/sommerkarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/5.svg" alt="Desserts & Kaffee" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/6.svg" alt="Wasser, Limos & Bier" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img loading="lazy" decoding="async" src="images/speisekarte/speisekarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('sommer', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
@@ -839,7 +875,8 @@
         <div class="flex justify-center gap-2 mt-6" id="sommer-dots"></div>
       </div>
 
-      <!-- Saisonale Karte -->
+      <!-- ==== DEAKTIVIERT: Saisonale Speisekarte (Teil 2 von 2) ==================
+      <!~~ Saisonale Karte ~~>
       <div id="card-saisonale" class="card-content hidden">
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
@@ -853,6 +890,7 @@
         </div>
         <div class="flex justify-center gap-2 mt-6" id="saisonale-dots"></div>
       </div>
+           ==== Ende deaktivierter Block ====================================== -->
     </div>
   </section>
 
@@ -993,6 +1031,14 @@
             <p>Di – Do: 17 – 22 Uhr</p>
             <p>Fr – Sa: 17 – 23 Uhr</p>
           </div>
+          <p class="august-hinweis text-brand-500 font-bold text-sm leading-relaxed mt-3">
+            Im August entfällt der Mittagstisch – wir öffnen ab 17 Uhr.
+          </p>
+          <p class="text-warmgray/70 text-sm leading-relaxed mt-3">
+            An sehr heißen Tagen kann sich der Beginn um eine Stunde nach hinten verschieben –
+            tagesaktuell hier und auf
+            <a href="https://www.instagram.com/knoedelstube_heilbronn/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 text-brand-500 hover:text-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 transition-colors duration-200">Instagram</a>.
+          </p>
         </div>
       </div>
 
@@ -1105,20 +1151,25 @@
             <div>
               <label for="uhrzeit" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Uhrzeit</label>
               <select id="uhrzeit" name="uhrzeit" autocomplete="off" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200">
-                <option>12:00</option>
-                <option>12:30</option>
-                <option>13:00</option>
-                <option>13:30</option>
-                <option>17:00</option>
-                <option>17:30</option>
-                <option selected>18:00</option>
-                <option>18:30</option>
-                <option>19:00</option>
-                <option>19:30</option>
-                <option>20:00</option>
-                <option>20:30</option>
-                <option>21:00</option>
+                <optgroup id="slots-mittag" label="Mittagstisch">
+                  <option>12:00</option>
+                  <option>12:30</option>
+                  <option>13:00</option>
+                  <option>13:30</option>
+                </optgroup>
+                <optgroup label="Abends">
+                  <option>17:00</option>
+                  <option>17:30</option>
+                  <option selected>18:00</option>
+                  <option>18:30</option>
+                  <option>19:00</option>
+                  <option>19:30</option>
+                  <option>20:00</option>
+                  <option>20:30</option>
+                  <option>21:00</option>
+                </optgroup>
               </select>
+              <p id="uhrzeit-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">Im August bieten wir keinen Mittagstisch an.</p>
             </div>
           </div>
           <div>
@@ -1420,10 +1471,11 @@
     }
 
     // Menu card page flip
-    const cardState = { saisonale: 0, sommer: 0 };
-    const cardCounts = { saisonale: 2, sommer: 6 };
+    // 'saisonale' ist deaktiviert — siehe Kommentar-Block im Speisekarte-Abschnitt
+    const cardState = { sommer: 0 };
+    const cardCounts = { sommer: 6 };
 
-    ['saisonale', 'sommer'].forEach(name => {
+    ['sommer'].forEach(name => {
       const dotsEl = document.getElementById(name + '-dots');
       for (let i = 0; i < cardCounts[name]; i++) {
         const dot = document.createElement('button');
@@ -1489,6 +1541,44 @@
     reviewTrack.parentElement.addEventListener('mouseenter', () => clearInterval(reviewInterval));
     reviewTrack.parentElement.addEventListener('mouseleave', () => { reviewInterval = setInterval(() => moveReview(1), 6500); });
 
+    // ==== August 2026: kein Mittagstisch ====================================
+    // Steuert Banner, Öffnungszeiten-Hinweise und die Mittagsslots im
+    // Reservierungsformular aus einem Datumsbereich. Nach dem 31.08.2026
+    // laufen alle drei automatisch aus.
+    // Zum Aufräumen danach entfernen: dieser Block, #august-banner,
+    // die .august-hinweis-Absätze und specialOpeningHoursSpecification im JSON-LD.
+    const OHNE_MITTAGSTISCH_VON = new Date(2026, 7, 1);
+    const OHNE_MITTAGSTISCH_BIS = new Date(2026, 7, 31, 23, 59, 59);
+    const MITTAGS_SLOTS = ['12:00', '12:30', '13:00', '13:30'];
+
+    function istOhneMittagstisch(datum) {
+      return datum >= OHNE_MITTAGSTISCH_VON && datum <= OHNE_MITTAGSTISCH_BIS;
+    }
+
+    // Banner und Hinweise nach Ablauf des Zeitraums ausblenden
+    if (!istOhneMittagstisch(new Date())) {
+      const banner = document.getElementById('august-banner');
+      if (banner) banner.classList.add('hidden');
+      document.querySelectorAll('.august-hinweis').forEach(el => el.classList.add('hidden'));
+    }
+
+    // Mittagsslots im Reservierungsformular je nach gewähltem Datum sperren
+    function mittagstischUmschalten(datum) {
+      const slots = document.getElementById('slots-mittag');
+      const feld = document.getElementById('uhrzeit');
+      const hinweis = document.getElementById('uhrzeit-hinweis');
+      if (!slots || !feld || !hinweis) return;
+
+      const sperren = datum ? istOhneMittagstisch(datum) : false;
+      slots.hidden = sperren;
+      slots.disabled = sperren;
+      hinweis.classList.toggle('hidden', !sperren);
+      if (sperren && MITTAGS_SLOTS.includes(feld.value)) feld.value = '18:00';
+    }
+
+    // Basis-Zustand auch dann setzen, wenn flatpickr nicht lädt
+    mittagstischUmschalten(new Date());
+
     // Flatpickr: disable Sundays (0) and Mondays (1)
     // Die Vendor-Skripte werden mit defer geladen (nicht render-blockierend),
     // daher Init erst nach dem Parsen, wenn flatpickr verfügbar ist.
@@ -1507,11 +1597,13 @@
         disable: [
           date => date.getDay() === 0 || date.getDay() === 1,
         ],
-        onReady: (_, __, instance) => {
+        onChange: selectedDates => mittagstischUmschalten(selectedDates[0]),
+        onReady: (selectedDates, __, instance) => {
           const year = instance.calendarContainer.querySelector('.cur-year');
           if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
           const month = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
           if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
+          mittagstischUmschalten(selectedDates[0]);
         },
       });
     }
