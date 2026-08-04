@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://knoedelstube.de/images/og-image.jpg" />
 
   <link rel="icon" type="image/svg+xml" href="brand_assets/KS_Icon_Teal.svg" />
-  <link rel="stylesheet" href="tailwind.css?v=a160e4e0" />
+  <link rel="stylesheet" href="tailwind.css?v=3753d517" />
   <!-- Flatpickr-CSS asynchron laden: wird erst für den Datepicker im Reservierungsformular gebraucht -->
   <link rel="stylesheet" href="vendor/flatpickr.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="vendor/flatpickr.min.css" /></noscript>
@@ -96,10 +96,25 @@
     "specialOpeningHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
+        "opens": "18:00",
+        "closes": "22:00",
+        "validFrom": "2026-08-04",
+        "validThrough": "2026-08-04"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
         "opens": "17:00",
         "closes": "22:00",
         "validFrom": "2026-08-01",
+        "validThrough": "2026-08-03"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
+        "opens": "17:00",
+        "closes": "22:00",
+        "validFrom": "2026-08-05",
         "validThrough": "2026-08-31"
       },
       {
@@ -618,6 +633,22 @@
           <p class="august-hinweis font-body text-sm md:text-base font-bold mt-2 leading-snug" style="color:#e6c187;">
             Im August entfällt der Mittagstisch – wir öffnen ab 17 Uhr.
           </p>
+        </div>
+        <!-- Tagesaktueller Hitze-Hinweis: blendet sich nach dem Stichtag im Skript selbst aus -->
+        <div id="hitze-hinweis" class="mt-6 md:mt-8 w-full max-w-xl md:max-w-2xl">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 rounded-2xl px-5 py-4 md:px-7 md:py-5 shadow-elevated"
+               style="background:#e6c187;">
+            <span class="font-body text-xs md:text-sm font-bold uppercase tracking-[0.2em] rounded-full px-4 py-1.5 whitespace-nowrap"
+                  style="background:#0e272b; color:#e6c187;">Heute</span>
+            <div class="text-center sm:text-left">
+              <p class="font-body text-base md:text-xl font-bold leading-snug" style="color:#0e272b;">
+                Wegen der Hitze öffnen wir erst um <span class="whitespace-nowrap">18:00 Uhr</span>.
+              </p>
+              <p class="font-body text-sm md:text-base font-semibold leading-snug mt-1" style="color:#163f45;">
+                Warme Küche bis <span class="whitespace-nowrap">21:45 Uhr</span>.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1560,6 +1591,18 @@
       const banner = document.getElementById('august-banner');
       if (banner) banner.classList.add('hidden');
       document.querySelectorAll('.august-hinweis').forEach(el => el.classList.add('hidden'));
+    }
+
+    // ==== Tagesaktueller Hitze-Hinweis =====================================
+    // Gilt nur für den unten gesetzten Tag; danach blendet sich der Hinweis im
+    // Hero selbst aus. Für einen weiteren Hitzetag Datum und Uhrzeit im
+    // Markup (#hitze-hinweis) und den Tages-Eintrag in
+    // specialOpeningHoursSpecification (JSON-LD) anpassen – der reguläre
+    // August-Eintrag ist dort um den Hitzetag herum aufgeteilt.
+    const HITZE_HINWEIS_BIS = new Date(2026, 7, 4, 23, 59, 59);
+    if (new Date() > HITZE_HINWEIS_BIS) {
+      const hitzeHinweis = document.getElementById('hitze-hinweis');
+      if (hitzeHinweis) hitzeHinweis.classList.add('hidden');
     }
 
     // Mittagsslots im Reservierungsformular je nach gewähltem Datum sperren
