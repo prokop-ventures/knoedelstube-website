@@ -6,6 +6,7 @@
 #   - Caddy mountet zusätzlich /opt/knoedelstube/static-web nach /srv/knoedelstube (read-only).
 #   - Caddy joint das Compose-Netzwerk des knoedelstube-Stacks, damit der
 #     Hostname "knoedel-mail" im reverse_proxy auflösbar ist.
+#   - Caddy >= 2.7 (der expression-Matcher weiter unten braucht CEL).
 #
 # ─── Phase 1: Test über Subdomain ───
 # Nur die Subdomain im Hostname-Block, knoedelstube.de bleibt unberührt.
@@ -47,18 +48,50 @@ knoedelstube.hefangelist.de, knoedelstube.de, www.knoedelstube.de {
         reverse_proxy knoedel-mail:3000
     }
 
-    # Spam-Altlasten aus früherer Domain-Kompromittierung / Scraper-Backlinks.
+    # ── Spam-Altlasten aus früherer Domain-Kompromittierung / Scraper-Backlinks ──
     # 410 Gone signalisiert Google "endgültig weg" und beschleunigt die
     # De-Indexierung gegenüber 404 deutlich. In handle-Blöcken, weil mehrere
     # handle-Direktiven exklusiv nach erstem Treffer ausgewertet werden.
-    @spam_legacy path /products/* /product/* /shop/* /wp-admin/* /wp-admin /wp-content/* /wp-includes/* /wp-login.php /xmlrpc.php /feed /feed/* /comments/feed/*
+    @spam_legacy path /products/* /product/* /shop/* /cart /cart/* /checkout /checkout/* /my-account /my-account/* \
+                      /wp-admin/* /wp-admin /wp-content/* /wp-includes/* /wp-json/* /wp-login.php /wp-cron.php \
+                      /xmlrpc.php /index.php /index.php/* \
+                      /feed /feed/* /comments/feed/* /*/feed /*/feed/* /trackback /trackback/* /*/trackback \
+                      /category/* /tag/* /author/* /page/* /attachment/* /comment-page-*
     handle @spam_legacy {
         respond 410
     }
 
-    @spam_legacy_query query p=*
+    # Datums-Archive der alten WordPress-Installation (/2019/, /2019/05/, …).
+    @spam_dates path_regexp ^/(19|20)[0-9]{2}(/|$)
+    handle @spam_dates {
+        respond 410
+    }
+
+    # Spam-Querys der alten Installation. Bewusst als ein Ausdruck und nicht
+    # als "query p=* page_id=* ...": Mehrere Keys in einem query-Matcher werden
+    # UND-verknüpft, es müssten also alle gleichzeitig anliegen.
+    @spam_legacy_query expression {query}.matches('(^|&)(p|page_id|cat|feed|attachment_id|author)=')
     handle @spam_legacy_query {
         respond 410
+    }
+
+    # ── Kanonisierung: eine URL pro Inhalt ──
+    # Die Site nutzt keinerlei Query-Parameter (kein Analytics, kein
+    # URLSearchParams im Frontend). Beliebige Querys auf / lieferten bisher
+    # 200 mit identischem Inhalt — ein unendlicher URL-Raum, der Crawl-Budget
+    # frisst und in der Search Console als Duplikat auftaucht.
+    @root_query {
+        path /
+        expression {query} != ""
+    }
+    handle @root_query {
+        redir https://knoedelstube.de/ permanent
+    }
+
+    # /index.html ist ein Duplikat von / — auf die kanonische URL umleiten.
+    @index_html path /index.html
+    handle @index_html {
+        redir https://knoedelstube.de/ permanent
     }
 
     handle {
