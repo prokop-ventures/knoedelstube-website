@@ -1394,7 +1394,14 @@
 
       function close() {
         if (!lb.classList.contains('open')) return;
+        let erledigt = false;
+        let sicherung = null;
         const finish = function () {
+          // Kann aus zwei Richtungen kommen (transitionend oder Sicherung) –
+          // deshalb nur einmal ausführen.
+          if (erledigt) return;
+          erledigt = true;
+          clearTimeout(sicherung);
           lb.setAttribute('aria-hidden', 'true');
           document.body.style.overflow = '';
           lbImg.style.transition = 'none';
@@ -1402,12 +1409,21 @@
           if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
           lbImg.removeEventListener('transitionend', finish);
         };
+        // Sicherungsnetz: bleibt transitionend aus (unterbrochene Transition,
+        // Bildwechsel, verstecktes Element), stünde body.overflow dauerhaft auf
+        // 'hidden' und die Seite ließe sich nicht mehr scrollen.
+        sicherung = setTimeout(finish, 600);
         if (!reduce && lastThumb) {
           const rect = lastThumb.getBoundingClientRect();
           // Nur zurück-zoomen, wenn das Thumbnail noch sichtbar im Viewport ist
           if (rect.width > 0 && rect.bottom > 0 && rect.top < window.innerHeight) {
-            lbImg.style.transition = '';
             const f = flipFrom(rect);
+            // flipFrom hinterlässt transition: none. Ohne Rückkehr zum
+            // Ausgangszustand plus erzwungenem Reflow startet gar keine
+            // Transition – das Bild springt und transitionend feuert nie.
+            lbImg.style.transform = '';
+            void lbImg.offsetWidth;
+            lbImg.style.transition = '';
             lbImg.style.transform = 'translate(' + f.dx + 'px,' + f.dy + 'px) scale(' + f.sx + ',' + f.sy + ')';
             lbImg.addEventListener('transitionend', finish);
           } else {
