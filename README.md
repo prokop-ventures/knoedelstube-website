@@ -61,13 +61,15 @@ Claude führt `git pull` aus.
 ### Speisekarte aktualisieren — neue SVGs einbauen
 
 Die Speisekarte zeigt mehrere SVG-Bilder (eine Seite pro SVG).
-Der Tab "Saisonale Spezialitäten" ist aktuell deaktiviert — das Markup liegt
-auskommentiert in `index.html` im Abschnitt Speisekarte, inkl. Anleitung zum
-Reaktivieren.
+Über der Karte stehen zwei Tabs: links "Speisekarte" (Default), rechts
+"Saisonale Karte". Beim Tausch von SVGs immer die Seitenzahl in `cardCounts`
+im `<script>` mitziehen.
 
 **Bilder liegen unter:**
-- `images/speisekarte/speisekarte/` — z.B. `2.svg` bis `7.svg`
-- `images/speisekarte/saisonale-karte/` — z.B. `1.svg`, `2.svg` (derzeit deaktiviert)
+- `images/speisekarte/speisekarte/` — `2.svg` bis `7.svg` (Tab "Speisekarte").
+  `1.svg` ist das Deckblatt der Druckversion und wird auf der Website
+  bewusst nicht gezeigt.
+- `images/speisekarte/saisonale-karte/` — `1.svg`, `2.svg` (Tab "Saisonale Karte")
 
 **Beispiel: Du hast neue SVGs für die Speisekarte bekommen.**
 

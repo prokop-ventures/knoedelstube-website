@@ -264,6 +264,18 @@
             ] },
             { "@type": "MenuItem", "name": "Weinschorle süß oder sauer", "description": "0,25 l.", "offers": { "@type": "Offer", "price": "6.50", "priceCurrency": "EUR" } }
           ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Saisonale Specials",
+          "description": "Wechselnde saisonale Vorspeisen, Hauptgänge und Desserts – bitte beim Servicepersonal erfragen.",
+          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/1.svg"
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Hausgemachte Limos, Spritz & Longdrinks",
+          "description": "Hausgemachte Limonaden und Spritz – auch als Heiße Limo oder Hot Spritz – sowie Longdrinks.",
+          "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/2.svg"
         }
       ]
     },
@@ -867,35 +879,17 @@
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-brand-500" style="letter-spacing: -0.03em;">Speisekarte</h2>
       </div>
 
-      <!-- ==== DEAKTIVIERT: Saisonale Speisekarte (03.08.2026) ====================
-           Die Karten-Tabs sind mit deaktiviert, weil nur noch eine Karte übrig ist.
-
-           Zum Reaktivieren: diesen Kommentar-Block auflösen UND zusätzlich
-             1. im <script> unten 'saisonale' wieder ergänzen in:
-                cardState, cardCounts und dem forEach-Array
-             2. im JSON-LD (hasMenu → hasMenuSection) die beiden MenuSections
-                wieder eintragen:
-                  { "@type": "MenuSection",
-                    "name": "Saisonale Spezialitäten",
-                    "description": "Wechselnde saisonale Gerichte – bitte beim Servicepersonal erfragen.",
-                    "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/1.svg" },
-                  { "@type": "MenuSection",
-                    "name": "Limos & Longdrinks",
-                    "description": "Saisonale Erfrischungen und Longdrinks.",
-                    "image": "https://knoedelstube.de/images/speisekarte/saisonale-karte/2.svg" }
-
-      <!~~ Karten-Tabs ~~>
+      <!-- Karten-Tabs — links die dauerhafte Speisekarte (Default), rechts die saisonale Karte -->
       <div class="flex justify-center gap-4 mb-10">
-        <button onclick="showMenuCard('sommer')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="sommer">Speisekarte</button>
-        <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Spezialitäten</button>
+        <button onclick="showMenuCard('speisekarte')" class="card-tab is-active px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="speisekarte">Speisekarte</button>
+        <button onclick="showMenuCard('saisonale')" class="card-tab px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2" data-card="saisonale">Saisonale Karte</button>
       </div>
-           ==== Ende deaktivierter Block (Teil 1 von 2) ====================== -->
 
       <!-- Speisekarte -->
-      <div id="card-sommer" class="card-content">
+      <div id="card-speisekarte" class="card-content">
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
-            <div class="card-track" id="sommer-track">
+            <div class="card-track" id="speisekarte-track">
               <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/speisekarte/2.svg" alt="Suppen, Vorspeisen & Salate" class="w-full" /></div></div>
               <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/speisekarte/3.svg" alt="Knödelküche" class="w-full" /></div></div>
               <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/speisekarte/4.svg" alt="Wirtshausküche" class="w-full" /></div></div>
@@ -904,20 +898,19 @@
               <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/speisekarte/7.svg" alt="Spirituosen & Wein" class="w-full" /></div></div>
             </div>
           </div>
-          <button onclick="moveCard('sommer', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
-          <button onclick="moveCard('sommer', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
+          <button onclick="moveCard('speisekarte', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
+          <button onclick="moveCard('speisekarte', 1)" class="absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Weiter">&#8250;</button>
         </div>
-        <div class="flex justify-center gap-2 mt-6" id="sommer-dots"></div>
+        <div class="flex justify-center gap-2 mt-6" id="speisekarte-dots"></div>
       </div>
 
-      <!-- ==== DEAKTIVIERT: Saisonale Speisekarte (Teil 2 von 2) ==================
-      <!~~ Saisonale Karte ~~>
+      <!-- Saisonale Karte -->
       <div id="card-saisonale" class="card-content hidden">
         <div class="relative max-w-3xl mx-auto">
           <div class="overflow-hidden rounded-3xl shadow-elevated">
             <div class="card-track" id="saisonale-track">
-              <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Spezialitäten" class="w-full" /></div></div>
-              <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/2.svg" alt="Limos & Longdrinks" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/1.svg" alt="Saisonale Specials – Vorspeise, Hauptgang und Dessert" class="w-full" /></div></div>
+              <div><div class="bg-white p-4 md:p-8"><img width="559" height="794" loading="lazy" decoding="async" src="images/speisekarte/saisonale-karte/2.svg" alt="Hausgemachte Limos, Spritz & Longdrinks" class="w-full" /></div></div>
             </div>
           </div>
           <button onclick="moveCard('saisonale', -1)" class="absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-floating flex items-center justify-center text-brand-500 hover:bg-white focus-visible:outline-2 focus-visible:outline-brand-500 active:bg-brand-50 transition-colors duration-200 text-xl z-10" aria-label="Zurück">&#8249;</button>
@@ -925,7 +918,6 @@
         </div>
         <div class="flex justify-center gap-2 mt-6" id="saisonale-dots"></div>
       </div>
-           ==== Ende deaktivierter Block ====================================== -->
     </div>
   </section>
 
@@ -1522,11 +1514,10 @@
     }
 
     // Menu card page flip
-    // 'saisonale' ist deaktiviert — siehe Kommentar-Block im Speisekarte-Abschnitt
-    const cardState = { sommer: 0 };
-    const cardCounts = { sommer: 6 };
+    const cardState = { speisekarte: 0, saisonale: 0 };
+    const cardCounts = { speisekarte: 6, saisonale: 2 };
 
-    ['sommer'].forEach(name => {
+    ['speisekarte', 'saisonale'].forEach(name => {
       const dotsEl = document.getElementById(name + '-dots');
       for (let i = 0; i < cardCounts[name]; i++) {
         const dot = document.createElement('button');
