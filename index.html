@@ -592,9 +592,11 @@
        im Markup und wurden erst im Skript am Seitenende ausgeblendet – das
        kostete bei jedem Aufruf einen Layout-Shift von ~0,15 CLS. */
     #hitze-hinweis,
+    #feiertag-hinweis,
     #august-banner,
     .august-hinweis { display: none; }
     .ks-hitze #hitze-hinweis { display: block; }
+    .ks-feiertag #feiertag-hinweis { display: block; }
     .ks-august #august-banner { display: block; }
     .ks-august .august-hinweis { display: block; }
   </style>
@@ -610,6 +612,12 @@
       // Tagesaktueller Hitze-Hinweis
       if (jetzt <= new Date(2026, 7, 4, 23, 59, 59)) {
         wurzel.classList.add('ks-hitze');
+      }
+      // Feiertags-Hinweis: 3. Oktober 2026 (Samstag) – regulär geöffnet.
+      // Für den nächsten Feiertag: Stichtag hier und Text im Markup
+      // (#feiertag-hinweis) anpassen.
+      if (jetzt <= new Date(2026, 9, 3, 23, 59, 59)) {
+        wurzel.classList.add('ks-feiertag');
       }
     })();
   </script>
@@ -682,6 +690,23 @@
               </p>
               <p class="font-body text-sm md:text-base font-semibold leading-snug mt-1" style="color:#163f45;">
                 Warme Küche bis <span class="whitespace-nowrap">21:45 Uhr</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Feiertags-Hinweis: standardmäßig per CSS aus, das Skript in <head>
+             schaltet ihn bis zum Stichtag frei (Klasse .ks-feiertag) -->
+        <div id="feiertag-hinweis" class="mt-6 md:mt-8 w-full max-w-xl md:max-w-2xl">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 rounded-2xl px-5 py-4 md:px-7 md:py-5 shadow-elevated"
+               style="background:#e6c187;">
+            <span class="font-body text-xs md:text-sm font-bold uppercase tracking-[0.2em] rounded-full px-4 py-1.5 whitespace-nowrap"
+                  style="background:#0e272b; color:#e6c187;">3. Oktober</span>
+            <div class="text-center sm:text-left">
+              <p class="font-body text-base md:text-xl font-bold leading-snug" style="color:#0e272b;">
+                Am Feiertag haben wir wie gewohnt geöffnet.
+              </p>
+              <p class="font-body text-sm md:text-base font-semibold leading-snug mt-1" style="color:#163f45;">
+                <span class="whitespace-nowrap">12 – 14 Uhr</span> und <span class="whitespace-nowrap">17 – 23 Uhr</span>.
               </p>
             </div>
           </div>
