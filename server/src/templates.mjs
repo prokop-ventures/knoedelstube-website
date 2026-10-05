@@ -9,6 +9,7 @@ Personen:  {personen}
 Telefon:   {telefon}
 E-Mail:    {email}
 Tisch bis: {tischBis}
+Gruppenbedingungen: {gruppenbedingungen}
 Nachricht: {nachricht}
 
 ---
@@ -18,9 +19,9 @@ Eine Antwort direkt an den Gast ist per Reply möglich.`;
 const fill = (tpl, vars) =>
   Object.entries(vars).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v && v.length > 0 ? v : '–'), tpl);
 
-export function renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis }) {
+export function renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis, gruppenbedingungen }) {
   const subject = `Reservierung ${datum} – ${name} (${personen})`;
-  const text = fill(RESERVATION_BODY, { name, datum, uhrzeit, personen, telefon, email, nachricht, tischBis });
+  const text = fill(RESERVATION_BODY, { name, datum, uhrzeit, personen, telefon, email, nachricht, tischBis, gruppenbedingungen });
   return { subject, text };
 }
 
