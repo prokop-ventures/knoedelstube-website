@@ -1223,6 +1223,7 @@
               </select>
               <p id="uhrzeit-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">Im August bieten wir keinen Mittagstisch an.</p>
               <p id="kontingent-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">18:00 bis 19:00 Uhr ist an diesem Abend ausgebucht. Frühe Tische vergeben wir bis 19:15 Uhr, ab 19:30 Uhr ohne Zeitlimit.</p>
+              <p id="puenktlich-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">Bitte kommen Sie pünktlich: Ihr Tisch ist ab 19:15 Uhr erneut vergeben.</p>
             </div>
           </div>
           <div>
@@ -1734,7 +1735,17 @@
       }
       hinweis.classList.toggle('hidden', !voll);
       if (voll && KERNZEIT_SLOTS.includes(feld.value)) feld.value = '19:30';
+      puenktlichUmschalten();
     }
+
+    // Bitte um Pünktlichkeit nur, wenn ein Tisch mit festem Ende gewählt ist
+    function puenktlichUmschalten() {
+      const feld = document.getElementById('uhrzeit');
+      const hinweis = document.getElementById('puenktlich-hinweis');
+      if (!feld || !hinweis) return;
+      hinweis.classList.toggle('hidden', !(kernzeitVoll && FRUEHE_SLOTS.includes(feld.value)));
+    }
+    document.getElementById('uhrzeit').addEventListener('change', puenktlichUmschalten);
 
     async function kontingentPruefen(datum) {
       const anfrage = ++kontingentAnfrage;
