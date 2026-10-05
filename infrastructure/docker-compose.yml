@@ -4,6 +4,10 @@ services:
     container_name: knoedel-mail
     restart: unless-stopped
     env_file: mail.env
+    # Adresse des Kalender-Skripts für die Kontingent-Abfrage. Kommt beim Deploy
+    # aus der Repository-Variable KONTINGENT_URL; leer = alle Zeiten buchbar.
+    environment:
+      KONTINGENT_URL: ${KONTINGENT_URL:-}
     healthcheck:
       test:
         - "CMD-SHELL"

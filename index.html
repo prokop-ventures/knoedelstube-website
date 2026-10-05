@@ -1210,8 +1210,8 @@
                   <option>13:30</option>
                 </optgroup>
                 <optgroup label="Abends">
-                  <option>17:00</option>
-                  <option>17:30</option>
+                  <option value="17:00">17:00</option>
+                  <option value="17:30">17:30</option>
                   <option selected>18:00</option>
                   <option>18:30</option>
                   <option>19:00</option>
@@ -1222,6 +1222,7 @@
                 </optgroup>
               </select>
               <p id="uhrzeit-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">Im August bieten wir keinen Mittagstisch an.</p>
+              <p id="kontingent-hinweis" class="hidden text-brand-500 text-xs mt-1 font-bold">18:00 bis 19:00 Uhr ist an diesem Abend ausgebucht. Frühe Tische vergeben wir bis 19:15 Uhr, ab 19:30 Uhr ohne Zeitlimit.</p>
             </div>
           </div>
           <div>
@@ -1706,6 +1707,52 @@
     // Basis-Zustand auch dann setzen, wenn flatpickr nicht lädt
     mittagstischUmschalten(new Date());
 
+    // ==== Kontingent für 18:00 bis 19:00 Uhr ================================
+    // Ist diese Zeit am gewählten Tag ausgebucht, bietet das Formular nur noch
+    // die frühe Runde (Tisch bis 19:15 Uhr) und Zeiten ab 19:30 Uhr an. Ob das
+    // so ist, sagt der Server anhand des Reservierungskalenders. Bleibt die
+    // Antwort aus, sind alle Zeiten wählbar – bestätigt wird ohnehin von Hand.
+    const KERNZEIT_SLOTS = ['18:00', '18:30', '19:00'];
+    const FRUEHE_SLOTS = ['17:00', '17:30'];
+    let kernzeitVoll = false;
+    let kontingentAnfrage = 0;
+
+    function kernzeitUmschalten(voll) {
+      kernzeitVoll = voll;
+      const feld = document.getElementById('uhrzeit');
+      const hinweis = document.getElementById('kontingent-hinweis');
+      if (!feld || !hinweis) return;
+
+      for (const option of feld.options) {
+        if (KERNZEIT_SLOTS.includes(option.value)) {
+          option.hidden = voll;
+          option.disabled = voll;
+        }
+        if (FRUEHE_SLOTS.includes(option.value)) {
+          option.textContent = voll ? option.value + ' (Tisch bis 19:15 Uhr)' : option.value;
+        }
+      }
+      hinweis.classList.toggle('hidden', !voll);
+      if (voll && KERNZEIT_SLOTS.includes(feld.value)) feld.value = '19:30';
+    }
+
+    async function kontingentPruefen(datum) {
+      const anfrage = ++kontingentAnfrage;
+      kernzeitUmschalten(false);
+      if (!datum) return;
+
+      const zwei = n => String(n).padStart(2, '0');
+      const text = zwei(datum.getDate()) + '.' + zwei(datum.getMonth() + 1) + '.' + datum.getFullYear();
+      try {
+        const res = await fetch('/api/reservation?datum=' + encodeURIComponent(text));
+        const data = await res.json();
+        // Nur die Antwort zum zuletzt gewählten Datum zählt
+        if (anfrage === kontingentAnfrage) kernzeitUmschalten(data.kernzeitVoll === true);
+      } catch (_) {
+        // ohne Antwort bleiben alle Zeiten wählbar
+      }
+    }
+
     // Flatpickr: disable Sundays (0) and Mondays (1)
     // Die Vendor-Skripte werden mit defer geladen (nicht render-blockierend),
     // daher Init erst nach dem Parsen, wenn flatpickr verfügbar ist.
@@ -1724,13 +1771,17 @@
         disable: [
           date => date.getDay() === 0 || date.getDay() === 1,
         ],
-        onChange: selectedDates => mittagstischUmschalten(selectedDates[0]),
+        onChange: selectedDates => {
+          mittagstischUmschalten(selectedDates[0]);
+          kontingentPruefen(selectedDates[0]);
+        },
         onReady: (selectedDates, __, instance) => {
           const year = instance.calendarContainer.querySelector('.cur-year');
           if (year) { year.id = 'fp-year'; year.setAttribute('aria-label', 'Jahr'); year.setAttribute('autocomplete', 'off'); }
           const month = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
           if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
           mittagstischUmschalten(selectedDates[0]);
+          kontingentPruefen(selectedDates[0]);
         },
       });
     }
@@ -1843,6 +1894,8 @@
         nachricht: document.getElementById('nachricht').value.trim(),
         botcheck:  this.querySelector('[name=botcheck]').checked,
       };
+      // Frühe Runde an ausgebuchten Abenden: Tisch mit festem Ende
+      payload.tischBis = kernzeitVoll && FRUEHE_SLOTS.includes(payload.uhrzeit) ? '19:15' : '';
 
       try {
         await postJson('/api/reservation', payload);

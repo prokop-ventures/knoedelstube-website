@@ -45,6 +45,8 @@ app.post('/api/contact', limiter, async (req, res) => {
   const email = String(req.body.email ?? '').trim();
   const betreff = String(req.body.betreff ?? '').trim();
   const nachricht = String(req.body.nachricht ?? '').trim();
+  // Nur die frühe Runde an ausgebuchten Abenden hat ein festes Ende
+  const tischBis = req.body.tischBis === '19:15' ? '19:15 Uhr' : '';
 
   if (!nonEmpty(name) || !isEmail(email) || !nonEmpty(betreff)) {
     return res.status(400).json({ ok: false, error: 'invalid_input' });
@@ -58,6 +60,48 @@ app.post('/api/contact', limiter, async (req, res) => {
     console.error('contact send failed', err);
     res.status(502).json({ ok: false, error: 'send_failed' });
   }
+});
+
+// Kontingent: Sind 18:00/18:30 am gewählten Tag ausgebucht? Die Antwort kommt
+// vom Kalender-Skript der Knödelstube. Ohne Antwort gelten alle Zeiten als
+// frei – jede Anfrage wird ohnehin von Hand bestätigt.
+const KONTINGENT_URL = process.env.KONTINGENT_URL ?? '';
+const KONTINGENT_CACHE_MS = 60 * 1000;
+const kontingentCache = new Map();
+
+const abfrageLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.get('/api/reservation', abfrageLimiter, async (req, res) => {
+  const datum = String(req.query.datum ?? '');
+  if (!/^\d{2}\.\d{2}\.\d{4}$/.test(datum)) {
+    return res.status(400).json({ ok: false, error: 'invalid_input' });
+  }
+  res.setHeader('Cache-Control', 'no-store');
+
+  const treffer = kontingentCache.get(datum);
+  if (treffer && Date.now() - treffer.zeit < KONTINGENT_CACHE_MS) {
+    return res.json({ ok: true, kernzeitVoll: treffer.voll });
+  }
+
+  let voll = false;
+  if (KONTINGENT_URL) {
+    try {
+      const antwort = await fetch(`${KONTINGENT_URL}?datum=${encodeURIComponent(datum)}`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      voll = (await antwort.json()).kernzeitVoll === true;
+      if (kontingentCache.size > 500) kontingentCache.clear();
+      kontingentCache.set(datum, { voll, zeit: Date.now() });
+    } catch (err) {
+      console.error('kontingent lookup failed', err);
+    }
+  }
+  res.json({ ok: true, kernzeitVoll: voll });
 });
 
 app.post('/api/reservation', limiter, async (req, res) => {
@@ -75,7 +119,7 @@ app.post('/api/reservation', limiter, async (req, res) => {
     return res.status(400).json({ ok: false, error: 'invalid_input' });
   }
 
-  const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht });
+  const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis });
   try {
     await sendMail({ ...mail, replyTo: `"${name}" <${email}>` });
     res.json({ ok: true });
