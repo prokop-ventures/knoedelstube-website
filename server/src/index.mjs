@@ -45,8 +45,6 @@ app.post('/api/contact', limiter, async (req, res) => {
   const email = String(req.body.email ?? '').trim();
   const betreff = String(req.body.betreff ?? '').trim();
   const nachricht = String(req.body.nachricht ?? '').trim();
-  // Nur die frühe Runde an ausgebuchten Abenden hat ein festes Ende
-  const tischBis = req.body.tischBis === '19:15' ? '19:15 Uhr' : '';
 
   if (!nonEmpty(name) || !isEmail(email) || !nonEmpty(betreff)) {
     return res.status(400).json({ ok: false, error: 'invalid_input' });
@@ -114,13 +112,15 @@ app.post('/api/reservation', limiter, async (req, res) => {
   const uhrzeit = String(req.body.uhrzeit ?? '').trim();
   const datum = String(req.body.datum ?? '').trim();
   const nachricht = String(req.body.nachricht ?? '').trim();
+  // Nur die frühe Runde an ausgebuchten Abenden hat ein festes Ende
+  const tischBis = req.body.tischBis === '19:15' ? '19:15 Uhr' : '';
 
   if (!nonEmpty(name) || !isEmail(email) || !nonEmpty(datum) || !nonEmpty(uhrzeit) || !nonEmpty(personen)) {
     return res.status(400).json({ ok: false, error: 'invalid_input' });
   }
 
-  const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis });
   try {
+    const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis });
     await sendMail({ ...mail, replyTo: `"${name}" <${email}>` });
     res.json({ ok: true });
   } catch (err) {
