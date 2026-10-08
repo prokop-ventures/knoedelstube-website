@@ -1243,6 +1243,15 @@
             <label for="nachricht" class="block text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Nachricht (optional)</label>
             <textarea id="nachricht" name="nachricht" autocomplete="off" rows="3" class="w-full px-4 py-3 rounded-xl border border-brand-200 bg-brand-50/30 text-warmgray focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-shadow duration-200 resize-none"></textarea>
           </div>
+          <div id="gruppen-bedingungen" class="hidden p-4 bg-brand-50 border border-brand-200 rounded-xl">
+            <p class="text-sm font-bold text-brand-500 uppercase tracking-wider mb-1">Gruppen ab 8 Personen</p>
+            <p class="text-brand-400 text-sm">Ihre Personenzahl können Sie bis <span id="gruppen-frist">2 Tage</span> vor dem Termin kostenlos ändern. Erscheinen weniger Gäste als zuletzt gemeldet, bleiben 10 % der Personenzahl (aufgerundet) ohne Berechnung. Für jede weitere fehlende Person berechnen wir 25 € Ausfallpauschale. Der Nachweis, dass uns kein oder ein geringerer Schaden entstanden ist, bleibt Ihnen vorbehalten.</p>
+            <label for="gruppen-ok" class="flex items-start gap-3 mt-4 text-brand-500 text-sm font-bold">
+              <input type="checkbox" id="gruppen-ok" name="gruppenbedingungen" class="mt-1" />
+              <span>Ich habe die Gruppenbedingungen gelesen und akzeptiere sie.</span>
+            </label>
+            <p class="field-error hidden text-red-600 text-xs mt-1" data-error-for="gruppen-ok"></p>
+          </div>
           <button type="submit" id="reservierung-submit" class="w-full py-4 bg-brand-500 text-white font-bold tracking-wider uppercase rounded-xl shadow-elevated hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-brand-500 focus-visible:outline-offset-2 active:bg-brand-600 transition-colors duration-200">Reservierung anfragen</button>
         </form>
         <div id="form-success" class="hidden mt-4 p-4 bg-brand-50 border border-brand-200 rounded-xl text-center">
@@ -1755,6 +1764,69 @@
     }
     document.getElementById('uhrzeit').addEventListener('change', puenktlichUmschalten);
 
+    // ==== Gruppenbedingungen (Ausfallregel) =================================
+    // Ab 8 Personen, September bis April: Bedingungen zeigen und bestätigen
+    // lassen. An Feiertagen und Sondertagen gelten sie das ganze Jahr, mit
+    // längerer Frist. Die Werte stehen auch im Kalender-Skript (CONFIG.ausfall)
+    // und im Text von #gruppen-bedingungen – bei Änderungen alle drei anpassen.
+    const GRUPPE_AB = 8;
+    const AUSFALL_MONATE = [9, 10, 11, 12, 1, 2, 3, 4];
+    const FRIST_TAGE = 2;
+    const FRIST_TAGE_FEIERTAG = 7;
+
+    function gewaehltesDatum() {
+      const d = document.getElementById('datum').value.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+      return d ? new Date(Number(d[3]), Number(d[2]) - 1, Number(d[1])) : null;
+    }
+
+    // Gaußsche Osterformel in der Fassung von Butcher
+    function ostersonntag(jahr) {
+      const a = jahr % 19, b = Math.floor(jahr / 100), c = jahr % 100;
+      const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+      const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+      const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+      const m = Math.floor((a + 11 * h + 22 * l) / 451);
+      return new Date(jahr, Math.floor((h + l - 7 * m + 114) / 31) - 1, ((h + l - 7 * m + 114) % 31) + 1);
+    }
+
+    // Gesetzliche Feiertage in Baden-Württemberg, dazu Heiligabend, Silvester, Muttertag
+    function feiertagsfrist(tag) {
+      const jahr = tag.getFullYear();
+      const ostern = ostersonntag(jahr);
+      const nachOstern = (tage) => new Date(jahr, ostern.getMonth(), ostern.getDate() + tage);
+      const muttertag = 8 + (7 - new Date(jahr, 4, 1).getDay()) % 7;   // zweiter Sonntag im Mai
+      return [
+        new Date(jahr, 0, 1), new Date(jahr, 0, 6),
+        nachOstern(-2), nachOstern(1), new Date(jahr, 4, 1),
+        nachOstern(39), nachOstern(50), nachOstern(60),
+        new Date(jahr, 9, 3), new Date(jahr, 10, 1),
+        new Date(jahr, 11, 25), new Date(jahr, 11, 26),
+        new Date(jahr, 11, 24), new Date(jahr, 11, 31), new Date(jahr, 4, muttertag),
+      ].some((f) => f.getMonth() === tag.getMonth() && f.getDate() === tag.getDate());
+    }
+
+    function gruppenbedingungenGelten() {
+      const personen = parseInt(document.getElementById('personen').value, 10);
+      const tag = gewaehltesDatum();
+      return personen >= GRUPPE_AB && !!tag &&
+        (AUSFALL_MONATE.includes(tag.getMonth() + 1) || feiertagsfrist(tag));
+    }
+
+    function gruppenbedingungenUmschalten() {
+      const box = document.getElementById('gruppen-bedingungen');
+      const haken = document.getElementById('gruppen-ok');
+      if (!box || !haken) return;
+      const gelten = gruppenbedingungenGelten();
+      const tag = gewaehltesDatum();
+      document.getElementById('gruppen-frist').textContent =
+        (tag && feiertagsfrist(tag) ? FRIST_TAGE_FEIERTAG : FRIST_TAGE) + ' Tage';
+      box.classList.toggle('hidden', !gelten);
+      haken.required = gelten;
+      if (!gelten) haken.checked = false;
+    }
+    document.getElementById('personen').addEventListener('change', gruppenbedingungenUmschalten);
+    document.getElementById('datum').addEventListener('change', gruppenbedingungenUmschalten);
+
     async function kontingentPruefen(datum) {
       const anfrage = ++kontingentAnfrage;
       kernzeitUmschalten(false);
@@ -1801,6 +1873,7 @@
           if (month) { month.id = 'fp-month'; month.setAttribute('aria-label', 'Monat'); month.setAttribute('autocomplete', 'off'); }
           mittagstischUmschalten(selectedDates[0]);
           kontingentPruefen(selectedDates[0]);
+          gruppenbedingungenUmschalten();
         },
       });
     }
@@ -1828,7 +1901,7 @@
     function fieldErrorMessage(input) {
       const v = input.validity;
       if (v.valid) return '';
-      if (v.valueMissing) return 'Bitte ausfüllen.';
+      if (v.valueMissing) return input.type === 'checkbox' ? 'Bitte bestätigen.' : 'Bitte ausfüllen.';
       if (v.typeMismatch || v.patternMismatch) {
         if (input.type === 'email') return 'Bitte gültige E-Mail-Adresse eingeben (z.B. name@beispiel.de).';
         return 'Format ungültig.';
@@ -1915,6 +1988,7 @@
       };
       // Frühe Runde an ausgebuchten Abenden: Tisch mit festem Ende
       payload.tischBis = kernzeitVoll && FRUEHE_SLOTS.includes(payload.uhrzeit) ? '19:15' : '';
+      payload.gruppenbedingungen = gruppenbedingungenGelten() && document.getElementById('gruppen-ok').checked;
 
       try {
         await postJson('/api/reservation', payload);

@@ -114,13 +114,15 @@ app.post('/api/reservation', limiter, async (req, res) => {
   const nachricht = String(req.body.nachricht ?? '').trim();
   // Nur die frühe Runde an ausgebuchten Abenden hat ein festes Ende
   const tischBis = req.body.tischBis === '19:15' ? '19:15 Uhr' : '';
+  // Gruppen ab 8 Personen bestätigen im Formular die Ausfallregel
+  const gruppenbedingungen = req.body.gruppenbedingungen === true ? 'akzeptiert' : '';
 
   if (!nonEmpty(name) || !isEmail(email) || !nonEmpty(datum) || !nonEmpty(uhrzeit) || !nonEmpty(personen)) {
     return res.status(400).json({ ok: false, error: 'invalid_input' });
   }
 
   try {
-    const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis });
+    const mail = renderReservation({ name, email, telefon, personen, uhrzeit, datum, nachricht, tischBis, gruppenbedingungen });
     await sendMail({ ...mail, replyTo: `"${name}" <${email}>` });
     res.json({ ok: true });
   } catch (err) {
